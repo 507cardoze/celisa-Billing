@@ -1,21 +1,23 @@
-import 'react-perfect-scrollbar/dist/css/styles.css';
 import React from 'react';
-import { useRoutes } from 'react-router-dom';
+import { Switch, Route} from "react-router-dom";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from '@material-ui/core';
-import GlobalStyles from 'src/components/GlobalStyles';
-import 'src/mixins/chartjs';
-import theme from 'src/theme';
-import routes from 'src/routes';
+import theme from './theme/index';
 
-const App = () => {
-  const routing = useRoutes(routes);
+import Login from './pages/login/'
+import Dashboard from './pages/dashboard/'
 
+
+function App() {
   return (
     <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      {routing}
+      <CssBaseline />
+      <Switch>
+      <Route exact path="/" component={Dashboard} />
+      <Route path="/login" component={Login} />
+      </Switch>
     </ThemeProvider>
   );
-};
+}
 
 export default App;
