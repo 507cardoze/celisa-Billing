@@ -13,100 +13,46 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import MainList from "../MainList/mainList.component";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import * as fetch from '../../helpers/fetch'
+import * as url from '../../helpers/urls';
+import { useHistory  } from "react-router-dom";
+import * as styles from '../../helpers/styles'
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  toolbar: {
-    paddingRight: 24, 
-  },
-  toolbarIcon: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  menuButtonHidden: {
-    display: "none",
-  },
-  title: {
-    flexGrow: 1,
-  },
-  drawerPaper: {
-    position: "relative",
-    whiteSpace: "nowrap",
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerPaperClose: {
-    overflowX: "hidden",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9),
-    },
-  },
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: "100vh",
-    overflow: "auto",
-  },
-  container: {
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "column",
-  },
-  fixedHeight: {
-    height: 240,
-  },
-}));
+const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 
 function MainLayout(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const handleDrawerOpen = () => setOpen(true)
+  const handleDrawerClose = () => setOpen(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const history = useHistory();
+
+  const handleLogout = async () => {
+
+    setIsLoading(true)
+
+    const logout = url.logoutUrl();
+    const header = fetch.requestHeader("DELETE", "" , localStorage.token)
+    const loggedInfo = await fetch.fetchData(logout, header)
+
+    if(loggedInfo === "refresh token deleted."){
+      localStorage.clear()
+      history.push("/login");
+    }else{
+      localStorage.clear()
+      history.push("/login");
+    }
+
+  }
 
   return (
     <div className={classes.root}>
+      { isLoading && <Backdrop className={classes.backdrop} open={isLoading}>
+              <CircularProgress color="inherit" />
+            </Backdrop>}
       <AppBar
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}
@@ -134,7 +80,7 @@ function MainLayout(props) {
             {props.Tittle}
           </Typography>
 
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={handleLogout}>
             <ExitToAppIcon />
           </IconButton>
         </Toolbar>
