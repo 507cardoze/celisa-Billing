@@ -41,7 +41,7 @@ function ProfilePage(){
     const fetchUserData = async (url, header, setter) => {
       const loggedInfo = await fetch.fetchData(url, header)
       fetch.UnauthorizedRedirect(loggedInfo, history)
-      setter({...userDetails,
+      setter({
         user_id:loggedInfo[0].user_id, 
         name: loggedInfo[0].name, 
         lastname: loggedInfo[0].lastname,

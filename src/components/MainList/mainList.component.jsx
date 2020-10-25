@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import ListItem from "@material-ui/core/ListItem";
@@ -26,8 +26,8 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 
 function MainList({ user }) {
-  const [open, setOpen] = useState(false);
-  const [openConsultas, setOpenConsultas] = useState(true);
+  // const [open, setOpen] = useState(false);
+  // const [openConsultas, setOpenConsultas] = useState(true);
 
   // const handleClick = () => setOpen(!open)
   // const handleClickConsultas = () => setOpenConsultas(!openConsultas)
