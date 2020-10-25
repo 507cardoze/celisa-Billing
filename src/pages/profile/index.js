@@ -34,8 +34,9 @@ function ProfilePage(){
     const header = fetch.requestHeader("GET",null, localStorage.token)
 
   useEffect(()=>{
-    
-
+    const getUserData = url.getUserUrl();
+    const getPaisData = url.getPaisesUrl()
+    const header = fetch.requestHeader("GET",null, localStorage.token)
     //consultas al api
     const fetchUserData = async (url, header, setter) => {
       const loggedInfo = await fetch.fetchData(url, header)
@@ -60,7 +61,7 @@ function ProfilePage(){
     // inicio de funciones de consultas
     fetchUserData(getUserData, header, setUserDetails)
     fetchData(getPaisData, header, setPaises)
-},[history, getUserData, getPaisData, header])
+},[history])
 
 const handleChange = (event) => {
   setUserDetails({
