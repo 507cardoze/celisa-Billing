@@ -5,23 +5,23 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
-import PersonIcon from "@material-ui/icons/Person";
-import PeopleIcon from "@material-ui/icons/People";
-import BarChartIcon from "@material-ui/icons/BarChart";
-import SettingsIcon from "@material-ui/icons/Settings";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import Collapse from "@material-ui/core/Collapse";
-import List from "@material-ui/core/List";
-import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
-import HomeWorkIcon from "@material-ui/icons/HomeWork";
-import PublicIcon from "@material-ui/icons/Public";
-import TerrainIcon from "@material-ui/icons/Terrain";
-import HouseIcon from "@material-ui/icons/House";
-import ListAltIcon from "@material-ui/icons/ListAlt";
-import BeachAccessIcon from "@material-ui/icons/BeachAccess";
-import AllInboxIcon from "@material-ui/icons/AllInbox";
+// import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
+// import PersonIcon from "@material-ui/icons/Person";
+// import PeopleIcon from "@material-ui/icons/People";
+// import BarChartIcon from "@material-ui/icons/BarChart";
+// import SettingsIcon from "@material-ui/icons/Settings";
+// import ExpandLess from "@material-ui/icons/ExpandLess";
+// import ExpandMore from "@material-ui/icons/ExpandMore";
+// import Collapse from "@material-ui/core/Collapse";
+// import List from "@material-ui/core/List";
+// import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+// import HomeWorkIcon from "@material-ui/icons/HomeWork";
+// import PublicIcon from "@material-ui/icons/Public";
+// import TerrainIcon from "@material-ui/icons/Terrain";
+// import HouseIcon from "@material-ui/icons/House";
+// import ListAltIcon from "@material-ui/icons/ListAlt";
+// import BeachAccessIcon from "@material-ui/icons/BeachAccess";
+// import AllInboxIcon from "@material-ui/icons/AllInbox";
 
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 
@@ -29,8 +29,8 @@ function MainList({ user }) {
   const [open, setOpen] = useState(false);
   const [openConsultas, setOpenConsultas] = useState(true);
 
-  const handleClick = () => setOpen(!open)
-  const handleClickConsultas = () => setOpenConsultas(!openConsultas)
+  // const handleClick = () => setOpen(!open)
+  // const handleClickConsultas = () => setOpenConsultas(!openConsultas)
 
   const useStyles = makeStyles((theme) => ({
     root: {

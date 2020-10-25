@@ -21,3 +21,12 @@ export const registerUrl = () => {
 export const getUserUrl = () => {
     return `${process.env.REACT_APP_BACK_END}/v1/auth/user-data`;
 }
+
+export const updateUserDetailsUrl = () => {
+    return `${process.env.REACT_APP_BACK_END}/v1/auth/update-data`;
+}
+
+export const getPaisesUrl = () => {
+    return `${process.env.REACT_APP_BACK_END}/v1/pais/all`;
+}
+

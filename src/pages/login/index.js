@@ -1,5 +1,4 @@
 import React,{useState} from "react";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
@@ -73,6 +72,7 @@ function Login() {
               margin="normal"
               fullWidth
               label="Usuario"
+              autoComplete="username"
               value={username}
               onChange={e=>setUserName(e.target.value)}
               autoFocus
@@ -84,6 +84,7 @@ function Login() {
               fullWidth
               label="Contraseña"
               type="password"
+              autoComplete="current-password"
               value={password}
               onChange={e=>setPassword(e.target.value)}
               disabled={isLoading}

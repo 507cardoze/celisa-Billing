@@ -4,7 +4,6 @@ import * as url from './urls'
 import { useHistory  } from "react-router-dom";
 
 export const requestHeader = (method, body = {}, token) => {
-    
     return {
         method,
         headers: {
@@ -24,57 +23,46 @@ requestHeader.PropTypes = {
     body:  PropTypes.object
 };
 
-
-
-
-export const fetchData = async (url, header) => {
+export const fetchData = async (urls, header) => {
     try {
-        const query = await fetch(url, header);
+        const query = await fetch(urls, header);
         const parsed = await query.json();
-
         if(parsed === "No esta autorizado"){
+          
           const body = JSON.stringify({token: localStorage.refresh_token})
           const TokenRenewServiceUrl = url.refreshTokenUrl()
-          console.log("parsed: ",parsed)
           const headerRT = requestHeader("POST", body , "" )
           const loggedInfo = await fetchData(TokenRenewServiceUrl, headerRT)
+
           if (loggedInfo.accessToken) {
+            localStorage.removeItem("token")
             localStorage.setItem("token", loggedInfo.accessToken);
-            const requery = await fetch(url, header);
+            
+            header.headers.Authorization = `Bearer ${loggedInfo.accessToken}`
+
+            const requery = await fetch(urls, header);
             const reparsed = await requery.json();
             return reparsed;
           }else{
               return "No esta autorizado";
           }
         }
-
         return parsed;
     } catch (error) {
         return "conexion error";
     }
 }
 
-
-
 export const SubcriberRefreshToken = ({children}) => {
     const history = useHistory();
     useEffect(() => {
-        
           const interval = setInterval(async() => {
-          const body = JSON.stringify({token: localStorage.refresh_token})
-          const TokenRenewServiceUrl = url.refreshTokenUrl()
-          const header = requestHeader("POST", body , "" )
-          const loggedInfo = await fetchData(TokenRenewServiceUrl, header)
-
-          if (loggedInfo.accessToken) {
-            localStorage.setItem("token", loggedInfo.accessToken);
-          }else{
+          if (localStorage.refresh_token === null) {
             localStorage.removeItem("token")
             localStorage.removeItem("refresh_token")
-              history.push("/login");
+            history.push("/login");
           }
-
-        }, 600000);
+        }, 300000);
     
         return () => {
             clearInterval(interval)
@@ -86,7 +74,6 @@ export const SubcriberRefreshToken = ({children}) => {
         </>
     );
   }
-
 
   export function useStickyState(defaultValue, key) {
     const [value, setValue] = useState(() => {
@@ -102,11 +89,7 @@ export const SubcriberRefreshToken = ({children}) => {
   }
 
   export const UnauthorizedRedirect = (data, history) => {
-    if(data === "No esta autorizado"){
-      localStorage.removeItem("token")
-      localStorage.removeItem("refresh_token")
-              history.push("/login");
-    }else if(data === "conexion error"){
+    if(data === "conexion error"){
       localStorage.removeItem("token")
       localStorage.removeItem("refresh_token")
       history.push("/login");

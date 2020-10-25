@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import * as styles from '../../helpers/styles'
@@ -14,42 +14,10 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
-];
-
 const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 
-const ProfileDetails = ({ className,userDetails, ...rest }) => {
+const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubmit, ...rest }) => {
   const classes = useStyles();
-  const [values, setValues] = useState({
-    firstName: 'Katarina',
-    lastName: 'Smith',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'Alabama',
-    country: 'USA'
-  });
-
-  console.log(userDetails)
-
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
 
   return (
     <form
@@ -57,6 +25,7 @@ const ProfileDetails = ({ className,userDetails, ...rest }) => {
       noValidate
       className={clsx(classes.root, className)}
       {...rest}
+      onSubmit={handleOnSubmit}
     >
       <Card>
         <CardHeader
@@ -93,7 +62,7 @@ const ProfileDetails = ({ className,userDetails, ...rest }) => {
               <TextField
                 fullWidth
                 label="Apellido"
-                name="lasname"
+                name="lastname"
                 onChange={handleChange}
                 required
                 value={userDetails.lastname}
@@ -123,7 +92,7 @@ const ProfileDetails = ({ className,userDetails, ...rest }) => {
               <TextField
                 fullWidth
                 label="Número de teléfono"
-                name="phone"
+                name="number"
                 onChange={handleChange}
                 type="text"
                 value={userDetails.number}
@@ -139,20 +108,19 @@ const ProfileDetails = ({ className,userDetails, ...rest }) => {
               <TextField
                 fullWidth
                 label="Seleccione un pais"
-                name="state"
+                name="id_pais"
                 onChange={handleChange}
                 required
                 select
-                SelectProps={{ native: true }}
-                value={values.state}
+                value={userDetails.id_pais}
                 variant="outlined"
               >
-                {states.map((option) => (
+                {paises.map((option) => (
                   <option
-                    key={option.value}
-                    value={option.value}
+                    key={option.pais_id}
+                    value={option.pais_id}
                   >
-                    {option.label}
+                    {option.pais}
                   </option>
                 ))}
               </TextField>
@@ -164,7 +132,7 @@ const ProfileDetails = ({ className,userDetails, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Direccion"
+                label="Dirección"
                 name="address"
                 onChange={handleChange}
                 required
@@ -185,7 +153,6 @@ const ProfileDetails = ({ className,userDetails, ...rest }) => {
            variant="contained"
            color="primary"
            className={classes.submit}
-
           >
             Guardar Detalles
           </Button>
