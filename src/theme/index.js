@@ -10,10 +10,10 @@ const theme = createMuiTheme({
       paper: colors.common.white
     },
     primary: {
-      main: colors.indigo[500]
+      main: '#EDDECD'
     },
     secondary: {
-      main: colors.indigo[500]
+      main: "#EDDECD"
     },
     text: {
       primary: colors.blueGrey[900],
@@ -21,7 +21,7 @@ const theme = createMuiTheme({
     }
   },
   shadows,
-  // typography
+  typography
 });
 
 export default theme;

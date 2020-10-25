@@ -6,12 +6,12 @@ export default {
   },
   h2: {
     fontWeight: 500,
-    fontSize: 29,
+    fontSize: 34,
     letterSpacing: '-0.24px'
   },
   h3: {
     fontWeight: 500,
-    fontSize: 24,
+    fontSize: 34,
     letterSpacing: '-0.06px'
   },
   h4: {
@@ -21,7 +21,7 @@ export default {
   },
   h5: {
     fontWeight: 500,
-    fontSize: 16,
+    fontSize: 34,
     letterSpacing: '-0.05px'
   },
   h6: {

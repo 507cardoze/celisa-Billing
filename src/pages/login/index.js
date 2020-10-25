@@ -11,7 +11,6 @@ import fondoPrincipal from '../../static/fondo-principal.jpg'
 import * as fetch from '../../helpers/fetch'
 import * as styles from '../../helpers/styles'
 import * as toast from '../../helpers/toast'
-import logo from '../../static/PNG Blanco celisastore.png'
 import * as url from '../../helpers/urls';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -65,9 +64,8 @@ function Login() {
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          <Avatar className={classes.avatar} alt="logo" src={logo}></Avatar>
           <Typography component="h1" variant="h5">
-            Servicio de Pedidos de Celisa
+            Celisa Store Billing
           </Typography>
           <form className={classes.form} onSubmit={handleOnSubmit} noValidate>
             <TextField

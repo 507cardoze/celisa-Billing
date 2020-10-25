@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState,useEffect} from 'react';
 import PropTypes from 'prop-types';
 import * as url from './urls'
 import { useHistory  } from "react-router-dom";
@@ -10,7 +10,7 @@ export const requestHeader = (method, body = {}, token) => {
         headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
-            "Authorization": token ? `Bearer ${token}` : "" ,
+            Authorization: token ? `Bearer ${token}` : "" ,
         },
         mode: "cors",
         cache: "default",
@@ -31,6 +31,23 @@ export const fetchData = async (url, header) => {
     try {
         const query = await fetch(url, header);
         const parsed = await query.json();
+
+        if(parsed === "No esta autorizado"){
+          const body = JSON.stringify({token: localStorage.refresh_token})
+          const TokenRenewServiceUrl = url.refreshTokenUrl()
+          console.log("parsed: ",parsed)
+          const headerRT = requestHeader("POST", body , "" )
+          const loggedInfo = await fetchData(TokenRenewServiceUrl, headerRT)
+          if (loggedInfo.accessToken) {
+            localStorage.setItem("token", loggedInfo.accessToken);
+            const requery = await fetch(url, header);
+            const reparsed = await requery.json();
+            return reparsed;
+          }else{
+              return "No esta autorizado";
+          }
+        }
+
         return parsed;
     } catch (error) {
         return "conexion error";
@@ -52,7 +69,8 @@ export const SubcriberRefreshToken = ({children}) => {
           if (loggedInfo.accessToken) {
             localStorage.setItem("token", loggedInfo.accessToken);
           }else{
-              localStorage.clear()
+            localStorage.removeItem("token")
+            localStorage.removeItem("refresh_token")
               history.push("/login");
           }
 
@@ -70,3 +88,27 @@ export const SubcriberRefreshToken = ({children}) => {
   }
 
 
+  export function useStickyState(defaultValue, key) {
+    const [value, setValue] = useState(() => {
+      const stickyValue = localStorage.getItem(key);
+      return stickyValue !== null
+        ? JSON.parse(stickyValue)
+        : defaultValue;
+    });
+    useEffect(() => {
+      localStorage.setItem(key, JSON.stringify(value));
+    }, [key, value]);
+    return [value, setValue];
+  }
+
+  export const UnauthorizedRedirect = (data, history) => {
+    if(data === "No esta autorizado"){
+      localStorage.removeItem("token")
+      localStorage.removeItem("refresh_token")
+              history.push("/login");
+    }else if(data === "conexion error"){
+      localStorage.removeItem("token")
+      localStorage.removeItem("refresh_token")
+      history.push("/login");
+    }
+  };

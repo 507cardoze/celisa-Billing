@@ -18,22 +18,20 @@ export const loginStyles = (theme, fondo) => {
           backgroundPosition: "center",
         },
         paper: {
-          margin: theme.spacing(8, 4),
+          margin: theme.spacing(15, 4),
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-        },
-        avatar: {
-          margin: theme.spacing(2),
-          backgroundColor: "black",
+          justifyContent: "center"
         },
         form: {
           width: "100%", // Fix IE 11 issue.
-          marginTop: theme.spacing(2),
+          marginTop: theme.spacing(4),
         },
         submit: {
           backgroundColor: theme.palette.secondary.main,
           margin: theme.spacing(3, 0, 2),
+          fontWeight:"bold"
         },
         backdrop: {
           zIndex: theme.zIndex.drawer + 1,
@@ -81,6 +79,8 @@ export const mainLayOutStyles = (theme) => {
     },
     title: {
       flexGrow: 1,
+      fontWeight: "bold",
+      textAlign: "center"
     },
     drawerPaper: {
       position: "relative",
@@ -124,6 +124,11 @@ export const mainLayOutStyles = (theme) => {
     backdrop: {
       zIndex: theme.zIndex.drawer + 1,
       color: '#fff',
+    },
+    submit: {
+      backgroundColor: theme.palette.secondary.main,
+      margin: theme.spacing(3, 0, 2),
+      fontWeight:"bold"
     },
   }
 

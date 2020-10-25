@@ -17,3 +17,7 @@ export const refreshTokenUrl = () => {
 export const registerUrl = () => {
     return `${process.env.REACT_APP_BACK_END}/v1/auth/register`;
 }
+
+export const getUserUrl = () => {
+    return `${process.env.REACT_APP_BACK_END}/v1/auth/user-data`;
+}

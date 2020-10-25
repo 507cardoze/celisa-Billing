@@ -6,6 +6,7 @@ import theme from './theme/index';
 import {PrivateRoute} from './components/PrivateRoute'
 import Login from './pages/login/'
 import Dashboard from './pages/dashboard/'
+import ProfilePage from './pages/profile/'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <CssBaseline />
       <Switch>
       <PrivateRoute exact path="/" component={Dashboard} />
+      <PrivateRoute path="/profile" component={ProfilePage} />
       <Route path="/login" component={Login} />
       </Switch>
     </ThemeProvider>

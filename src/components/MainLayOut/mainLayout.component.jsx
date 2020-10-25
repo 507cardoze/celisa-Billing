@@ -19,12 +19,13 @@ import { useHistory  } from "react-router-dom";
 import * as styles from '../../helpers/styles'
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import {useStickyState } from '../../helpers/fetch'
 
 const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 
 function MainLayout(props) {
   const classes = useStyles();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useStickyState(true, "open");
   const handleDrawerOpen = () => setOpen(true)
   const handleDrawerClose = () => setOpen(false)
   const [isLoading, setIsLoading] = useState(false);
@@ -39,10 +40,12 @@ function MainLayout(props) {
     const loggedInfo = await fetch.fetchData(logout, header)
 
     if(loggedInfo === "refresh token deleted."){
-      localStorage.clear()
+      localStorage.removeItem("token")
+      localStorage.removeItem("refresh_token")
       history.push("/login");
     }else{
-      localStorage.clear()
+      localStorage.removeItem("token")
+      localStorage.removeItem("refresh_token")
       history.push("/login");
     }
 

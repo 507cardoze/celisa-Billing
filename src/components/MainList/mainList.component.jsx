@@ -23,6 +23,8 @@ import ListAltIcon from "@material-ui/icons/ListAlt";
 import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 import AllInboxIcon from "@material-ui/icons/AllInbox";
 
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+
 function MainList({ user }) {
   const [open, setOpen] = useState(false);
   const [openConsultas, setOpenConsultas] = useState(true);
@@ -53,9 +55,16 @@ function MainList({ user }) {
         <ListItem button className="list-fix-padding">
           <ListItemIcon>
             <DashboardIcon />
-            <Link to="/"></Link>
           </ListItemIcon>
           <ListItemText primary="Consola de datos" />
+        </ListItem>
+      </Link>
+      <Link to="/profile" className={classes.links}>
+        <ListItem button className="list-fix-padding">
+          <ListItemIcon>
+            <AccountBoxIcon />
+          </ListItemIcon>
+          <ListItemText primary="Perfil de usuario" />
         </ListItem>
       </Link>
       {/* <ListItem
