@@ -16,7 +16,7 @@ import {
 
 const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 
-const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubmit, ...rest }) => {
+const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubmit,isLoading, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -52,6 +52,7 @@ const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubm
                 required
                 value={userDetails.name}
                 variant="outlined"
+                disabled={isLoading}
               />
             </Grid>
             <Grid
@@ -67,6 +68,7 @@ const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubm
                 required
                 value={userDetails.lastname}
                 variant="outlined"
+                disabled={isLoading}
               />
             </Grid>
             <Grid
@@ -82,6 +84,7 @@ const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubm
                 required
                 value={userDetails.email}
                 variant="outlined"
+                disabled={isLoading}
               />
             </Grid>
             <Grid
@@ -97,6 +100,7 @@ const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubm
                 type="text"
                 value={userDetails.number}
                 variant="outlined"
+                disabled={isLoading}
               />
             </Grid>
             
@@ -114,6 +118,7 @@ const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubm
                 select
                 value={userDetails.id_pais}
                 variant="outlined"
+                disabled={isLoading}
               >
                 {paises.map((option) => (
                   <option
@@ -138,6 +143,7 @@ const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubm
                 required
                 value={userDetails.address}
                 variant="outlined"
+                disabled={isLoading}
               />
             </Grid>
           </Grid>

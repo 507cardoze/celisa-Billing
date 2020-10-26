@@ -7,7 +7,7 @@ export const logoutUrl = () => {
 }
 
 export const resetPasswordUrl = () => {
-    return `${process.env.REACT_APP_BACK_END}/v1/auth/logout`;
+    return `${process.env.REACT_APP_BACK_END}/v1/auth/reset`;
 }
 
 export const refreshTokenUrl = () => {

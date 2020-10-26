@@ -25,7 +25,7 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 
-function MainList({ user }) {
+function MainList() {
   // const [open, setOpen] = useState(false);
   // const [openConsultas, setOpenConsultas] = useState(true);
 

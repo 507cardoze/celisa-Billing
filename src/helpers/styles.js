@@ -134,6 +134,16 @@ export const mainLayOutStyles = (theme) => {
 
 }
 
+export const passwordStyles = (theme) => {
+  return {
+    submit: {
+      backgroundColor: theme.palette.secondary.main,
+      margin: theme.spacing(3, 0, 2),
+      fontWeight:"bold"
+    },
+  }
+}
+
 export const Copyright = ({name}) => {
     return (
       <Typography variant="body2" color="textSecondary" align="center">
