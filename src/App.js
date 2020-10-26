@@ -8,6 +8,7 @@ import Login from './pages/login/'
 import Dashboard from './pages/dashboard/'
 import ProfilePage from './pages/profile/'
 import NotFoundView from './pages/noView/'
+import Users from './pages/users/'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Switch>
       <PrivateRoute exact path="/" component={Dashboard} />
       <PrivateRoute path="/profile" component={ProfilePage} />
+      <PrivateRoute path="/users" component={Users} />
       <Route path="/login" component={Login} />
       <Route path="*" component={NotFoundView} />
       </Switch>
