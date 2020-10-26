@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const Toolbar = ({ className, ...rest }) => {
+const Toolbar = ({ className,isLoading, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -55,13 +55,14 @@ const Toolbar = ({ className, ...rest }) => {
         display="flex"
         justifyContent="flex-end"
       >
-        <Button className={classes.exportButton}>
+        <Button className={classes.exportButton} disable={isLoading}>
           Exportar
         </Button>
         <Button
           color="primary"
           variant="contained"
           className={`${classes.submit}`}
+          disable={isLoading}
         >
           Agregar usuario
         </Button>
@@ -72,6 +73,7 @@ const Toolbar = ({ className, ...rest }) => {
             <Box maxWidth={500}>
               <TextField
                 fullWidth
+                disable={isLoading}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -96,8 +98,8 @@ const Toolbar = ({ className, ...rest }) => {
         justifyContent="flex-end"
       >
       </Box>
-      <Card>
-          <CardContent className="search-box">
+      {!isLoading && <Card>
+          <CardContent className="search-box" >
           <Box className={`${classes.searchResults}`} >
              <List component="nav" aria-label="results">
                 <Link className={`${classes.a}`}>
@@ -109,7 +111,7 @@ const Toolbar = ({ className, ...rest }) => {
             </List>
           </Box>
           </CardContent>
-      </Card>
+      </Card>}
     </div>
   );
 };

@@ -30,3 +30,6 @@ export const getPaisesUrl = () => {
     return `${process.env.REACT_APP_BACK_END}/v1/pais/all`;
 }
 
+export const getAllUsersUrl = () => {
+    return `${process.env.REACT_APP_BACK_END}/v1/auth/all-users`;
+}
