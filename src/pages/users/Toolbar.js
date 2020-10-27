@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const Toolbar = ({ className,isLoading, ...rest }) => {
+const Toolbar = ({ className,isLoading,resultados,handleOnChangeTextField,searchField, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -74,6 +74,8 @@ const Toolbar = ({ className,isLoading, ...rest }) => {
               <TextField
                 fullWidth
                 disable={isLoading}
+                value={searchField}
+                onChange={handleOnChangeTextField}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -98,20 +100,25 @@ const Toolbar = ({ className,isLoading, ...rest }) => {
         justifyContent="flex-end"
       >
       </Box>
-      {!isLoading && <Card>
+      <Card>
           <CardContent className="search-box" >
           <Box className={`${classes.searchResults}`} >
              <List component="nav" aria-label="results">
-                <Link className={`${classes.a}`}>
+               {resultados.map(row=>{
+                 return <>
+                 <Link className={`${classes.a}`} key={row.user_id}>
                     <ListItem button>
-                        <ListItemText primary="Lourdez apellido - correo electronico" />
+                        <ListItemText primary={`${row.name} ${row.lastname} ${row.address}`} />
                     </ListItem>
                 </Link>
                 <Divider light />
+                 </>
+               })}
+                
             </List>
           </Box>
           </CardContent>
-      </Card>}
+      </Card>
     </div>
   );
 };

@@ -33,3 +33,7 @@ export const getPaisesUrl = () => {
 export const getAllUsersUrl = () => {
     return `${process.env.REACT_APP_BACK_END}/v1/auth/all-users`;
 }
+
+export const getSearchUsersUrl = () => {
+    return `${process.env.REACT_APP_BACK_END}/v1/auth//search`;
+}

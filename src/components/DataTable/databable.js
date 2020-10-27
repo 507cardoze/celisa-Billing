@@ -24,17 +24,17 @@ const useStyles = makeStyles({
   return (
     <TableContainer component={Paper}>
       <TablePagination
-    rowsPerPageOptions={[50, 100, 200]}
-    labelRowsPerPage="Filas por página"
-    labelDisplayedRows={({ from, to, count }) => {
-      return `${from}-${to} de ${count}`
-    }}
-    component="div"
-    count={total && total}
-    rowsPerPage={limit}
-    onChangeRowsPerPage={(event) =>handleChangeLimit(parseInt(event.target.value))}
-    page={page - 1}
-    onChangePage={(event, page) => handleChangePage(page)}
+        rowsPerPageOptions={[50, 100, 200]}
+        labelRowsPerPage="Filas por página"
+        labelDisplayedRows={({ from, to, count }) => {
+          return `${from}-${to} de ${count}`
+        }}
+        component="div"
+        count={total && total}
+        rowsPerPage={limit}
+        onChangeRowsPerPage={(event) =>handleChangeLimit(parseInt(event.target.value))}
+        page={page - 1}
+        onChangePage={(event, page) => handleChangePage(page)}
   />
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
@@ -61,17 +61,17 @@ const useStyles = makeStyles({
         <TableBody>{children}</TableBody>
       </Table>
       <TablePagination
-    rowsPerPageOptions={[50, 100, 200]}
-    labelRowsPerPage="Filas por página"
-    labelDisplayedRows={({ from, to, count }) => {
-      return `${from}-${to} de ${count}`
-    }}
-    component="div"
-    count={total && total}
-    rowsPerPage={limit}
-    onChangeRowsPerPage={(event) =>handleChangeLimit(parseInt(event.target.value))}
-    page={page - 1}
-    onChangePage={(event, page) => handleChangePage(page)}
+        rowsPerPageOptions={[50, 100, 200]}
+        labelRowsPerPage="Filas por página"
+        labelDisplayedRows={({ from, to, count }) => {
+          return `${from}-${to} de ${count}`
+        }}
+        component="div"
+        count={total && total}
+        rowsPerPage={limit}
+        onChangeRowsPerPage={(event) =>handleChangeLimit(parseInt(event.target.value))}
+        page={page - 1}
+        onChangePage={(event, page) => handleChangePage(page)}
   />
     </TableContainer>
   );

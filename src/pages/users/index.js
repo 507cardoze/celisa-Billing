@@ -12,17 +12,13 @@ import { Link } from "react-router-dom";
 import moment from 'moment'
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import * as styles from '../../helpers/styles'
-import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 
 const Users = () => {
-  const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
   const [rows, setRows] = useState({});
+  const [resultados, setResultados] = useState([]);
+  const [searchField, setSearchField] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(50);
   const [atrib, setAtrib] = useState("name");
@@ -44,30 +40,57 @@ const Users = () => {
       { tittle: "Estado",atributo:"estado" }
     ];
 
+const handleOnChangeTextField = (event) => {
+  setSearchField(event.target.value)
+  if(searchField.length > 3){
+    const getSearchUserURL = url.getSearchUsersUrl();
+    const headerSearch = fetch.requestHeader("GET",null, localStorage.token)
+    const fetchData = async (url, header, setter) => {
+      const loggedInfo = await fetch.fetchData(url, header)
+      fetch.UnauthorizedRedirect(loggedInfo, history)
+      setter(loggedInfo);
+    }
+    fetchData(`${getSearchUserURL}?text=${searchField}`, headerSearch, setResultados)
+  }else{
+    setResultados([])
+  }
+}
+
+// useEffect(()=>{
+//   const getAllusersURL = url.getAllUsersUrl();
+//   const header = fetch.requestHeader("GET",null, localStorage.token)
+//   const fetchData = async (url, header, setter) => {
+//     const loggedInfo = await fetch.fetchData(url, header)
+//     fetch.UnauthorizedRedirect(loggedInfo, history)
+//     setter(loggedInfo);
+//   }
+//   // inicio de funciones de consultas
+//   fetchData()
+// },[history])
+
     useEffect(()=>{
       const getAllusersURL = url.getAllUsersUrl();
       const header = fetch.requestHeader("GET",null, localStorage.token)
       const fetchData = async (url, header, setter) => {
-        setIsLoading(true)
         const loggedInfo = await fetch.fetchData(url, header)
         fetch.UnauthorizedRedirect(loggedInfo, history)
         setter(loggedInfo);
-        setIsLoading(false)
       }
-      
       // inicio de funciones de consultas
+      setIsLoading(true)
       fetchData(`${getAllusersURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`, header, setRows)
+      setIsLoading(false)
     },[history, page, limit, atrib, order])
 
 
   return (
     <MainLayout Tittle="Usuarios">
-       {isLoading &&  
-       <Backdrop className={classes.backdrop}  open={isLoading}>
-              <CircularProgress color="inherit" />
-            </Backdrop>}
         <Container maxWidth={false}>
-        <Toolbar isLoading={isLoading} />
+        <Toolbar 
+        isLoading={isLoading} 
+        resultados={resultados} 
+        handleOnChangeTextField={handleOnChangeTextField} 
+        searchField={searchField} />
         <Box mt={3}>
             <DataTable 
             columns={columns} 
@@ -97,7 +120,7 @@ const Users = () => {
                     </TableCell>
                     <TableCell align="left">{`${row.name} ${row.lastname}`}</TableCell>
                     <TableCell align="left">{row.rol}</TableCell>
-                    <TableCell align="left">{moment(row.last_activity).fromNow()}</TableCell>
+                    <TableCell align="left">{moment(row.last_activity).fromNow("ss")}</TableCell>
                     <TableCell align="left">
                       <Switch
                         checked={row.estado === 1 ? true : false}
