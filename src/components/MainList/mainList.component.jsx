@@ -1,38 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import DashboardIcon from "@material-ui/icons/Dashboard";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
- import PersonIcon from "@material-ui/icons/Person";
-// import PeopleIcon from "@material-ui/icons/People";
-// import BarChartIcon from "@material-ui/icons/BarChart";
+import PersonIcon from "@material-ui/icons/Person";
 import SettingsIcon from "@material-ui/icons/Settings";
-// import ExpandLess from "@material-ui/icons/ExpandLess";
-// import ExpandMore from "@material-ui/icons/ExpandMore";
-// import Collapse from "@material-ui/core/Collapse";
-// import List from "@material-ui/core/List";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
-// import HomeWorkIcon from "@material-ui/icons/HomeWork";
-// import PublicIcon from "@material-ui/icons/Public";
-// import TerrainIcon from "@material-ui/icons/Terrain";
-// import HouseIcon from "@material-ui/icons/House";
-// import ListAltIcon from "@material-ui/icons/ListAlt";
-//import BeachAccessIcon from "@material-ui/icons/BeachAccess";
-// import AllInboxIcon from "@material-ui/icons/AllInbox";
-import Divider from '@material-ui/core/Divider';
+import Divider from "@material-ui/core/Divider";
+import ControlPointIcon from "@material-ui/icons/ControlPoint";
+import AssignmentIcon from "@material-ui/icons/Assignment";
+import AddIcon from "@material-ui/icons/Add";
+import PieChartIcon from "@material-ui/icons/PieChart";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
 
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import { UserContext } from "../../Context/userContext";
 
 function MainList() {
-  // const [open, setOpen] = useState(false);
-  // const [openConsultas, setOpenConsultas] = useState(true);
-
-  // const handleClick = () => setOpen(!open)
-  // const handleClickConsultas = () => setOpenConsultas(!openConsultas)
-
   const useStyles = makeStyles((theme) => ({
     root: {
       width: "100%",
@@ -49,61 +34,90 @@ function MainList() {
     },
   }));
 
+  const [user] = useContext(UserContext);
+
   const classes = useStyles();
   return (
     <div>
-      <Link to="/" className={classes.links}>
-        <ListItem button className="list-fix-padding">
-          <ListItemIcon>
-            <DashboardIcon />
-          </ListItemIcon>
-          <ListItemText primary="Consola de datos" />
-        </ListItem>
-      </Link>
-      
-      <Link to="/users" className={classes.links}>
+      {user && user.rol === "Administrador" && (
+        <>
+          <Link to="/" className={classes.links}>
+            <ListItem button className="list-fix-padding">
+              <ListItemIcon>
+                <PieChartIcon />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItem>
+          </Link>
+
+          <Link to="/new-pedidos" className={classes.links}>
+            <ListItem button className={`list-fix-padding`}>
+              <ListItemIcon>
+                <AddIcon />
+              </ListItemIcon>
+              <ListItemText primary="Crear Pedido" />
+            </ListItem>
+          </Link>
+
+          <Link to="/pedidos" className={classes.links}>
+            <ListItem button className={`list-fix-padding`}>
+              <ListItemIcon>
+                <AssignmentIcon />
+              </ListItemIcon>
+              <ListItemText primary="Pedidos" />
+            </ListItem>
+          </Link>
+
+          <Link to="/orders" className={classes.links}>
+            <ListItem button className={`list-fix-padding`}>
+              <ListItemIcon>
+                <AddShoppingCartIcon />
+              </ListItemIcon>
+              <ListItemText primary="Ordenes" />
+            </ListItem>
+          </Link>
+
+          <Link to="/users" className={classes.links}>
             <ListItem button className="list-fix-padding">
               <ListItemIcon>
                 <PersonIcon />
               </ListItemIcon>
               <ListItemText primary="Usuarios" />
             </ListItem>
-      </Link>
+          </Link>
 
-      
-
-      <Link to="/orders" className={classes.links}>
+          <Link to="/configuration" className={classes.links}>
             <ListItem button className={`list-fix-padding`}>
               <ListItemIcon>
-                
-                <AddShoppingCartIcon />
-              </ListItemIcon>
-              <ListItemText primary="Pedidos" />
-            </ListItem>
-      </Link>
-
-      <Link to="/configuration" className={classes.links}>
-            <ListItem button className={`list-fix-padding`}>
-              <ListItemIcon>
-                
                 <SettingsIcon />
               </ListItemIcon>
               <ListItemText primary="Configuración" />
             </ListItem>
-      </Link>
-
-      <Divider />
-
-      <Link to="/my-orders" className={classes.links}>
-            <ListItem button className={`list-fix-padding`}>
-              <ListItemIcon>
-              <ShoppingBasketIcon />
-              </ListItemIcon>
-              <ListItemText primary="Mis pedidos" />
-            </ListItem>
           </Link>
 
-          <Link to="/profile" className={classes.links}>
+          <Divider />
+        </>
+      )}
+
+      <Link to="/new-orders" className={classes.links}>
+        <ListItem button className={`list-fix-padding`}>
+          <ListItemIcon>
+            <ControlPointIcon />
+          </ListItemIcon>
+          <ListItemText primary="Crear Orden" />
+        </ListItem>
+      </Link>
+
+      <Link to="/my-orders" className={classes.links}>
+        <ListItem button className={`list-fix-padding`}>
+          <ListItemIcon>
+            <ShoppingBasketIcon />
+          </ListItemIcon>
+          <ListItemText primary="Mis Ordenes" />
+        </ListItem>
+      </Link>
+
+      <Link to="/profile" className={classes.links}>
         <ListItem button className="list-fix-padding">
           <ListItemIcon>
             <AccountBoxIcon />
@@ -111,117 +125,6 @@ function MainList() {
           <ListItemText primary="Perfil de usuario" />
         </ListItem>
       </Link>
-
-        
-
-      
-      {/* <ListItem
-        button
-        onClick={handleClickConsultas}
-        className="list-fix-padding"
-      >
-        <ListItemIcon>
-          <BarChartIcon />
-        </ListItemIcon>
-        <ListItemText primary="Consultas" />
-        {openConsultas ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
-      <Collapse in={openConsultas} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <Link to="/consultas-consumo" className={classes.links}>
-            <ListItem button className={`${classes.nested} list-fix-padding`}>
-              <ListItemIcon>
-                <ShoppingBasketIcon />
-              </ListItemIcon>
-              <ListItemText primary="Por consumos" />
-            </ListItem>
-          </Link>
-         
-          <Link to="/consultas-inventario" className={classes.links}>
-            <ListItem button className={`${classes.nested} list-fix-padding`}>
-              <ListItemIcon>
-                <AllInboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Por Inventarios" />
-            </ListItem>
-          </Link>
-        </List>
-      </Collapse>
-      <Link to="/inventario" className={classes.links}>
-        <ListItem button className="list-fix-padding">
-          <ListItemIcon>
-            <ListAltIcon />
-          </ListItemIcon>
-          <ListItemText primary="Inventarios" />
-        </ListItem>
-      </Link>
-      <Link to="/clientes" className={classes.links}>
-        <ListItem button className="list-fix-padding">
-          <ListItemIcon>
-            <PeopleIcon />
-          </ListItemIcon>
-          <ListItemText primary="Clientes" />
-        </ListItem>
-      </Link>
-      <Link to="/productos" className={classes.links}>
-        <ListItem button className="list-fix-padding">
-          <ListItemIcon>
-            <AddShoppingCartIcon />
-          </ListItemIcon>
-          <ListItemText primary="Productos" />
-        </ListItem>
-      </Link>
-      <Link to="/feria" className={classes.links}>
-        <ListItem button className="list-fix-padding">
-          <ListItemIcon>
-            <BeachAccessIcon />
-          </ListItemIcon>
-          <ListItemText primary="Ferias" />
-        </ListItem>
-      </Link>
-     <ListItem button onClick={handleClick} className="list-fix-padding">
-          <ListItemIcon>
-            <SettingsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Configuración" />
-          {open ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <Link to="/pais" className={classes.links}>
-            <ListItem button className={`${classes.nested} list-fix-padding`}>
-              <ListItemIcon>
-                <PublicIcon />
-              </ListItemIcon>
-              <ListItemText primary="Pais" />
-            </ListItem>
-          </Link>
-          <Link to="/provincias" className={classes.links}>
-            <ListItem button className={`${classes.nested} list-fix-padding`}>
-              <ListItemIcon>
-                <TerrainIcon />
-              </ListItemIcon>
-              <ListItemText primary="Provincias" />
-            </ListItem>
-          </Link>
-          <Link to="/distritos" className={classes.links}>
-            <ListItem button className={`${classes.nested} list-fix-padding`}>
-              <ListItemIcon>
-                <HomeWorkIcon />
-              </ListItemIcon>
-              <ListItemText primary="Distritos" />
-            </ListItem>
-          </Link>
-          <Link to="/corregimientos" className={classes.links}>
-            <ListItem button className={`${classes.nested} list-fix-padding`}>
-              <ListItemIcon>
-                <HouseIcon />
-              </ListItemIcon>
-              <ListItemText primary="Corregimientos" />
-            </ListItem>
-          </Link>
-        </List>
-      </Collapse> */}
     </div>
   );
 }

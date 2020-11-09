@@ -1,7 +1,7 @@
-import React from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import * as styles from '../../helpers/styles'
+import React from "react";
+import clsx from "clsx";
+import PropTypes from "prop-types";
+import * as styles from "../../helpers/styles";
 import {
   Box,
   Button,
@@ -11,12 +11,20 @@ import {
   Divider,
   Grid,
   TextField,
-  makeStyles
-} from '@material-ui/core';
+  makeStyles,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 
-const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubmit,isLoading, ...rest }) => {
+const ProfileDetails = ({
+  className,
+  userDetails,
+  paises,
+  handleChange,
+  handleOnSubmit,
+  isLoading,
+  ...rest
+}) => {
   const classes = useStyles();
 
   return (
@@ -28,21 +36,11 @@ const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubm
       onSubmit={handleOnSubmit}
     >
       <Card>
-        <CardHeader
-          subheader="La información se puede editar"
-          title="Perfil"
-        />
+        <CardHeader subheader="La información se puede editar" title="Perfil" />
         <Divider />
         <CardContent>
-          <Grid
-            container
-            spacing={3}
-          >
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+          <Grid container spacing={3}>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 helperText="Por favor especifique el nombre"
@@ -55,11 +53,7 @@ const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubm
                 disabled={isLoading}
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Apellido"
@@ -71,11 +65,7 @@ const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubm
                 disabled={isLoading}
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Correo electrónico"
@@ -87,11 +77,7 @@ const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubm
                 disabled={isLoading}
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Número de teléfono"
@@ -103,12 +89,8 @@ const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubm
                 disabled={isLoading}
               />
             </Grid>
-            
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Seleccione un pais"
@@ -121,20 +103,13 @@ const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubm
                 disabled={isLoading}
               >
                 {paises.map((option) => (
-                  <option
-                    key={option.pais_id}
-                    value={option.pais_id}
-                  >
+                  <option key={option.pais_id} value={option.pais_id}>
                     {option.pais}
                   </option>
                 ))}
               </TextField>
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Dirección"
@@ -149,16 +124,12 @@ const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubm
           </Grid>
         </CardContent>
         <Divider />
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          p={2}
-        >
+        <Box display="flex" justifyContent="flex-end" p={2}>
           <Button
-           type="submit"
-           variant="contained"
-           color="primary"
-           className={classes.submit}
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.submit}
           >
             Guardar Detalles
           </Button>
@@ -169,7 +140,7 @@ const ProfileDetails = ({ className,userDetails,paises,handleChange,handleOnSubm
 };
 
 ProfileDetails.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default ProfileDetails;
