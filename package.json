@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^7.2.1",
     "chart.js": "^2.9.3",
     "dotenv": "^8.2.0",
+    "file-saver": "^2.0.2",
     "moment": "^2.27.0",
     "node-sass": "^4.14.1",
     "react": "^17.0.1",
@@ -20,7 +21,8 @@
     "react-perfect-scrollbar": "^1.5.8",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.4",
-    "react-toastify": "^6.0.9"
+    "react-toastify": "^6.0.9",
+    "xlsx": "^0.16.8"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import {
   Box,
-  Button,
   Card,
   CardContent,
   TextField,
@@ -17,6 +16,8 @@ import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import BackButton from "../../components/BackButton/BackButton";
+import ExportCSV from "../../components/ExportExcelButton/ExportExcelButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -48,6 +49,11 @@ const Toolbar = ({
   resultados,
   handleOnChangeTextField,
   searchField,
+  nav,
+  ruta,
+  searchLabel,
+  dataExport,
+  filename,
   ...rest
 }) => {
   const classes = useStyles();
@@ -55,17 +61,13 @@ const Toolbar = ({
   return (
     <div className={clsx(classes.root, className)} {...rest}>
       <Box display="flex" justifyContent="flex-end">
-        <Button className={classes.exportButton} disable={isLoading}>
-          Exportar
-        </Button>
-        <Button
-          color="primary"
-          variant="contained"
-          className={`${classes.submit}`}
-          disable={isLoading}
-        >
-          Agregar usuario
-        </Button>
+        <ExportCSV
+          csvData={dataExport}
+          fileName={filename}
+          loading={isLoading}
+          label="Exportar a excel"
+        />
+        <BackButton texto={nav} ruta={ruta} />
       </Box>
       <Box mt={3}>
         <Card>
@@ -85,7 +87,7 @@ const Toolbar = ({
                     </InputAdornment>
                   ),
                 }}
-                placeholder="Buscar usuario"
+                placeholder={searchLabel}
                 variant="outlined"
               />
             </Box>

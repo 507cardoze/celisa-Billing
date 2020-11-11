@@ -1,44 +1,43 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 
-
 export const loginStyles = (theme, fondo) => {
-    return {
-        root: {
-          height: "100vh",
-        },
-        image: {
-          backgroundImage: `url(${fondo})`,
-          backgroundRepeat: "no-repeat",
-          backgroundColor:
-            theme.palette.type === "light"
-              ? theme.palette.grey[50]
-              : theme.palette.grey[900],
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        },
-        paper: {
-          margin: theme.spacing(15, 4),
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center"
-        },
-        form: {
-          width: "100%", // Fix IE 11 issue.
-          marginTop: theme.spacing(4),
-        },
-        submit: {
-          backgroundColor: theme.palette.secondary.main,
-          margin: theme.spacing(3, 0, 2),
-          fontWeight:"bold"
-        },
-        backdrop: {
-          zIndex: theme.zIndex.drawer + 1,
-          color: '#fff',
-        },
-      }
-}
+  return {
+    root: {
+      height: "100vh",
+    },
+    image: {
+      backgroundImage: `url(${fondo})`,
+      backgroundRepeat: "no-repeat",
+      backgroundColor:
+        theme.palette.type === "light"
+          ? theme.palette.grey[50]
+          : theme.palette.grey[900],
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    },
+    paper: {
+      margin: theme.spacing(15, 4),
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    form: {
+      width: "100%", // Fix IE 11 issue.
+      marginTop: theme.spacing(4),
+    },
+    submit: {
+      backgroundColor: theme.palette.secondary.main,
+      margin: theme.spacing(3, 0, 2),
+      fontWeight: "bold",
+    },
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: "#fff",
+    },
+  };
+};
 
 export const mainLayOutStyles = (theme) => {
   const drawerWidth = 240;
@@ -47,7 +46,7 @@ export const mainLayOutStyles = (theme) => {
       display: "flex",
     },
     toolbar: {
-      paddingRight: 24, 
+      paddingRight: 24,
     },
     toolbarIcon: {
       display: "flex",
@@ -80,7 +79,7 @@ export const mainLayOutStyles = (theme) => {
     title: {
       flexGrow: 1,
       fontWeight: "bold",
-      textAlign: "center"
+      textAlign: "center",
     },
     drawerPaper: {
       position: "relative",
@@ -123,33 +122,37 @@ export const mainLayOutStyles = (theme) => {
     },
     backdrop: {
       zIndex: theme.zIndex.drawer + 1,
-      color: '#fff',
+      color: "#fff",
     },
     submit: {
       backgroundColor: theme.palette.secondary.main,
       margin: theme.spacing(3, 0, 2),
-      fontWeight:"bold"
+      fontWeight: "bold",
     },
-  }
-
-}
+    excel: {
+      backgroundColor: "green",
+      color: "white",
+      marginRight: 10,
+    },
+  };
+};
 
 export const passwordStyles = (theme) => {
   return {
     submit: {
       backgroundColor: theme.palette.secondary.main,
       margin: theme.spacing(3, 0, 2),
-      fontWeight:"bold"
+      fontWeight: "bold",
     },
-  }
-}
+  };
+};
 
-export const Copyright = ({name}) => {
-    return (
-      <Typography variant="body2" color="textSecondary" align="center">
-        {`Copyright ${name} © `}
-        {new Date().getFullYear()}
-        {"."}
-      </Typography>
-    );
-  }
+export const Copyright = ({ name }) => {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {`Copyright ${name} © `}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+};

@@ -10,6 +10,8 @@ import ProfilePage from "./pages/profile/";
 import NotFoundView from "./pages/noView/";
 import Users from "./pages/users/";
 import UsersEdit from "./pages/users/userEdit";
+import UsersCreate from "./pages/users/userCreate";
+
 import { UserProvider } from "./Context/userContext";
 
 function App() {
@@ -21,6 +23,7 @@ function App() {
           <PrivateRoute exact path="/" component={Dashboard} />
           <PrivateRoute path="/profile" component={ProfilePage} />
           <PrivateRoute path="/users" component={Users} />
+          <PrivateRoute path="/create-user" component={UsersCreate} />
           <PrivateRoute path="/edit-user/:id" component={UsersEdit} />
           <Route path="/login" component={Login} />
           <Route path="*" component={NotFoundView} />

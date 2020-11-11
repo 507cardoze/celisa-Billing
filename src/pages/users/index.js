@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, memo } from "react";
 import { Box, Container, Switch } from "@material-ui/core";
 import Toolbar from "./Toolbar";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
@@ -16,6 +16,7 @@ const Users = () => {
   //state
   const [isLoading, setIsLoading] = useState(false);
   const [rows, setRows] = useState({});
+  const [dataExport, setDataExport] = useState([]);
   const [resultados, setResultados] = useState([]);
   const [searchField, setSearchField] = useState("");
   const [page, setPage] = useState(1);
@@ -36,6 +37,7 @@ const Users = () => {
   const columns = [
     { tittle: "Nombres", atributo: "name" },
     { tittle: "rol", atributo: "rol" },
+    { tittle: "Telefono", atributo: "contact_number" },
     { tittle: "Estado", atributo: "estado" },
     { tittle: "última actividad", atributo: "last_activity" },
   ];
@@ -90,6 +92,11 @@ const Users = () => {
           resultados={resultados}
           handleOnChangeTextField={handleOnChangeTextField}
           searchField={searchField}
+          nav="Agregar Usuario"
+          ruta="/create-user"
+          searchLabel="Buscar usuarios"
+          dataExport={dataExport}
+          filename=""
         />
         <Box mt={3}>
           <DataTable
@@ -113,18 +120,21 @@ const Users = () => {
                     </Link>
                   </TableCell>
                   <TableCell align="center">{row.rol}</TableCell>
+                  <TableCell align="center">{row.contact_number}</TableCell>
 
                   <TableCell align="center">
                     <Switch
                       checked={row.estado === 1 ? true : false}
-                      //color="primary"
-                      // inputProps={{
-                      //   "aria-label": "primary checkbox",
-                      // }}
+                      color="primary"
+                      inputProps={{
+                        "aria-label": "primary checkbox",
+                      }}
                     />
                   </TableCell>
                   <TableCell align="center">
-                    {moment(row.last_activity).fromNow("ss")}
+                    {row.last_activity
+                      ? moment(row.last_activity).fromNow("ss")
+                      : ""}
                   </TableCell>
                 </TableRow>
               ))}
@@ -135,4 +145,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default memo(Users);
