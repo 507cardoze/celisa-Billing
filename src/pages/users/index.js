@@ -10,8 +10,6 @@ import * as fetch from "../../helpers/fetch";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import IconButton from "@material-ui/core/IconButton";
-import EditIcon from "@material-ui/icons/Edit";
 import { UserContext } from "../../Context/userContext";
 
 const Users = () => {
@@ -38,8 +36,8 @@ const Users = () => {
   const columns = [
     { tittle: "Nombres", atributo: "name" },
     { tittle: "rol", atributo: "rol" },
-    { tittle: "última actividad", atributo: "last_activity" },
     { tittle: "Estado", atributo: "estado" },
+    { tittle: "última actividad", atributo: "last_activity" },
   ];
 
   //funciones
@@ -109,19 +107,14 @@ const Users = () => {
             {results &&
               results.map((row) => (
                 <TableRow key={row.user_id}>
-                  <TableCell align="left" component="th" scope="row">
-                    <Link to={`/crear-user/${row.user_id}`}>
-                      <IconButton aria-label="edit">
-                        <EditIcon />
-                      </IconButton>
+                  <TableCell align="center">
+                    <Link to={`/edit-user/${row.user_id}`}>
+                      {`${row.name} ${row.lastname}`}
                     </Link>
                   </TableCell>
-                  <TableCell align="left">{`${row.name} ${row.lastname}`}</TableCell>
-                  <TableCell align="left">{row.rol}</TableCell>
-                  <TableCell align="left">
-                    {moment(row.last_activity).fromNow("ss")}
-                  </TableCell>
-                  <TableCell align="left">
+                  <TableCell align="center">{row.rol}</TableCell>
+
+                  <TableCell align="center">
                     <Switch
                       checked={row.estado === 1 ? true : false}
                       //color="primary"
@@ -129,6 +122,9 @@ const Users = () => {
                       //   "aria-label": "primary checkbox",
                       // }}
                     />
+                  </TableCell>
+                  <TableCell align="center">
+                    {moment(row.last_activity).fromNow("ss")}
                   </TableCell>
                 </TableRow>
               ))}

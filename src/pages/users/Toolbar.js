@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import React from "react";
+import PropTypes from "prop-types";
+import clsx from "clsx";
 import {
   Box,
   Button,
@@ -9,52 +9,52 @@ import {
   TextField,
   InputAdornment,
   SvgIcon,
-  makeStyles
-} from '@material-ui/core';
-import { Search as SearchIcon } from 'react-feather';
+  makeStyles,
+} from "@material-ui/core";
+import { Search as SearchIcon } from "react-feather";
 import { Link } from "react-router-dom";
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
   exportButton: {
-    fontWeight:"bold",
-    marginRight: theme.spacing(1)
+    fontWeight: "bold",
+    marginRight: theme.spacing(1),
   },
-  searchResults:{
+  searchResults: {
     display: "flex",
     justifyContent: "flex-start",
     flexDirection: "column",
     maxHeight: 150,
-    overflowY: "auto"
+    overflowY: "auto",
   },
   a: {
-    textDecoration:"none",
+    textDecoration: "none",
     color: "black",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   submit: {
     backgroundColor: theme.palette.secondary.main,
-    fontWeight:"bold"
+    fontWeight: "bold",
   },
-
 }));
 
-const Toolbar = ({ className,isLoading,resultados,handleOnChangeTextField,searchField, ...rest }) => {
+const Toolbar = ({
+  className,
+  isLoading,
+  resultados,
+  handleOnChangeTextField,
+  searchField,
+  ...rest
+}) => {
   const classes = useStyles();
 
   return (
-    <div
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-      >
+    <div className={clsx(classes.root, className)} {...rest}>
+      <Box display="flex" justifyContent="flex-end">
         <Button className={classes.exportButton} disable={isLoading}>
           Exportar
         </Button>
@@ -79,14 +79,11 @@ const Toolbar = ({ className,isLoading,resultados,handleOnChangeTextField,search
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SvgIcon
-                        fontSize="small"
-                        color="action"
-                      >
+                      <SvgIcon fontSize="small" color="action">
                         <SearchIcon />
                       </SvgIcon>
                     </InputAdornment>
-                  )
+                  ),
                 }}
                 placeholder="Buscar usuario"
                 variant="outlined"
@@ -95,36 +92,39 @@ const Toolbar = ({ className,isLoading,resultados,handleOnChangeTextField,search
           </CardContent>
         </Card>
       </Box>
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-      >
-      </Box>
+      <Box display="flex" justifyContent="flex-end"></Box>
       <Card>
-          <CardContent className="search-box" >
-          <Box className={`${classes.searchResults}`} >
-             <List component="nav" aria-label="results">
-               {resultados.map(row=>{
-                 return <>
-                 <Link className={`${classes.a}`} key={row.user_id}>
-                    <ListItem button>
-                        <ListItemText primary={`${row.name} ${row.lastname} ${row.address}`} />
-                    </ListItem>
-                </Link>
-                <Divider light />
-                 </>
-               })}
-                
+        <CardContent className="search-box">
+          <Box className={`${classes.searchResults}`}>
+            <List component="nav" aria-label="results">
+              {resultados.map((row) => {
+                return (
+                  <>
+                    <Link
+                      to={`/edit-user/${row.user_id}`}
+                      className={`${classes.a}`}
+                      key={row.user_id}
+                    >
+                      <ListItem button>
+                        <ListItemText
+                          primary={`${row.name} ${row.lastname} ${row.address}`}
+                        />
+                      </ListItem>
+                    </Link>
+                    <Divider light />
+                  </>
+                );
+              })}
             </List>
           </Box>
-          </CardContent>
+        </CardContent>
       </Card>
     </div>
   );
 };
 
 Toolbar.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default Toolbar;

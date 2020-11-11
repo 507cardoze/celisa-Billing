@@ -21,7 +21,7 @@ function App() {
           <PrivateRoute exact path="/" component={Dashboard} />
           <PrivateRoute path="/profile" component={ProfilePage} />
           <PrivateRoute path="/users" component={Users} />
-          <PrivateRoute path="/crear-user/:id" component={UsersEdit} />
+          <PrivateRoute path="/edit-user/:id" component={UsersEdit} />
           <Route path="/login" component={Login} />
           <Route path="*" component={NotFoundView} />
         </Switch>

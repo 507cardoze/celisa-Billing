@@ -12,13 +12,24 @@ import TablePagination from "@material-ui/core/TablePagination";
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 1150,
-    maxWidth: 1150,
+    minWidth: 900,
+    maxWidth: 1200,
   },
 });
 
- function DataTable({children,columns, total, page, limit,handleChangeLimit,handleChangePage,atrib,order,handleChangeAtrib,handleChangeOrder}) {
-
+function DataTable({
+  children,
+  columns,
+  total,
+  page,
+  limit,
+  handleChangeLimit,
+  handleChangePage,
+  atrib,
+  order,
+  handleChangeAtrib,
+  handleChangeOrder,
+}) {
   const classes = useStyles();
 
   return (
@@ -27,32 +38,33 @@ const useStyles = makeStyles({
         rowsPerPageOptions={[50, 100, 200]}
         labelRowsPerPage="Filas por página"
         labelDisplayedRows={({ from, to, count }) => {
-          return `${from}-${to} de ${count}`
+          return `${from}-${to} de ${count}`;
         }}
         component="div"
         count={total && total}
         rowsPerPage={limit}
-        onChangeRowsPerPage={(event) =>handleChangeLimit(parseInt(event.target.value))}
+        onChangeRowsPerPage={(event) =>
+          handleChangeLimit(parseInt(event.target.value))
+        }
         page={page - 1}
         onChangePage={(event, page) => handleChangePage(page)}
-  />
+      />
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell align="left"></TableCell>
             {columns.map((column) => {
               return (
-                <TableCell align="left" key={column.tittle}>
+                <TableCell align="center" key={column.tittle}>
                   <TableSortLabel
-                    active={atrib === column.atributo ? true : false }
+                    active={atrib === column.atributo ? true : false}
                     direction={order}
-                    onClick={()=>{
+                    onClick={() => {
                       handleChangeAtrib(column.atributo);
-                      handleChangeOrder(order === "desc" ? "asc" : "desc")
+                      handleChangeOrder(order === "desc" ? "asc" : "desc");
                     }}
-            >
-              {column.tittle}
-            </TableSortLabel>
+                  >
+                    {column.tittle}
+                  </TableSortLabel>
                 </TableCell>
               );
             })}
@@ -64,15 +76,17 @@ const useStyles = makeStyles({
         rowsPerPageOptions={[50, 100, 200]}
         labelRowsPerPage="Filas por página"
         labelDisplayedRows={({ from, to, count }) => {
-          return `${from}-${to} de ${count}`
+          return `${from}-${to} de ${count}`;
         }}
         component="div"
         count={total && total}
         rowsPerPage={limit}
-        onChangeRowsPerPage={(event) =>handleChangeLimit(parseInt(event.target.value))}
+        onChangeRowsPerPage={(event) =>
+          handleChangeLimit(parseInt(event.target.value))
+        }
         page={page - 1}
         onChangePage={(event, page) => handleChangePage(page)}
-  />
+      />
     </TableContainer>
   );
 }

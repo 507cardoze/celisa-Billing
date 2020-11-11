@@ -150,7 +150,6 @@ function ProfilePage() {
     const getUserData = url.getUserUrl();
     const getPaisData = url.getPaisesUrl();
     const header = fetch.requestHeader("GET", null, localStorage.token);
-    //consultas al api
 
     const fetchUserData = async (url, header, setter) => {
       setIsLoading(true);
