@@ -15,6 +15,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import { UserContext } from "../../Context/userContext";
 
 const Users = () => {
+  //state
   const [isLoading, setIsLoading] = useState(false);
   const [rows, setRows] = useState({});
   const [resultados, setResultados] = useState([]);
@@ -41,6 +42,8 @@ const Users = () => {
     { tittle: "Estado", atributo: "estado" },
   ];
 
+  //funciones
+
   const handleOnChangeTextField = (event) => {
     setSearchField(event.target.value);
     if (searchField.length > 3) {
@@ -61,21 +64,18 @@ const Users = () => {
     }
   };
 
+  //efectos
+
   useEffect(() => {
-    // verifica si el usuario tiene permisos para esta pantalla.
     fetch.UserRedirect(user, history);
-    // inicializo el url para la consulta de usuarios.
     const getAllusersURL = url.getAllUsersUrl();
-    // se crea el header para hacer la consulta cargando el token
     const header = fetch.requestHeader("GET", null, localStorage.token);
     const fetchData = async (url, header, setter) => {
       const loggedInfo = await fetch.fetchData(url, header);
       fetch.UnauthorizedRedirect(loggedInfo, history);
       setter(loggedInfo);
     };
-    // inicio de funciones de consultas
     setIsLoading(true);
-    //consulta de datos
     fetchData(
       `${getAllusersURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
       header,
@@ -110,7 +110,7 @@ const Users = () => {
               results.map((row) => (
                 <TableRow key={row.user_id}>
                   <TableCell align="left" component="th" scope="row">
-                    <Link to={`users/edit-user/${row.user_id}`}>
+                    <Link to={`/crear-user/${row.user_id}`}>
                       <IconButton aria-label="edit">
                         <EditIcon />
                       </IconButton>

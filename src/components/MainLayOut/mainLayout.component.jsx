@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -13,49 +13,51 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import MainList from "../MainList/mainList.component";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import * as fetch from '../../helpers/fetch'
-import * as url from '../../helpers/urls';
-import { useHistory  } from "react-router-dom";
-import * as styles from '../../helpers/styles'
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import {useStickyState } from '../../helpers/fetch'
+import * as fetch from "../../helpers/fetch";
+import * as url from "../../helpers/urls";
+import { useHistory } from "react-router-dom";
+import * as styles from "../../helpers/styles";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { useStickyState } from "../../helpers/fetch";
 
 const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 
 function MainLayout(props) {
   const classes = useStyles();
   const [open, setOpen] = useStickyState(true, "open");
-  const handleDrawerOpen = () => setOpen(true)
-  const handleDrawerClose = () => setOpen(false)
+  const handleDrawerOpen = () => setOpen(true);
+  const handleDrawerClose = () => setOpen(false);
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
 
   const handleLogout = async () => {
-
-    setIsLoading(true)
+    setIsLoading(true);
 
     const logout = url.logoutUrl();
-    const header = fetch.requestHeader("DELETE", "" , localStorage.token)
-    const loggedInfo = await fetch.fetchData(logout, header)
+    const header = fetch.requestHeader("DELETE", "", localStorage.token);
+    const loggedInfo = await fetch.fetchData(logout, header);
 
-    if(loggedInfo === "refresh token deleted."){
-      localStorage.removeItem("token")
-      localStorage.removeItem("refresh_token")
+    if (loggedInfo === "refresh token deleted.") {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("user");
       history.push("/login");
-    }else{
-      localStorage.removeItem("token")
-      localStorage.removeItem("refresh_token")
+    } else {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("user");
       history.push("/login");
     }
-
-  }
+  };
 
   return (
     <div className={classes.root}>
-      { isLoading && <Backdrop className={classes.backdrop} open={isLoading}>
-              <CircularProgress color="inherit" />
-            </Backdrop>}
+      {isLoading && (
+        <Backdrop className={classes.backdrop} open={isLoading}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
       <AppBar
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}
@@ -68,7 +70,7 @@ function MainLayout(props) {
             onClick={handleDrawerOpen}
             className={clsx(
               classes.menuButton,
-              open && classes.menuButtonHidden
+              open && classes.menuButtonHidden,
             )}
           >
             <MenuIcon />
@@ -102,7 +104,7 @@ function MainLayout(props) {
         </div>
         <Divider />
         <List>
-          <MainList  />
+          <MainList />
         </List>
       </Drawer>
       <main className={classes.content}>

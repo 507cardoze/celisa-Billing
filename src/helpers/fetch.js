@@ -56,7 +56,7 @@ export const SubcriberRefreshToken = ({ children }) => {
   const history = useHistory();
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (localStorage.refresh_token === null) {
+      if (localStorage.refresh_token === null || localStorage.token === null) {
         localStorage.removeItem("token");
         localStorage.removeItem("refresh_token");
         history.push("/login");
@@ -90,5 +90,5 @@ export const UnauthorizedRedirect = (data, history) => {
 };
 
 export const UserRedirect = (user, history) => {
-  if (user && user.rol !== "Administrador") return history.push("/my-orders");
+  if (user && user.rol !== "Administrador") return history.push("/profile");
 };

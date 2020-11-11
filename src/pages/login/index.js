@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
@@ -14,6 +14,7 @@ import * as url from "../../helpers/urls";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Redirect, useHistory } from "react-router-dom";
+import { UserContext } from "../../Context/userContext";
 
 const useStyles = makeStyles((theme) =>
   styles.loginStyles(theme, fondoPrincipal),
@@ -25,6 +26,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
+  const [user, setUser] = useContext(UserContext);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -47,6 +49,28 @@ function Login() {
     if (loggedInfo.accessToken) {
       localStorage.setItem("token", loggedInfo.accessToken);
       localStorage.setItem("refresh_token", loggedInfo.refreshToken);
+
+      const getUserData = url.getUserUrl();
+      const headerGetData = fetch.requestHeader(
+        "GET",
+        null,
+        loggedInfo.accessToken,
+      );
+      const userdata = await fetch.fetchData(getUserData, headerGetData);
+      setUser({
+        user_id: userdata[0].user_id,
+        name: userdata[0].name,
+        lastname: userdata[0].lastname,
+        email: userdata[0].correo_electronico,
+        number: userdata[0].contact_number,
+        id_pais: userdata[0].id_pais,
+        address: userdata[0].address,
+        pais: userdata[0].pais,
+        estado: userdata[0].estado,
+        rol: userdata[0].rol,
+      });
+
+      if (user.estado === 0) return toast.msgWarn("Usuario desactivado.");
       history.push("/");
     } else if (loggedInfo === "conexion error") {
       toast.msgWarn("Verifique su conexion a internet.");

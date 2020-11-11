@@ -13,6 +13,10 @@ import {
   TextField,
   makeStyles,
 } from "@material-ui/core";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 
@@ -23,6 +27,7 @@ const ProfileDetails = ({
   handleChange,
   handleOnSubmit,
   isLoading,
+  permiso = false,
   ...rest
 }) => {
   const classes = useStyles();
@@ -91,23 +96,27 @@ const ProfileDetails = ({
             </Grid>
 
             <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Seleccione un pais"
-                name="id_pais"
-                onChange={handleChange}
-                required
-                select
-                value={userDetails.id_pais}
-                variant="outlined"
-                disabled={isLoading}
-              >
-                {paises.map((option) => (
-                  <option key={option.pais_id} value={option.pais_id}>
-                    {option.pais}
-                  </option>
-                ))}
-              </TextField>
+              {isLoading ? (
+                <CircularProgress />
+              ) : (
+                <TextField
+                  fullWidth
+                  label="Seleccione un pais"
+                  name="id_pais"
+                  onChange={handleChange}
+                  required
+                  select
+                  value={userDetails.id_pais}
+                  variant="outlined"
+                  disabled={isLoading}
+                >
+                  {paises.map((option) => (
+                    <option key={option.pais_id} value={option.pais_id}>
+                      {option.pais}
+                    </option>
+                  ))}
+                </TextField>
+              )}
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField
@@ -121,6 +130,23 @@ const ProfileDetails = ({
                 disabled={isLoading}
               />
             </Grid>
+            {permiso && (
+              <Grid item md={6} xs={12}>
+                <InputLabel id="permisos-label">Permisos</InputLabel>
+                <Select
+                  labelId="permisos-label"
+                  id="permisos"
+                  variant="outlined"
+                  name="rol"
+                  fullWidth
+                  onChange={handleChange}
+                  value={userDetails.rol}
+                >
+                  <MenuItem value="Administrador">Administrador</MenuItem>
+                  <MenuItem value="Usuario Final">Usuario Final</MenuItem>
+                </Select>
+              </Grid>
+            )}
           </Grid>
         </CardContent>
         <Divider />
