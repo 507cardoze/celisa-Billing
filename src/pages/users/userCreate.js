@@ -8,6 +8,7 @@ import { UserContext } from "../../Context/userContext";
 import * as toast from "../../helpers/toast";
 import BackButton from "../../components/BackButton/BackButton";
 import RegisterForm from "./RegisterForm";
+import BackdropSpinner from "../../components/BackDrop/backDrop";
 
 const UserCreate = () => {
   // state
@@ -60,6 +61,7 @@ const UserCreate = () => {
       rol: newUser.rol,
       password: newUser.password,
       repeat_password: newUser.repeat_password,
+      username: newUser.username,
     });
 
     const header = fetch.requestHeader("POST", body, localStorage.token);
@@ -70,6 +72,18 @@ const UserCreate = () => {
     const loggedInfo = await fetch.fetchData(registerServiceUrl, header);
     fetch.UnauthorizedRedirect(loggedInfo, history);
     if (loggedInfo === "Usuario creado exitosamente.") {
+      setNewUser({
+        username: "",
+        password: "*12345",
+        repeat_password: "*12345",
+        name: "",
+        lastname: "",
+        address: "",
+        rol: "Usuario Final",
+        contact_number: "",
+        correo_electronico: "",
+        id_pais: 1,
+      });
       toast.msgSuccess("Usuario creado exitosamente.");
     } else {
       toast.errorToast(loggedInfo);
@@ -100,13 +114,17 @@ const UserCreate = () => {
             <BackButton texto="Atras" ruta="/users" />
           </Box>
           <Grid item lg={12} md={12} xs={12}>
-            <RegisterForm
-              isLoading={isLoading}
-              paises={paises}
-              userDetails={newUser}
-              handleChange={handleChange}
-              handleOnSubmit={handleOnSubmit}
-            />
+            {paises.length > 0 ? (
+              <RegisterForm
+                isLoading={isLoading}
+                paises={paises}
+                userDetails={newUser}
+                handleChange={handleChange}
+                handleOnSubmit={handleOnSubmit}
+              />
+            ) : (
+              <BackdropSpinner isLoading={isLoading} />
+            )}
           </Grid>
         </Grid>
       </Container>

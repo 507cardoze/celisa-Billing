@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Container, Grid, Box } from "@material-ui/core";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import BackdropSpinner from "../../components/BackDrop/backDrop";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
 import * as url from "../../helpers/urls";
 import * as fetch from "../../helpers/fetch";
@@ -49,6 +49,7 @@ const UsersEdit = ({ match }) => {
       pais: loggedInfo[0].pais,
       estado: loggedInfo[0].estado,
       rol: loggedInfo[0].rol,
+      username: loggedInfo[0].username,
     });
   };
 
@@ -79,12 +80,12 @@ const UsersEdit = ({ match }) => {
       password: passwords.password,
     });
 
-    const header = fetch.requestHeader("POST", body, localStorage.token);
-    const resetServiceUrl = url.resetPasswordUrl();
+    const header = fetch.requestHeader("GET", body, localStorage.token);
+    const changeServiceUrl = url.getUserEstadoChangeUrl();
 
     setIsLoading(true);
 
-    const loggedInfo = await fetch.fetchData(resetServiceUrl, header);
+    const loggedInfo = await fetch.fetchData(changeServiceUrl, header);
     fetch.UnauthorizedRedirect(loggedInfo, history);
     if (loggedInfo === "Contraseña cambiada con exito.") {
       setPasswords({
@@ -159,6 +160,7 @@ const UsersEdit = ({ match }) => {
         pais: loggedInfo[0].pais,
         estado: loggedInfo[0].estado,
         rol: loggedInfo[0].rol,
+        username: loggedInfo[0].username,
       });
     };
     const fetchDataPaises = async (url, header, setter) => {
@@ -173,9 +175,7 @@ const UsersEdit = ({ match }) => {
   }, [user, history, id, getPaisData]);
 
   return (
-    <MainLayout
-      Tittle={rows ? `Editar usuario de ${rows.name} ${rows.lastname}` : ""}
-    >
+    <MainLayout Tittle={rows ? `Editar ${rows.username}` : ""}>
       <Container maxWidth="lg">
         <Grid container spacing={3}>
           <Box display="flex" justifyContent="flex-end" p={2}>
@@ -183,24 +183,26 @@ const UsersEdit = ({ match }) => {
           </Box>
           <Grid item lg={12} md={12} xs={12}>
             {rows?.user_id ? (
-              <ProfileDetails
-                userDetails={rows}
-                paises={paises}
-                handleChange={handleChange}
-                handleOnSubmit={handleOnSubmit}
-                isLoading={isLoading}
-                permiso
-              />
+              <>
+                <ProfileDetails
+                  userDetails={rows}
+                  paises={paises}
+                  handleChange={handleChange}
+                  handleOnSubmit={handleOnSubmit}
+                  isLoading={isLoading}
+                  permiso
+                />
+                <Box mt={3}>
+                  <Password
+                    passwords={passwords}
+                    handleChangePassword={handleChangePassword}
+                    handleOnSubmitPassword={handleOnSubmitPassword}
+                  />
+                </Box>
+              </>
             ) : (
-              <CircularProgress />
+              <BackdropSpinner isLoading={isLoading} />
             )}
-            <Box mt={3}>
-              <Password
-                passwords={passwords}
-                handleChangePassword={handleChangePassword}
-                handleOnSubmitPassword={handleOnSubmitPassword}
-              />
-            </Box>
           </Grid>
         </Grid>
       </Container>

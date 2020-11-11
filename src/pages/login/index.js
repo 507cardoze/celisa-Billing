@@ -11,10 +11,9 @@ import * as fetch from "../../helpers/fetch";
 import * as styles from "../../helpers/styles";
 import * as toast from "../../helpers/toast";
 import * as url from "../../helpers/urls";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { Redirect, useHistory } from "react-router-dom";
 import { UserContext } from "../../Context/userContext";
+import BackdropSpinner from "../../components/BackDrop/backDrop";
 
 const useStyles = makeStyles((theme) =>
   styles.loginStyles(theme, fondoPrincipal),
@@ -57,6 +56,7 @@ function Login() {
         loggedInfo.accessToken,
       );
       const userdata = await fetch.fetchData(getUserData, headerGetData);
+      console.log(userdata);
       setUser({
         user_id: userdata[0].user_id,
         name: userdata[0].name,
@@ -68,6 +68,7 @@ function Login() {
         pais: userdata[0].pais,
         estado: userdata[0].estado,
         rol: userdata[0].rol,
+        username: userdata[0].username,
       });
 
       if (user.estado === 0) return toast.msgWarn("Usuario desactivado.");
@@ -114,9 +115,7 @@ function Login() {
               disabled={isLoading}
             />
             {isLoading ? (
-              <Backdrop className={classes.backdrop} open={isLoading}>
-                <CircularProgress color="inherit" />
-              </Backdrop>
+              <BackdropSpinner isLoading={!isLoading} />
             ) : (
               <Button
                 type="submit"

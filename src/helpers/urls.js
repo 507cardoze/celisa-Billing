@@ -41,3 +41,7 @@ export const getSearchUsersUrl = () => {
 export const getUserByIdUrl = () => {
   return `${process.env.REACT_APP_BACK_END}/v1/auth/byUserId`;
 };
+
+export const getUserEstadoChangeUrl = () => {
+  return `${process.env.REACT_APP_BACK_END}/v1/auth/estado-update`;
+};

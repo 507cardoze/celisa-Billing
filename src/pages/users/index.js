@@ -11,6 +11,7 @@ import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { UserContext } from "../../Context/userContext";
+import BackdropSpinner from "../../components/BackDrop/backDrop";
 
 const Users = () => {
   //state
@@ -36,13 +37,16 @@ const Users = () => {
 
   const columns = [
     { tittle: "Nombres", atributo: "name" },
-    { tittle: "rol", atributo: "rol" },
+    { tittle: "Usuario", atributo: "username" },
+    { tittle: "Rol", atributo: "rol" },
     { tittle: "Telefono", atributo: "contact_number" },
     { tittle: "Estado", atributo: "estado" },
     { tittle: "última actividad", atributo: "last_activity" },
   ];
 
   //funciones
+
+  const getAllusersURL = url.getAllUsersUrl();
 
   const handleOnChangeTextField = (event) => {
     setSearchField(event.target.value);
@@ -64,11 +68,35 @@ const Users = () => {
     }
   };
 
+  const updateEstado = async (id, estado) => {
+    const header = fetch.requestHeader("GET", null, localStorage.token);
+    const changeServiceUrl = url.getUserEstadoChangeUrl();
+
+    const loggedInfo = await fetch.fetchData(
+      `${changeServiceUrl}?estado=${!estado}&user_id=${id}`,
+      header,
+    );
+    fetch.UnauthorizedRedirect(loggedInfo, history);
+    if (loggedInfo === "changed") {
+      fetchData(
+        `${getAllusersURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
+        header,
+        setRows,
+      );
+    }
+  };
+
+  const fetchData = async (url, header, setter) => {
+    const loggedInfo = await fetch.fetchData(url, header);
+    fetch.UnauthorizedRedirect(loggedInfo, history);
+    setter(loggedInfo);
+  };
+
   //efectos
 
   useEffect(() => {
     fetch.UserRedirect(user, history);
-    const getAllusersURL = url.getAllUsersUrl();
+
     const header = fetch.requestHeader("GET", null, localStorage.token);
     const fetchData = async (url, header, setter) => {
       const loggedInfo = await fetch.fetchData(url, header);
@@ -81,8 +109,9 @@ const Users = () => {
       header,
       setRows,
     );
+    fetchData(`${getAllusersURL}?excel=${true}`, header, setDataExport);
     setIsLoading(false);
-  }, [user, history, page, limit, atrib, order]);
+  }, [user, history, page, limit, atrib, order, getAllusersURL]);
 
   return (
     <MainLayout Tittle="Usuarios">
@@ -96,7 +125,7 @@ const Users = () => {
           ruta="/create-user"
           searchLabel="Buscar usuarios"
           dataExport={dataExport}
-          filename=""
+          filename={`usuarios / ${moment().format("MMMM Do YYYY, h:mm")}`}
         />
         <Box mt={3}>
           <DataTable
@@ -111,7 +140,7 @@ const Users = () => {
             handleChangeAtrib={handleChangeAtrib}
             handleChangeOrder={handleChangeOrder}
           >
-            {results &&
+            {results ? (
               results.map((row) => (
                 <TableRow key={row.user_id}>
                   <TableCell align="center">
@@ -119,9 +148,9 @@ const Users = () => {
                       {`${row.name} ${row.lastname}`}
                     </Link>
                   </TableCell>
+                  <TableCell align="center">{row.username}</TableCell>
                   <TableCell align="center">{row.rol}</TableCell>
                   <TableCell align="center">{row.contact_number}</TableCell>
-
                   <TableCell align="center">
                     <Switch
                       checked={row.estado === 1 ? true : false}
@@ -129,15 +158,24 @@ const Users = () => {
                       inputProps={{
                         "aria-label": "primary checkbox",
                       }}
+                      onChange={() => {
+                        updateEstado(
+                          row.user_id,
+                          row.estado === 1 ? true : false,
+                        );
+                      }}
                     />
                   </TableCell>
                   <TableCell align="center">
                     {row.last_activity
-                      ? moment(row.last_activity).fromNow("ss")
+                      ? moment(row.last_activity).fromNow()
                       : ""}
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+            ) : (
+              <BackdropSpinner isLoading={isLoading} />
+            )}
           </DataTable>
         </Box>
       </Container>

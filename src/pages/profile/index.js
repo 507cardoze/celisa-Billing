@@ -4,17 +4,12 @@ import { Container, Grid, Box } from "@material-ui/core";
 import Profile from "./profile";
 import ProfileDetails from "./profileDetails";
 import Password from "./password";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import BackdropSpinner from "../../components/BackDrop/backDrop";
 import * as toast from "../../helpers/toast";
 import * as url from "../../helpers/urls";
 import * as fetch from "../../helpers/fetch";
 import { useHistory } from "react-router-dom";
-import Backdrop from "@material-ui/core/Backdrop";
-import { makeStyles } from "@material-ui/core/styles";
-import * as styles from "../../helpers/styles";
 import { UserContext } from "../../Context/userContext";
-
-const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 
 function ProfilePage() {
   //state
@@ -28,8 +23,6 @@ function ProfilePage() {
   const [user, setUser] = useContext(UserContext);
 
   //funciones
-
-  const classes = useStyles();
 
   const history = useHistory();
   const getUserData = url.getUserUrl();
@@ -50,6 +43,7 @@ function ProfilePage() {
       pais: loggedInfo[0].pais,
       estado: loggedInfo[0].estado,
       rol: loggedInfo[0].rol,
+      username: loggedInfo[0].username,
     });
   };
 
@@ -166,6 +160,7 @@ function ProfilePage() {
         pais: loggedInfo[0].pais,
         estado: loggedInfo[0].estado,
         rol: loggedInfo[0].rol,
+        username: loggedInfo[0].username,
       });
       setIsLoading(false);
     };
@@ -183,11 +178,7 @@ function ProfilePage() {
 
   return (
     <MainLayout Tittle="Perfil de usuario">
-      {isLoading && (
-        <Backdrop className={classes.backdrop} open={isLoading}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      )}
+      {isLoading && <BackdropSpinner isLoading={!isLoading} />}
       <Container maxWidth="lg">
         <Grid container spacing={3}>
           <Grid item lg={4} md={6} xs={12}>
