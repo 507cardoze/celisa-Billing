@@ -56,7 +56,6 @@ function Login() {
         loggedInfo.accessToken,
       );
       const userdata = await fetch.fetchData(getUserData, headerGetData);
-      console.log(userdata);
       setUser({
         user_id: userdata[0].user_id,
         name: userdata[0].name,
@@ -71,7 +70,8 @@ function Login() {
         username: userdata[0].username,
       });
 
-      if (user.estado === 0) return toast.msgWarn("Usuario desactivado.");
+      if (userdata[0].estado === 0)
+        return toast.msgWarn("Usuario desactivado.");
       history.push("/");
     } else if (loggedInfo === "conexion error") {
       toast.msgWarn("Verifique su conexion a internet.");

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, memo } from "react";
-import { Box, Container, Switch } from "@material-ui/core";
+import { Box, Container } from "@material-ui/core";
 import Toolbar from "../../components/ToolBar/Toolbar";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
 import DataTable from "../../components/DataTable/databable";
@@ -12,8 +12,9 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import { UserContext } from "../../Context/userContext";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
+import * as toast from "../../helpers/toast";
 
-const Users = () => {
+const Pedidos = () => {
   //state
   const [isLoading, setIsLoading] = useState(false);
   const [rows, setRows] = useState({});
@@ -22,8 +23,8 @@ const Users = () => {
   const [searchField, setSearchField] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(50);
-  const [atrib, setAtrib] = useState("name");
-  const [order, setOrder] = useState("asc");
+  const [atrib, setAtrib] = useState("pedido_id");
+  const [order, setOrder] = useState("desc");
 
   const handleChangePage = (page) => setPage(page++);
   const handleChangeLimit = (limit) => setLimit(limit);
@@ -36,32 +37,39 @@ const Users = () => {
   const { total } = rows;
 
   const columns = [
-    { tittle: "Nombres", atributo: "name" },
-    { tittle: "Usuario", atributo: "username" },
-    { tittle: "Rol", atributo: "rol" },
-    { tittle: "Telefono", atributo: "contact_number" },
-    { tittle: "Estado", atributo: "estado" },
-    { tittle: "última actividad", atributo: "last_activity" },
+    { tittle: "#", atributo: "pedido_id" },
+    { tittle: "Fecha", atributo: "fecha" },
+    { tittle: "Antigüedad", atributo: "fecha" },
+    { tittle: "Gasto de Operación", atributo: "gasto_operacion" },
+    { tittle: "Estado", atributo: "estatus" },
   ];
 
   //funciones
-
-  const getAllusersURL = url.getAllUsersUrl();
-  const getSearchUserURL = url.getSearchUsersUrl();
-  const headerSearch = fetch.requestHeader("GET", null, localStorage.token);
   const header = fetch.requestHeader("GET", null, localStorage.token);
-  const changeServiceUrl = url.getUserEstadoChangeUrl();
+  const headerSearch = fetch.requestHeader("GET", null, localStorage.token);
+  const headerCrear = fetch.requestHeader("POST", null, localStorage.token);
+  const headerClose = fetch.requestHeader("PUT", null, localStorage.token);
+
+  const getAllPedidoURL = url.getPedidosUrl();
+  const crearUrl = url.crearPedidoUrl();
+  const closeAllUrl = url.closeAllPedidoUrl();
+  const searchUrl = url.searchPedidosUrl();
+
+  const pedidos = {
+    add: () => handleOnClickNuevoPedido(),
+    closeAll: () => handleOnClickClosePedido(),
+  };
 
   const handleOnChangeTextField = (event) => {
     setSearchField(event.target.value);
-    if (searchField.length >= 3) {
+    if (searchField.length >= 0) {
       const fetchData = async (url, header, setter) => {
         const loggedInfo = await fetch.fetchData(url, header);
         fetch.UnauthorizedRedirect(loggedInfo, history);
         setter(loggedInfo);
       };
       fetchData(
-        `${getSearchUserURL}?text=${searchField}`,
+        `${searchUrl}?text=${searchField}`,
         headerSearch,
         setResultados,
       );
@@ -70,18 +78,33 @@ const Users = () => {
     }
   };
 
-  const updateEstado = async (id, estado) => {
-    const loggedInfo = await fetch.fetchData(
-      `${changeServiceUrl}?estado=${!estado}&user_id=${id}`,
-      header,
-    );
+  const handleOnClickNuevoPedido = async () => {
+    const loggedInfo = await fetch.fetchData(crearUrl, headerCrear);
     fetch.UnauthorizedRedirect(loggedInfo, history);
-    if (loggedInfo === "changed") {
+    if (loggedInfo === "pedido creado") {
       fetchData(
-        `${getAllusersURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
+        `${getAllPedidoURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
         header,
         setRows,
       );
+      fetchData(`${getAllPedidoURL}?excel=${true}`, header, setDataExport);
+    } else {
+      toast.errorToast(loggedInfo);
+    }
+  };
+
+  const handleOnClickClosePedido = async () => {
+    const loggedInfo = await fetch.fetchData(closeAllUrl, headerClose);
+    fetch.UnauthorizedRedirect(loggedInfo, history);
+    if (loggedInfo === "pedido creado") {
+      fetchData(
+        `${getAllPedidoURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
+        header,
+        setRows,
+      );
+      fetchData(`${getAllPedidoURL}?excel=${true}`, header, setDataExport);
+    } else {
+      toast.errorToast(loggedInfo);
     }
   };
 
@@ -103,27 +126,28 @@ const Users = () => {
     };
     setIsLoading(true);
     fetchData(
-      `${getAllusersURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
+      `${getAllPedidoURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
       header,
       setRows,
     );
-    fetchData(`${getAllusersURL}?excel=${true}`, header, setDataExport);
+    fetchData(`${getAllPedidoURL}?excel=${true}`, header, setDataExport);
     setIsLoading(false);
-  }, [user, history, page, limit, atrib, order, getAllusersURL]);
+  }, [user, history, page, limit, atrib, order, getAllPedidoURL]);
 
   return (
-    <MainLayout Tittle="Usuarios">
+    <MainLayout Tittle="Pedidos">
       <Container maxWidth={false}>
         <Toolbar
           isLoading={isLoading}
           resultados={resultados}
           handleOnChangeTextField={handleOnChangeTextField}
           searchField={searchField}
-          nav="Agregar Usuario"
-          ruta="/create-user"
-          searchLabel="Buscar usuarios"
+          nav="Agregar Pedido"
+          ruta="/create-pedido"
+          searchLabel="Buscar pedido"
           dataExport={dataExport}
-          filename={`usuarios / ${moment().format("MMMM Do YYYY, h:mm")}`}
+          filename={`pedidos / ${moment().format("MMMM Do YYYY, h:mm")}`}
+          pedidos={pedidos}
         />
         <Box mt={3}>
           <DataTable
@@ -140,34 +164,31 @@ const Users = () => {
           >
             {results?.length > 0 ? (
               results.map((row) => (
-                <TableRow key={row.user_id}>
+                <TableRow key={row.pedido_id}>
                   <TableCell align="center">
-                    <Link to={`/edit-user/${row.user_id}`}>
-                      {`${row.name} ${row.lastname}`}
+                    <Link to={`/edit-pedido/${row.pedido_id}`}>
+                      {row.pedido_id}
                     </Link>
                   </TableCell>
-                  <TableCell align="center">{row.username}</TableCell>
-                  <TableCell align="center">{row.rol}</TableCell>
-                  <TableCell align="center">{row.contact_number}</TableCell>
                   <TableCell align="center">
-                    <Switch
-                      checked={row.estado === 1 ? true : false}
-                      color="primary"
-                      inputProps={{
-                        "aria-label": "primary checkbox",
-                      }}
-                      onChange={() => {
-                        updateEstado(
-                          row.user_id,
-                          row.estado === 1 ? true : false,
-                        );
-                      }}
-                    />
+                    {moment(row.fecha).format("MMMM Do YYYY")}
                   </TableCell>
                   <TableCell align="center">
-                    {row.last_activity
-                      ? moment(row.last_activity).fromNow()
-                      : ""}
+                    {row.fecha ? moment(row.fecha).fromNow() : ""}
+                  </TableCell>
+                  <TableCell align="center" style={{ fontWeight: "bold" }}>
+                    {row.gasto_operacion
+                      ? `USD $${row.gasto_operacion}`
+                      : "Sin gasto definido aún"}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    style={{
+                      fontWeight: "bold",
+                      color: row.estatus === 1 ? "green" : "red",
+                    }}
+                  >
+                    {row.estatus === 1 ? "Abierto" : "Cerrado"}
                   </TableCell>
                 </TableRow>
               ))
@@ -186,4 +207,4 @@ const Users = () => {
   );
 };
 
-export default memo(Users);
+export default memo(Pedidos);

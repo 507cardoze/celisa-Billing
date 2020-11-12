@@ -16,8 +16,11 @@ import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import BackButton from "../../components/BackButton/BackButton";
+import BackButton, {
+  CustomButton,
+} from "../../components/BackButton/BackButton";
 import ExportCSV from "../../components/ExportExcelButton/ExportExcelButton";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -54,6 +57,7 @@ const Toolbar = ({
   searchLabel,
   dataExport,
   filename,
+  pedidos,
   ...rest
 }) => {
   const classes = useStyles();
@@ -67,7 +71,18 @@ const Toolbar = ({
           loading={isLoading}
           label="Exportar a excel"
         />
-        <BackButton texto={nav} ruta={ruta} />
+        {pedidos ? (
+          <>
+            <CustomButton text="Agregar Pedido" onClick={() => pedidos.add()} />
+            <CustomButton
+              style={{ marginLeft: 10, backgroundColor: "red", color: "white" }}
+              text="Cerrar pedidos"
+              onClick={() => pedidos.closeAll()}
+            />
+          </>
+        ) : (
+          <BackButton texto={nav} ruta={ruta} />
+        )}
       </Box>
       <Box mt={3}>
         <Card>
@@ -98,26 +113,53 @@ const Toolbar = ({
       <Card>
         <CardContent className="search-box">
           <Box className={`${classes.searchResults}`}>
-            <List component="nav" aria-label="results">
-              {resultados.map((row) => {
-                return (
-                  <>
-                    <Link
-                      to={`/edit-user/${row.user_id}`}
-                      className={`${classes.a}`}
-                      key={row.user_id}
-                    >
-                      <ListItem button>
-                        <ListItemText
-                          primary={`${row.name} ${row.lastname} ${row.address}`}
-                        />
-                      </ListItem>
-                    </Link>
-                    <Divider light />
-                  </>
-                );
-              })}
-            </List>
+            {pedidos ? (
+              <List component="nav" aria-label="results">
+                {resultados.map((row) => {
+                  return (
+                    <>
+                      <Link
+                        to={`/edit-pedido/${row.pedido_id}`}
+                        className={`${classes.a}`}
+                        key={row.pedido_id}
+                      >
+                        <ListItem button>
+                          <ListItemText
+                            primary={`${row.pedido_id} - ${moment(
+                              row.fecha,
+                            ).format("MMMM Do YYYY")} - ${
+                              row.estatus ? "Abierto" : "Cerrado"
+                            }`}
+                          />
+                        </ListItem>
+                      </Link>
+                      <Divider light />
+                    </>
+                  );
+                })}
+              </List>
+            ) : (
+              <List component="nav" aria-label="results">
+                {resultados.map((row) => {
+                  return (
+                    <>
+                      <Link
+                        to={`/edit-user/${row.user_id}`}
+                        className={`${classes.a}`}
+                        key={row.user_id}
+                      >
+                        <ListItem button>
+                          <ListItemText
+                            primary={`${row.name} ${row.lastname} ${row.address}`}
+                          />
+                        </ListItem>
+                      </Link>
+                      <Divider light />
+                    </>
+                  );
+                })}
+              </List>
+            )}
           </Box>
         </CardContent>
       </Card>

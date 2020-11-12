@@ -107,7 +107,6 @@ function ProfilePage() {
 
   const handleOnSubmitPassword = async (event) => {
     event.preventDefault();
-
     if (!passwords.password)
       return toast.errorToast("contraseña no puede ir vacia!");
     if (passwords.password !== passwords.confirm_password)

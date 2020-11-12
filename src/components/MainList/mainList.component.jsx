@@ -50,15 +50,6 @@ function MainList() {
             </ListItem>
           </Link>
 
-          <Link to="/new-pedidos" className={classes.links}>
-            <ListItem button className={`list-fix-padding`}>
-              <ListItemIcon>
-                <AddIcon />
-              </ListItemIcon>
-              <ListItemText primary="Crear Pedido" />
-            </ListItem>
-          </Link>
-
           <Link to="/pedidos" className={classes.links}>
             <ListItem button className={`list-fix-padding`}>
               <ListItemIcon>
@@ -83,15 +74,6 @@ function MainList() {
                 <PersonIcon />
               </ListItemIcon>
               <ListItemText primary="Usuarios" />
-            </ListItem>
-          </Link>
-
-          <Link to="/configuration" className={classes.links}>
-            <ListItem button className={`list-fix-padding`}>
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Configuración" />
             </ListItem>
           </Link>
 
@@ -122,7 +104,7 @@ function MainList() {
           <ListItemIcon>
             <AccountBoxIcon />
           </ListItemIcon>
-          <ListItemText primary="Perfil de usuario" />
+          <ListItemText primary="Mi Cuenta" />
         </ListItem>
       </Link>
     </div>

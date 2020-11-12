@@ -1,3 +1,5 @@
+//AUTH
+
 export const loginServiceUrl = () => {
   return `${process.env.REACT_APP_BACK_END}/v1/auth/login`;
 };
@@ -45,3 +47,25 @@ export const getUserByIdUrl = () => {
 export const getUserEstadoChangeUrl = () => {
   return `${process.env.REACT_APP_BACK_END}/v1/auth/estado-update`;
 };
+
+//AUTH
+
+// PEDIDOS
+
+export const getPedidosUrl = () => {
+  return `${process.env.REACT_APP_BACK_END}/v1/pedidos/all-pedidos`;
+};
+
+export const searchPedidosUrl = () => {
+  return `${process.env.REACT_APP_BACK_END}/v1/pedidos/search`;
+};
+
+export const crearPedidoUrl = () => {
+  return `${process.env.REACT_APP_BACK_END}/v1/pedidos/crear`;
+};
+
+export const closeAllPedidoUrl = () => {
+  return `${process.env.REACT_APP_BACK_END}/v1/pedidos/closeAll`;
+};
+
+//PEDIDOS

@@ -23,4 +23,18 @@ const BackButton = ({ texto, ruta }) => {
   );
 };
 
+export const CustomButton = ({ text, onClick, style = null }) => {
+  const classes = useStyles();
+  return (
+    <Button
+      variant="contained"
+      className={classes.submit}
+      style={style}
+      onClick={onClick}
+    >
+      {text}
+    </Button>
+  );
+};
+
 export default BackButton;
