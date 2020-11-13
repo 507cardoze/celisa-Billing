@@ -36,14 +36,23 @@ function MainLayout(props) {
 
     const logout = url.logoutUrl();
     const header = fetch.requestHeader("DELETE", "", localStorage.token);
-    const loggedInfo = await fetch.fetchData(logout, header);
 
-    if (loggedInfo === "refresh token deleted.") {
-      localStorage.removeItem("token");
-      localStorage.removeItem("refresh_token");
-      localStorage.removeItem("user");
-      history.push("/login");
-    } else {
+    try {
+      const query = await fetch(logout, header);
+      const loggedInfo = await query.json();
+      console.log(loggedInfo);
+      if (loggedInfo === "refresh token deleted.") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("user");
+        history.push("/login");
+      } else {
+        localStorage.removeItem("token");
+        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("user");
+        history.push("/login");
+      }
+    } catch (error) {
       localStorage.removeItem("token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user");

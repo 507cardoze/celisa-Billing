@@ -52,12 +52,13 @@ const Toolbar = ({
   resultados,
   handleOnChangeTextField,
   searchField,
-  nav,
-  ruta,
+  nav = null,
+  ruta = null,
   searchLabel,
   dataExport,
   filename,
   pedidos,
+  ordenes,
   ...rest
 }) => {
   const classes = useStyles();
@@ -81,7 +82,7 @@ const Toolbar = ({
             />
           </>
         ) : (
-          <BackButton texto={nav} ruta={ruta} />
+          nav && ruta && <BackButton texto={nav} ruta={ruta} />
         )}
       </Box>
       <Box mt={3}>
@@ -150,7 +151,29 @@ const Toolbar = ({
                       >
                         <ListItem button>
                           <ListItemText
-                            primary={`${row.name} ${row.lastname} ${row.address}`}
+                            primary={`${row.name} ${row.lastname} - ${row.address}`}
+                          />
+                        </ListItem>
+                      </Link>
+                      <Divider light />
+                    </>
+                  );
+                })}
+              </List>
+            )}
+            {ordenes && (
+              <List component="nav" aria-label="results">
+                {resultados.map((row) => {
+                  return (
+                    <>
+                      <Link
+                        to={`/edit-orden/${row.orden_id}`}
+                        className={`${classes.a}`}
+                        key={row.orden_id}
+                      >
+                        <ListItem button>
+                          <ListItemText
+                            primary={`${row.orden_id} - ${row.pedido_id} - ${row.nombre} ${row.apellido} - ${row.address} - ${row.nombre_cliente}`}
                           />
                         </ListItem>
                       </Link>

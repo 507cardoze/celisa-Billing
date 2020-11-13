@@ -6,12 +6,10 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import PersonIcon from "@material-ui/icons/Person";
-import SettingsIcon from "@material-ui/icons/Settings";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Divider from "@material-ui/core/Divider";
 import ControlPointIcon from "@material-ui/icons/ControlPoint";
 import AssignmentIcon from "@material-ui/icons/Assignment";
-import AddIcon from "@material-ui/icons/Add";
 import PieChartIcon from "@material-ui/icons/PieChart";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 
@@ -81,7 +79,7 @@ function MainList() {
         </>
       )}
 
-      <Link to="/new-orders" className={classes.links}>
+      <Link to="/create-orders" className={classes.links}>
         <ListItem button className={`list-fix-padding`}>
           <ListItemIcon>
             <ControlPointIcon />

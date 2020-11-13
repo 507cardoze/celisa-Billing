@@ -39,7 +39,6 @@ const Pedidos = () => {
   const columns = [
     { tittle: "#", atributo: "pedido_id" },
     { tittle: "Fecha", atributo: "fecha" },
-    { tittle: "Antigüedad", atributo: "fecha" },
     { tittle: "Gasto de Operación", atributo: "gasto_operacion" },
     { tittle: "Estado", atributo: "estatus" },
   ];
@@ -173,9 +172,6 @@ const Pedidos = () => {
                   <TableCell align="center">
                     {moment(row.fecha).format("MMMM Do YYYY")}
                   </TableCell>
-                  <TableCell align="center">
-                    {row.fecha ? moment(row.fecha).fromNow() : ""}
-                  </TableCell>
                   <TableCell align="center" style={{ fontWeight: "bold" }}>
                     {row.gasto_operacion
                       ? `USD $${row.gasto_operacion}`
@@ -194,10 +190,13 @@ const Pedidos = () => {
               ))
             ) : (
               <TableRow>
-                <BackdropSpinner isLoading={isLoading} />
-                {columns.map((value) => {
-                  return <TableCell key={value.tittle}></TableCell>;
-                })}
+                {results?.length === 0 ? (
+                  columns.map((value) => {
+                    return <TableCell key={value.tittle}></TableCell>;
+                  })
+                ) : (
+                  <BackdropSpinner isLoading={isLoading} />
+                )}
               </TableRow>
             )}
           </DataTable>

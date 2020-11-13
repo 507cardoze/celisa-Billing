@@ -11,7 +11,9 @@ import NotFoundView from "./pages/noView/";
 import Users from "./pages/users/";
 import UsersEdit from "./pages/users/userEdit";
 import UsersCreate from "./pages/users/userCreate";
-import Pedidos from "./pages/pedidos/index";
+import Pedidos from "./pages/pedidos";
+import Ordenes from "./pages/ordenes";
+import NewOrders from "./pages/ordenes/newOrders";
 
 import { UserProvider } from "./Context/userContext";
 
@@ -25,6 +27,8 @@ function App() {
           <PrivateRoute path="/profile" component={ProfilePage} />
           <PrivateRoute path="/users" component={Users} />
           <PrivateRoute path="/pedidos" component={Pedidos} />
+          <PrivateRoute path="/orders" component={Ordenes} />
+          <PrivateRoute path="/create-orders" component={NewOrders} />
           <PrivateRoute path="/create-user" component={UsersCreate} />
           <PrivateRoute path="/edit-user/:id" component={UsersEdit} />
           <Route path="/login" component={Login} />
