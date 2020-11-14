@@ -1,23 +1,54 @@
-import React from "react";
-import { Container, Grid, Paper } from "@material-ui/core";
+import React, { useState, useContext, useEffect } from 'react';
+import { Grid, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { OrderContext } from '../../Context/OrderContext';
+import * as url from '../../helpers/urls';
+import * as fetch from '../../helpers/fetch';
+import { useHistory } from 'react-router-dom';
+import moment from 'moment';
 
 function SeleccionPedidos() {
-  return (
-    <Container maxWidth="lg">
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Paper>
-            <h3>Select aqui!</h3>
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper>
-            <h3>Boton de siguiente aqui!</h3>
-          </Paper>
-        </Grid>
-      </Grid>
-    </Container>
-  );
+	const [orden, setOrden] = useContext(OrderContext);
+	const [pedidos, setPedidos] = useState([]);
+	const history = useHistory();
+
+	const setIdPedido = (id) => {
+		setOrden({
+			...orden,
+			id_pedido: id,
+		});
+	};
+
+	const getdataURL = url.activosPedidosUrl();
+
+	useEffect(() => {
+		const header = fetch.requestHeader('GET', null, localStorage.token);
+		const fetchData = async (url, header, setter) => {
+			const loggedInfo = await fetch.fetchData(url, header);
+			fetch.UnauthorizedRedirect(loggedInfo, history);
+			setter(loggedInfo);
+		};
+		fetchData(getdataURL, header, setPedidos);
+	}, [getdataURL]);
+
+	return (
+		<Grid container spacing={2}>
+			<Grid item xs={12} md={5} lg={5}>
+				<Select
+					variant="outlined"
+					fullWidth
+					onChange={(event) => setIdPedido(parseInt(event.target.value))}
+					value={orden.id_pedido}
+				>
+					{pedidos.length > 0 &&
+						pedidos.map((pedido) => (
+							<MenuItem value={pedido.pedido_id}>{`${
+								pedido.pedido_id
+							} - ${moment(pedido.fecha).format('MMMM D, YYYY')}`}</MenuItem>
+						))}
+				</Select>
+			</Grid>
+		</Grid>
+	);
 }
 
 export default SeleccionPedidos;

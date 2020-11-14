@@ -16,10 +16,12 @@ import Ordenes from "./pages/ordenes";
 import NewOrders from "./pages/ordenes/newOrders";
 
 import { UserProvider } from "./Context/userContext";
+import { OrderProvider } from "./Context/OrderContext";
 
 function App() {
   return (
-    <UserProvider>
+    <OrderProvider>
+      <UserProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Switch>
@@ -36,6 +38,7 @@ function App() {
         </Switch>
       </ThemeProvider>
     </UserProvider>
+    </OrderProvider>
   );
 }
 
