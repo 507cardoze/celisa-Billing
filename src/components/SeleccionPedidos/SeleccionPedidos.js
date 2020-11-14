@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Grid, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Grid, Select, MenuItem } from '@material-ui/core';
 import { OrderContext } from '../../Context/OrderContext';
 import * as url from '../../helpers/urls';
 import * as fetch from '../../helpers/fetch';
@@ -28,7 +28,7 @@ function SeleccionPedidos() {
 			setter(loggedInfo);
 		};
 		fetchData(getdataURL, header, setPedidos);
-	}, [getdataURL]);
+	}, [getdataURL, history]);
 
 	return (
 		<Grid container spacing={2}>
