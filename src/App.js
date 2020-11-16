@@ -20,25 +20,25 @@ import { OrderProvider } from "./Context/OrderContext";
 
 function App() {
   return (
-    <OrderProvider>
-      <UserProvider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Switch>
-          <PrivateRoute exact path="/" component={Dashboard} />
-          <PrivateRoute path="/profile" component={ProfilePage} />
-          <PrivateRoute path="/users" component={Users} />
-          <PrivateRoute path="/pedidos" component={Pedidos} />
-          <PrivateRoute path="/orders" component={Ordenes} />
-          <PrivateRoute path="/create-orders" component={NewOrders} />
-          <PrivateRoute path="/create-user" component={UsersCreate} />
-          <PrivateRoute path="/edit-user/:id" component={UsersEdit} />
-          <Route path="/login" component={Login} />
-          <Route path="*" component={NotFoundView} />
-        </Switch>
-      </ThemeProvider>
+    <UserProvider>
+      <OrderProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Switch>
+            <PrivateRoute exact path="/" component={Dashboard} />
+            <PrivateRoute path="/profile" component={ProfilePage} />
+            <PrivateRoute path="/users" component={Users} />
+            <PrivateRoute path="/pedidos" component={Pedidos} />
+            <PrivateRoute path="/orders" component={Ordenes} />
+            <PrivateRoute path="/create-orders" component={NewOrders} />
+            <PrivateRoute path="/create-user" component={UsersCreate} />
+            <PrivateRoute path="/edit-user/:id" component={UsersEdit} />
+            <Route path="/login" component={Login} />
+            <Route path="*" component={NotFoundView} />
+          </Switch>
+        </ThemeProvider>
+      </OrderProvider>
     </UserProvider>
-    </OrderProvider>
   );
 }
 

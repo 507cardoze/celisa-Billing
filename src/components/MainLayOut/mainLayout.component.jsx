@@ -45,17 +45,26 @@ function MainLayout(props) {
         localStorage.removeItem("token");
         localStorage.removeItem("refresh_token");
         localStorage.removeItem("user");
+        localStorage.removeItem("orden");
+        localStorage.removeItem("productoInput");
+        localStorage.removeItem("activeStep");
         history.push("/login");
       } else {
         localStorage.removeItem("token");
         localStorage.removeItem("refresh_token");
         localStorage.removeItem("user");
+        localStorage.removeItem("orden");
+        localStorage.removeItem("productoInput");
+        localStorage.removeItem("activeStep");
         history.push("/login");
       }
     } catch (error) {
       localStorage.removeItem("token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user");
+      localStorage.removeItem("orden");
+      localStorage.removeItem("productoInput");
+      localStorage.removeItem("activeStep");
       history.push("/login");
     }
   };

@@ -8,9 +8,7 @@ const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 const BackButton = ({ texto, ruta }) => {
   const history = useHistory();
   const classes = useStyles();
-  const moveBack = () => {
-    return history.push(ruta);
-  };
+  const moveBack = () => history.push(ruta);
   return (
     <Button
       variant="contained"
