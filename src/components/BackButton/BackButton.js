@@ -21,7 +21,12 @@ const BackButton = ({ texto, ruta }) => {
   );
 };
 
-export const CustomButton = ({ text, onClick, style = null }) => {
+export const CustomButton = ({
+  text,
+  onClick,
+  style = null,
+  disabled = false,
+}) => {
   const classes = useStyles();
   return (
     <Button
@@ -29,6 +34,7 @@ export const CustomButton = ({ text, onClick, style = null }) => {
       className={classes.submit}
       style={style}
       onClick={onClick}
+      disabled={disabled}
     >
       {text}
     </Button>

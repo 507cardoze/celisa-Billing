@@ -1,5 +1,12 @@
 import React, { useContext } from "react";
-import { Grid, TextField } from "@material-ui/core";
+import {
+  Grid,
+  TextField,
+  IconButton,
+  Container,
+  Box,
+  Typography,
+} from "@material-ui/core";
 import { OrderContext } from "../../Context/OrderContext";
 import { CustomButton } from "../../components/BackButton/BackButton";
 import { useStickyState } from "../../helpers/fetch";
@@ -11,15 +18,19 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { v4 as uuidv4 } from "uuid";
+import * as toast from "../../helpers/toast";
 
 function SeleccionProductos() {
   const [orden, setOrden] = useContext(OrderContext);
   const producto_inicial = {
+    id: "",
     descripcion: "",
     talla: "",
     color: "",
     cantidad: 1,
-    precio: 0.0,
+    precio: 0,
   };
 
   const [productoInput, setProductoInput] = useStickyState(
@@ -39,141 +50,194 @@ function SeleccionProductos() {
     });
   };
 
-  const setInicial = () => {
-    return setProductoInput(producto_inicial);
+  const addProducto = () => {
+    productoInput.id = uuidv4();
+    if (
+      productoInput.descripcion.trim().length > 0 &&
+      productoInput.talla.trim().length > 0 &&
+      productoInput.color.trim().length > 0
+    ) {
+      if (orden.productos.length > 0) {
+        const verify = orden.productos.filter(
+          (producto) =>
+            producto.descripcion === productoInput.descripcion.trim(),
+        );
+        if (verify.length > 0) {
+          toast.errorToast("Este producto ya existe en la lista");
+        } else {
+          setOrden({
+            ...orden,
+            productos: [...orden.productos, productoInput],
+          });
+          setProductoInput(producto_inicial);
+        }
+      } else {
+        setOrden({
+          ...orden,
+          productos: [...orden.productos, productoInput],
+        });
+        setProductoInput(producto_inicial);
+      }
+    } else {
+      return toast.errorToast("Debe llenar todos los campos.");
+    }
   };
 
-  const addProducto = () => {
-    setProductoInput(producto_inicial);
+  const deleteProducto = (unique_id) => {
+    const nuevoArray = orden.productos.filter(
+      (producto) => producto.id !== unique_id,
+    );
     setOrden({
       ...orden,
-      productos: [...orden.productos, productoInput],
+      productos: nuevoArray,
     });
   };
 
+  const deleteAllProductos = () => {
+    setOrden({
+      ...orden,
+      productos: [],
+    });
+  };
+
+  const suma = (acc, cur) => {
+    return acc + Number(cur.cantidad) * Number(cur.precio);
+  };
+
   return (
-    <Grid spacing={2} container xs={12} md={12} lg={12}>
-      <Grid xs={12} md={12} lg={12}>
+    <Container maxWidth={false} style={{ padding: 5 }}>
+      <Box style={{ maxWidth: 800 }}>
         {orden.productos?.length > 0 ? (
-          <Grid
-            xs={12}
-            md={12}
-            lg={12}
-            container
-            spacing={2}
-            style={{
-              marginTop: 5,
-              paddingLeft: 20,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <TableContainer component={Paper}>
-              <Table style={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Productos (articulo)</TableCell>
-                    <TableCell align="right">Talla</TableCell>
-                    <TableCell align="right">Color</TableCell>
-                    <TableCell align="right">Cantidad</TableCell>
-                    <TableCell align="right">Precio&nbsp;($)</TableCell>
+          <TableContainer component={Paper}>
+            <Table size="small" aria-label="a dense table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Productos (articulo)</TableCell>
+                  <TableCell align="right">Talla</TableCell>
+                  <TableCell align="right">Color</TableCell>
+                  <TableCell align="right">Cantidad</TableCell>
+                  <TableCell align="right">Precio Unitario&nbsp;($)</TableCell>
+                  <TableCell align="right">Precio Total&nbsp;($)</TableCell>
+                  <TableCell align="right">Eliminar</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {orden.productos.map((producto) => (
+                  <TableRow key={producto.id}>
+                    <TableCell component="th" scope="row">
+                      {producto.descripcion}
+                    </TableCell>
+                    <TableCell align="right">{producto.talla}</TableCell>
+                    <TableCell align="right">{producto.color}</TableCell>
+                    <TableCell align="right">{`${producto.cantidad}x`}</TableCell>
+                    <TableCell align="right">
+                      {`$${producto.precio.toFixed(2)}`}
+                    </TableCell>
+                    <TableCell align="right">
+                      {`$${(producto.precio * producto.cantidad).toFixed(2)}`}
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => deleteProducto(producto.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {orden.productos.map((producto) => (
-                    <TableRow key={producto.descripcion}>
-                      <TableCell component="th" scope="row">
-                        {producto.descripcion}
-                      </TableCell>
-                      <TableCell align="right">{producto.talla}</TableCell>
-                      <TableCell align="right">{producto.color}</TableCell>
-                      <TableCell align="right">{`${producto.cantidad}x`}</TableCell>
-                      <TableCell align="right">
-                        {(producto.precio * producto.cantidad).toFixed(2)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Grid>
+                ))}
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    <CustomButton
+                      text="Borrar todos los productos"
+                      style={{
+                        marginRight: 10,
+                        backgroundColor: "white",
+                      }}
+                      onClick={deleteAllProductos}
+                      size="small"
+                    />
+                  </TableCell>
+                  <TableCell align="right"></TableCell>
+                  <TableCell align="right">Articulos: </TableCell>
+                  <TableCell align="right">{`${orden.productos.length}`}</TableCell>
+                  <TableCell align="right" style={{ fontWeight: "bold" }}>
+                    Total:
+                  </TableCell>
+                  <TableCell align="right" style={{ fontWeight: "bold" }}>
+                    {`$${orden.productos.reduce(suma, 0).toFixed(2)}`}
+                  </TableCell>
+                  <TableCell align="right"></TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
         ) : (
-          <Grid
-            xs={12}
-            md={12}
-            lg={12}
-            container
-            spacing={2}
-            style={{
-              marginTop: 5,
-              paddingLeft: 20,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <p>No ha seleccionado productos</p>
-          </Grid>
+          <Typography variant="body2" color="textSecondary" align="center">
+            No ha seleccionado productos
+          </Typography>
         )}
-      </Grid>
+      </Box>
+
       <Grid
+        item
         xs={12}
         md={12}
         lg={12}
         container
         spacing={2}
         style={{
-          marginBottom: 20,
+          marginBottom: 30,
           marginTop: 20,
         }}
+        component={Paper}
       >
         <Grid item xs={12} md={4} lg={4}>
           <TextField
             variant="outlined"
             name="descripcion"
-            label="Descripcion del producto"
+            label="Descripción*"
             value={productoInput.descripcion}
             onChange={handleChange}
-            autoFocus
             fullWidth
           />
         </Grid>
-        <Grid item xs={6} md={6} lg={2}>
+        <Grid item xs={12} md={2} lg={2}>
           <TextField
             variant="outlined"
             name="talla"
-            label="Talla"
+            label="Talla*"
             value={productoInput.talla}
             onChange={handleChange}
           />
         </Grid>
 
-        <Grid item xs={6} md={6} lg={2}>
+        <Grid item xs={12} md={2} lg={2}>
           <TextField
             variant="outlined"
             name="color"
-            label="Color"
+            label="Color*"
             value={productoInput.color}
             onChange={handleChange}
           />
         </Grid>
 
-        <Grid item xs={8} md={8} lg={2}>
+        <Grid item xs={12} md={2} lg={2}>
           <TextField
             variant="outlined"
             type="number"
             name="cantidad"
-            label="Cantidad"
+            label="Cantidad*"
             value={productoInput.cantidad}
             onChange={handleChange}
-            style={{ width: "10ch" }}
           />
         </Grid>
 
-        <Grid item xs={8} md={8} lg={2}>
+        <Grid item xs={12} md={2} lg={2}>
           <TextField
             variant="outlined"
             name="precio"
-            label="Precio"
+            label="Precio*"
             type="number"
             InputProps={{
               startAdornment: (
@@ -182,32 +246,29 @@ function SeleccionProductos() {
             }}
             value={productoInput.precio}
             onChange={handleChange}
-            style={{ width: "15ch" }}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
           <CustomButton
-            text="Limpiar"
-            style={{ padding: 10, marginRight: 10 }}
-            onClick={setInicial}
-          />
-          <CustomButton
             text="Agregar"
-            style={{ padding: 10 }}
+            style={{
+              padding: 10,
+            }}
             onClick={addProducto}
+            size="small"
             disabled={
-              productoInput.descripcion.length > 0 &&
-              productoInput.talla.length > 0 &&
-              productoInput.color.length > 0 &&
-              productoInput.cantidad >= 1 &&
-              productoInput.precio >= 0
-                ? true
-                : false
+              productoInput.descripcion.trim().length > 0 &&
+              productoInput.talla.trim().length > 0 &&
+              productoInput.color.trim().length > 0 &&
+              productoInput.precio > 0 &&
+              productoInput.cantidad > 0
+                ? false
+                : true
             }
           />
         </Grid>
       </Grid>
-    </Grid>
+    </Container>
   );
 }
 
