@@ -84,4 +84,8 @@ export const searchOrdenesUrl = () => {
 	return `${process.env.REACT_APP_BACK_END}/v1/ordenes/search`;
 };
 
+export const crearOrdenesUrl = () => {
+	return `${process.env.REACT_APP_BACK_END}/v1/ordenes/crear`;
+};
+
 //ORDENES

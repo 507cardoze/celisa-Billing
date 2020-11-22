@@ -58,7 +58,7 @@ function SeleccionProductos() {
 						producto.descripcion === productoInput.descripcion.trim(),
 				);
 				if (verify.length > 0) {
-					toast.errorToast('Este producto ya existe en la lista');
+					toast.errorToast('Ya existe un producto igual en la lista.');
 				} else {
 					setOrden({
 						...orden,

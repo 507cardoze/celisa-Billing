@@ -13,6 +13,10 @@ import Button from '@material-ui/core/Button';
 import { OrderContext } from '../../Context/OrderContext';
 import { UserContext } from '../../Context/userContext';
 import PreviewOrden from '../../components/PreviewOrden/PreviewOrden';
+import * as url from '../../helpers/urls';
+import * as fetch from '../../helpers/fetch';
+import * as toast from '../../helpers/toast';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -65,21 +69,7 @@ function NewOrders() {
 	const steps = getSteps();
 	const [orden, setOrden] = useContext(OrderContext);
 	const [user] = useContext(UserContext);
-
-	useEffect(() => {
-		if (
-			orden?.nombre_cliente === '' &&
-			orden?.numero_cliente === '' &&
-			orden?.direccion_cliente === ''
-		) {
-			setOrden({
-				...orden,
-				nombre_cliente: `${user.name} ${user.lastname}`,
-				numero_cliente: user.number,
-				direccion_cliente: user.address,
-			});
-		}
-	}, [orden, setOrden, user]);
+	const history = useHistory();
 
 	const getStepButton = (step) => {
 		switch (step) {
@@ -130,7 +120,7 @@ function NewOrders() {
 					<Button
 						variant="contained"
 						color="primary"
-						onClick={handleNext}
+						onClick={handleCompletarOrden}
 						className={classes.button}
 					>
 						Completar
@@ -149,6 +139,7 @@ function NewOrders() {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
 
 	const handleReset = () => setActiveStep(0);
+	const handleMovingSteps = (num) => setActiveStep(num);
 
 	const handleResetOrden = () =>
 		setOrden({
@@ -158,6 +149,80 @@ function NewOrders() {
 			numero_cliente: user.number,
 			direccion_cliente: user.address,
 		});
+
+	const getdataURL = url.activosPedidosUrl();
+	const crearOrdenURL = url.crearOrdenesUrl();
+	const header = fetch.requestHeader('GET', null, localStorage.token);
+
+	const body = JSON.stringify({
+		orden: orden,
+	});
+
+	const headerPost = fetch.requestHeader('POST', body, localStorage.token);
+
+	const fetchData = async (url, header) => {
+		const loggedInfo = await fetch.fetchData(url, header);
+		fetch.UnauthorizedRedirect(loggedInfo, history);
+		return loggedInfo;
+	};
+
+	const handleCompletarOrden = async () => {
+		//validar que todo este correcto
+		if (!orden.id_pedido) return handleReset();
+
+		if (
+			orden?.nombre_cliente === '' ||
+			orden?.numero_cliente === '' ||
+			orden?.direccion_cliente === ''
+		)
+			return handleMovingSteps(1);
+		if (orden?.productos?.length <= 0) return handleMovingSteps(2);
+
+		// verificar que el pedido este aun activo antes de crear la orden
+
+		const pedidosActivos = await fetchData(getdataURL, header);
+		const vefifyPedidoActual = pedidosActivos.map(
+			(value) => value.pedido_id === orden.id_pedido,
+		);
+		if (!vefifyPedidoActual || vefifyPedidoActual?.length === 0) {
+			setOrden({
+				...orden,
+				id_pedido: null,
+			});
+			handleReset();
+		}
+
+		// a este punto toda la orden esta correcta y todo operativo
+
+		const crearOrden = await fetchData(crearOrdenURL, headerPost);
+		if (crearOrden === 'orden creada exitosamente') {
+			handleNext();
+		} else {
+			return toast.errorToast(crearOrden);
+		}
+	};
+
+	useEffect(() => {
+		const handleMovingSteps = (num) => setActiveStep(num);
+		if (
+			orden?.nombre_cliente === '' &&
+			orden?.numero_cliente === '' &&
+			orden?.direccion_cliente === ''
+		) {
+			setOrden({
+				...orden,
+				nombre_cliente: `${user.name} ${user.lastname}`,
+				numero_cliente: user.number,
+				direccion_cliente: user.address,
+			});
+		}
+		if (orden?.productos?.length === 0) {
+			handleMovingSteps(2);
+		}
+		if (!orden?.id_pedido) {
+			handleMovingSteps(0);
+		}
+	}, [orden, setOrden, user, setActiveStep]);
 
 	return (
 		<MainLayout Tittle="Crear Orden">
