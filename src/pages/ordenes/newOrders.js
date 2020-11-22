@@ -216,9 +216,7 @@ function NewOrders() {
 				direccion_cliente: user.address,
 			});
 		}
-		if (orden?.productos?.length === 0) {
-			handleMovingSteps(2);
-		}
+
 		if (!orden?.id_pedido) {
 			handleMovingSteps(0);
 		}
