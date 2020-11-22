@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { UserContext } from '../../Context/userContext';
 import BackdropSpinner from '../../components/BackDrop/backDrop';
+import NumericToolBar from '../../components/NumericToolBar/NumericToolBar';
 
 const Ordenes = () => {
 	//state
@@ -24,6 +25,7 @@ const Ordenes = () => {
 	const [limit, setLimit] = useState(50);
 	const [atrib, setAtrib] = useState('orden_id');
 	const [order, setOrder] = useState('desc');
+	const [estado, setEstado] = useState(0);
 
 	const handleChangePage = (page) => setPage(page++);
 	const handleChangeLimit = (limit) => setLimit(limit);
@@ -49,7 +51,6 @@ const Ordenes = () => {
 
 	//funciones
 	const headerSearch = fetch.requestHeader('GET', null, localStorage.token);
-
 	const getAllURL = url.getOrdenesUrl();
 	const searchUrl = url.searchOrdenesUrl();
 
@@ -83,24 +84,43 @@ const Ordenes = () => {
 		};
 		setIsLoading(true);
 		fetchData(
-			`${getAllURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
+			`${getAllURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${estado}`,
 			header,
 			setRows,
 		);
 		fetchData(`${getAllURL}?excel=${true}`, header, setDataExport);
 		setIsLoading(false);
-	}, [user, history, page, limit, atrib, order, getAllURL]);
+	}, [user, history, page, limit, atrib, order, getAllURL, estado]);
 
 	return (
 		<MainLayout Tittle="Ordenes">
 			<Container maxWidth={false}>
+				{rows?.dashboard && (
+					<NumericToolBar
+						setEstado={setEstado}
+						ver
+						data={{
+							titles: [
+								{ text: 'Total de ordenes en el sistema', estado: 0 },
+								{ text: 'Pendiente por aprobacion', estado: 1 },
+								{ text: 'Aprobadas', estado: 2 },
+								{ text: 'Llego al pais', estado: 3 },
+								{ text: 'Saldo Pendiente', estado: 4 },
+								{ text: 'Completados', estado: 5 },
+								{ text: 'Cancelados', estado: 6 },
+							],
+							values: Object.values(rows.dashboard),
+						}}
+					/>
+				)}
+
 				<Toolbar
 					isLoading={isLoading}
 					resultados={resultados}
 					handleOnChangeTextField={handleOnChangeTextField}
 					searchField={searchField}
-					// nav="Agregar Pedido"
-					// ruta="/create-pedido"
+					nav="Agregar Orden"
+					ruta="/create-orders"
 					searchLabel="Buscar ordenes"
 					dataExport={dataExport}
 					filename={`ordenes / ${moment().format('MMMM Do YYYY, h:mm')}`}
@@ -120,29 +140,22 @@ const Ordenes = () => {
 					>
 						{results?.length > 0 ? (
 							results.map((row) => (
-								<TableRow key={row.pedido_id}>
+								<TableRow key={row.orden_id}>
 									<TableCell align="center">
-										<Link to={`/edit-pedido/${row.pedido_id}`}>
-											{row.pedido_id}
+										<Link to={`/edit-orden/${row.orden_id}`}>
+											{row.orden_id}
 										</Link>
 									</TableCell>
+									<TableCell align="center">{row.pedido_id}</TableCell>
+									<TableCell align="center">{row.nombre}</TableCell>
+									<TableCell align="center">{row.apellido}</TableCell>
+									<TableCell align="center">{row.nombre_cliente}</TableCell>
+									<TableCell align="center">{row.numero_cliente}</TableCell>
+									<TableCell align="center">{row.direccion_cliente}</TableCell>
 									<TableCell align="center">
 										{moment(row.fecha).format('MMMM Do YYYY')}
 									</TableCell>
-									<TableCell align="center" style={{ fontWeight: 'bold' }}>
-										{row.gasto_operacion
-											? `USD $${row.gasto_operacion}`
-											: 'Sin gasto definido aún'}
-									</TableCell>
-									<TableCell
-										align="center"
-										style={{
-											fontWeight: 'bold',
-											color: row.estatus === 1 ? 'green' : 'red',
-										}}
-									>
-										{row.estatus === 1 ? 'Abierto' : 'Cerrado'}
-									</TableCell>
+									<TableCell align="center">{row.nombre_status}</TableCell>
 								</TableRow>
 							))
 						) : (

@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { UserContext } from '../../Context/userContext';
 import BackdropSpinner from '../../components/BackDrop/backDrop';
+import NumericToolBar from '../../components/NumericToolBar/NumericToolBar';
 
 const Users = () => {
 	//state
@@ -114,6 +115,18 @@ const Users = () => {
 	return (
 		<MainLayout Tittle="Usuarios">
 			<Container maxWidth={false}>
+				{rows?.dashboard && (
+					<NumericToolBar
+						data={{
+							titles: [
+								{ text: 'Total de usuarios en el sistema' },
+								{ text: 'Administradores' },
+								{ text: 'Compradores' },
+							],
+							values: Object.values(rows.dashboard),
+						}}
+					/>
+				)}
 				<Toolbar
 					isLoading={isLoading}
 					resultados={resultados}
