@@ -12,6 +12,7 @@ import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import { OrderContext } from '../../Context/OrderContext';
 import { UserContext } from '../../Context/userContext';
+import PreviewOrden from '../../components/PreviewOrden/PreviewOrden';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -51,6 +52,8 @@ const getStepContent = (step) => {
 			return <ClientDataForm />;
 		case 2:
 			return <SeleccionProductos />;
+		case 3:
+			return <PreviewOrden />;
 		default:
 			return 'Unknown step';
 	}
@@ -117,7 +120,7 @@ function NewOrders() {
 						color="primary"
 						onClick={handleNext}
 						className={classes.button}
-						// disabled={orden.productos.length === 0 ? true : false}
+						disabled={orden?.productos?.length === 0 ? true : false}
 					>
 						Siguiente
 					</Button>
@@ -129,7 +132,6 @@ function NewOrders() {
 						color="primary"
 						onClick={handleNext}
 						className={classes.button}
-						// disabled={orden.productos.length === 0 ? true : false}
 					>
 						Completar
 					</Button>
@@ -170,6 +172,7 @@ function NewOrders() {
 								alignItems: 'flex-start',
 								flexDirection: 'column',
 								overflowY: 'auto',
+								width: '100%',
 							}}
 						>
 							{getStepContent(index)}

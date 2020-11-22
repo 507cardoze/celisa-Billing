@@ -140,8 +140,8 @@ function SeleccionProductos() {
 	};
 
 	return (
-		<Container maxWidth={1200}>
-			<Box stlye={{ overflowX: 'scroll' }}>
+		<Container style={{ paddingTop: 20 }}>
+			<Box>
 				<TableContainer component={Paper}>
 					<Table size="small">
 						<TableHead>
