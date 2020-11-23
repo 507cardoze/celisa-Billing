@@ -80,6 +80,10 @@ export const getOrdenesUrl = () => {
 	return `${process.env.REACT_APP_BACK_END}/v1/ordenes/all-ordenes`;
 };
 
+export const getMyOrdenesUrl = () => {
+	return `${process.env.REACT_APP_BACK_END}/v1/ordenes/my-ordenes`;
+};
+
 export const searchOrdenesUrl = () => {
 	return `${process.env.REACT_APP_BACK_END}/v1/ordenes/search`;
 };

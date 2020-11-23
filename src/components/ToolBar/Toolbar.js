@@ -46,6 +46,84 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+const getLinksContainer = (type, data, classes) => {
+	switch (type) {
+		case 'usuarios':
+			return (
+				<List component="nav" aria-label="results">
+					{data.map((row) => {
+						return (
+							<>
+								<Link
+									to={`/edit-user/${row.user_id}`}
+									className={`${classes.a}`}
+									key={row.user_id}
+								>
+									<ListItem button>
+										<ListItemText
+											primary={`nombre: ${row.name} ${row.lastname} - direccion: ${row.address}`}
+										/>
+									</ListItem>
+								</Link>
+								<Divider light />
+							</>
+						);
+					})}
+				</List>
+			);
+		case 'pedidos':
+			return (
+				<List component="nav" aria-label="results">
+					{data.map((row) => {
+						return (
+							<>
+								<Link
+									to={`/edit-pedido/${row.pedido_id}`}
+									className={`${classes.a}`}
+									key={row.pedido_id}
+								>
+									<ListItem button>
+										<ListItemText
+											primary={`#${row.pedido_id} - ${moment(row.fecha).format(
+												'MMMM Do YYYY',
+											)} - ${row.estatus ? 'Abierto' : 'Cerrado'}`}
+										/>
+									</ListItem>
+								</Link>
+								<Divider light />
+							</>
+						);
+					})}
+				</List>
+			);
+		case 'ordenes':
+			return (
+				<List component="nav" aria-label="results">
+					{data.map((row) => {
+						return (
+							<>
+								<Link
+									to={`/edit-orden/${row.orden_id}`}
+									className={`${classes.a}`}
+									key={row.orden_id}
+								>
+									<ListItem button>
+										<ListItemText
+											primary={`#${row.orden_id} - vendedor: ${row.nombre} ${row.apellido} - cliente: ${row.nombre_cliente}`}
+										/>
+									</ListItem>
+								</Link>
+								<Divider light />
+							</>
+						);
+					})}
+				</List>
+			);
+		default:
+			return ``;
+	}
+};
+
 const Toolbar = ({
 	className,
 	isLoading,
@@ -59,6 +137,7 @@ const Toolbar = ({
 	filename,
 	pedidos,
 	ordenes,
+	type,
 	...rest
 }) => {
 	const classes = useStyles();
@@ -66,12 +145,14 @@ const Toolbar = ({
 	return (
 		<div className={clsx(classes.root, className)} {...rest}>
 			<Box display="flex" justifyContent="flex-end">
-				<ExportCSV
-					csvData={dataExport}
-					fileName={filename}
-					loading={isLoading}
-					label="Exportar a excel"
-				/>
+				{dataExport && (
+					<ExportCSV
+						csvData={dataExport}
+						fileName={filename}
+						loading={isLoading}
+						label="Exportar a excel"
+					/>
+				)}
 				{pedidos ? (
 					<>
 						<CustomButton text="Agregar Pedido" onClick={() => pedidos.add()} />
@@ -85,7 +166,7 @@ const Toolbar = ({
 					nav && ruta && <BackButton texto={nav} ruta={ruta} />
 				)}
 			</Box>
-			<Box mt={3}>
+			<Box mt={1}>
 				<Card>
 					<CardContent>
 						<Box maxWidth={500}>
@@ -114,75 +195,8 @@ const Toolbar = ({
 			<Card>
 				<CardContent className="search-box">
 					<Box className={`${classes.searchResults}`}>
-						{pedidos ? (
-							<List component="nav" aria-label="results">
-								{resultados.map((row) => {
-									return (
-										<>
-											<Link
-												to={`/edit-pedido/${row.pedido_id}`}
-												className={`${classes.a}`}
-												key={row.pedido_id}
-											>
-												<ListItem button>
-													<ListItemText
-														primary={`${row.pedido_id} - ${moment(
-															row.fecha,
-														).format('MMMM Do YYYY')} - ${
-															row.estatus ? 'Abierto' : 'Cerrado'
-														}`}
-													/>
-												</ListItem>
-											</Link>
-											<Divider light />
-										</>
-									);
-								})}
-							</List>
-						) : (
-							<List component="nav" aria-label="results">
-								{resultados.map((row) => {
-									return (
-										<>
-											<Link
-												to={`/edit-user/${row.user_id}`}
-												className={`${classes.a}`}
-												key={row.user_id}
-											>
-												<ListItem button>
-													<ListItemText
-														primary={`${row.name} ${row.lastname} - ${row.address}`}
-													/>
-												</ListItem>
-											</Link>
-											<Divider light />
-										</>
-									);
-								})}
-							</List>
-						)}
-						{ordenes && (
-							<List component="nav" aria-label="results">
-								{resultados.map((row) => {
-									return (
-										<>
-											<Link
-												to={`/edit-orden/${row.orden_id}`}
-												className={`${classes.a}`}
-												key={row.orden_id}
-											>
-												<ListItem button>
-													<ListItemText
-														primary={`${row.orden_id} - ${row.pedido_id} - ${row.nombre} ${row.apellido} - ${row.address} - ${row.nombre_cliente}`}
-													/>
-												</ListItem>
-											</Link>
-											<Divider light />
-										</>
-									);
-								})}
-							</List>
-						)}
+						{searchField.length > 0 &&
+							getLinksContainer(type, resultados, classes)}
 					</Box>
 				</CardContent>
 			</Card>

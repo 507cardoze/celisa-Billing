@@ -90,5 +90,6 @@ export const UnauthorizedRedirect = (data, history) => {
 };
 
 export const UserRedirect = (user, history) => {
-	if (user && user.rol !== 'Administrador') return history.push('/profile');
+	if (user && user.rol !== 'Administrador')
+		return history.push('/create-orders');
 };

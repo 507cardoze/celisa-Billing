@@ -123,6 +123,7 @@ const Ordenes = () => {
 					ruta="/create-orders"
 					searchLabel="Buscar ordenes"
 					dataExport={dataExport}
+					type="ordenes"
 					filename={`ordenes / ${moment().format('MMMM Do YYYY, h:mm')}`}
 				/>
 				<Box mt={3}>

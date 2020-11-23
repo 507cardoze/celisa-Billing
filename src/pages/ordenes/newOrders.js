@@ -80,7 +80,7 @@ function NewOrders() {
 						color="primary"
 						onClick={handleNext}
 						className={classes.button}
-						disabled={orden.id_pedido === null ? true : false}
+						disabled={orden?.id_pedido === null ? true : false}
 					>
 						Siguiente
 					</Button>
@@ -93,9 +93,9 @@ function NewOrders() {
 						onClick={handleNext}
 						className={classes.button}
 						disabled={
-							orden.nombre_cliente === '' &&
-							orden.numero_cliente === '' &&
-							orden.direccion_cliente === ''
+							orden?.nombre_cliente === '' &&
+							orden?.numero_cliente === '' &&
+							orden?.direccion_cliente === ''
 								? true
 								: false
 						}
@@ -128,7 +128,7 @@ function NewOrders() {
 				);
 
 			default:
-				return `no hay button`;
+				return `no hay links`;
 		}
 	};
 
