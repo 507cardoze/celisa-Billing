@@ -6,14 +6,13 @@ import {
   Typography,
   Button,
   CardActions,
-  Box,
 } from "@material-ui/core";
 
 const NumericToolBar = ({ setEstado = null, data, ver = false }) => {
   return (
-    <Box
+    <Grid
       container
-      spacing={2}
+      spacing={1}
       style={{
         display: "flex",
         justifyContent: "flex-start",
@@ -36,7 +35,7 @@ const NumericToolBar = ({ setEstado = null, data, ver = false }) => {
                 size="small"
                 onClick={() => setEstado(data?.titles[0].estado)}
               >
-                Ver
+                Filtrar
               </Button>
             </CardActions>
           )}
@@ -46,7 +45,7 @@ const NumericToolBar = ({ setEstado = null, data, ver = false }) => {
       {data?.titles.map((value, index) => {
         return (
           index !== 0 && (
-            <Grid item xs={6} md={4} lg={2} key={index}>
+            <Grid item key={index}>
               <Card>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
@@ -62,7 +61,7 @@ const NumericToolBar = ({ setEstado = null, data, ver = false }) => {
                       size="small"
                       onClick={() => setEstado(value.estado)}
                     >
-                      Ver
+                      Filtrar
                     </Button>
                   </CardActions>
                 )}
@@ -71,7 +70,7 @@ const NumericToolBar = ({ setEstado = null, data, ver = false }) => {
           )
         );
       })}
-    </Box>
+    </Grid>
   );
 };
 
