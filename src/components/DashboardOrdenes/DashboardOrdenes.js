@@ -12,8 +12,8 @@ const DashboardOrdenes = ({ orden, suma, sumaPagos }) => {
       lg={5}
       style={{
         display: "flex",
-        justifyContent: "flex-start",
-        alignContent: "flex-start",
+        justifyContent: "center",
+        alignContent: "center",
         width: "100%",
       }}
       spacing={2}
@@ -30,7 +30,7 @@ const DashboardOrdenes = ({ orden, suma, sumaPagos }) => {
             }}
           >
             <Typography color="textSecondary" gutterBottom>
-              Ultimo pago:
+              Último pago:
             </Typography>
             {orden?.pagos.lengh > 0 ? (
               <Typography variant="h5" component="h2" gutterBottom gutterTop>
@@ -38,7 +38,7 @@ const DashboardOrdenes = ({ orden, suma, sumaPagos }) => {
               </Typography>
             ) : (
               <Typography variant="h4" component="h2" gutterBottom gutterTop>
-                No se registran pagos aun
+                No se registran pagos aún
               </Typography>
             )}
           </CardContent>
@@ -56,7 +56,7 @@ const DashboardOrdenes = ({ orden, suma, sumaPagos }) => {
             }}
           >
             <Typography color="textSecondary" gutterBottom>
-              Ultima Fecha de pago
+              Última Fecha de pago:
             </Typography>
             {orden?.pagos.lengh > 0 ? (
               <Typography variant="h5" component="h2" gutterBottom gutterTop>
@@ -64,7 +64,7 @@ const DashboardOrdenes = ({ orden, suma, sumaPagos }) => {
               </Typography>
             ) : (
               <Typography variant="h4" component="h2" gutterBottom gutterTop>
-                No se registran pagos aun.
+                No se registran pagos aún.
               </Typography>
             )}
           </CardContent>

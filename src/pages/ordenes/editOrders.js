@@ -1,14 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
-import {
-  Container,
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-} from "@material-ui/core";
+import { Container, Grid, Box, Typography } from "@material-ui/core";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
-import * as toast from "../../helpers/toast";
 import * as url from "../../helpers/urls";
 import * as fetch from "../../helpers/fetch";
 import { useHistory } from "react-router-dom";
@@ -16,7 +9,37 @@ import { UserContext } from "../../Context/userContext";
 import BackButton from "../../components/BackButton/BackButton";
 import OrderDetails from "../../components/OrderDetail/OrderDetail";
 import DashboardOrdenes from "../../components/DashboardOrdenes/DashboardOrdenes";
-import moment from "moment";
+import ProductosTable from "../../components/ProductosTable/ProductosTable";
+
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 
 function EditOrder({ match }) {
   const id_orden = parseInt(match.params.id);
@@ -25,6 +48,12 @@ function EditOrder({ match }) {
   const [user] = useContext(UserContext);
   const [orden, setOrden] = useState(null);
   const [ordenIsEditable, setOrdenIsEditable] = useState(false);
+
+  const [value, setValue] = useState(0);
+
+  const handleChangeTab = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const urlGet = url.getByIdOrdenUrl();
   const header = fetch.requestHeader("GET", null, localStorage.token);
@@ -46,7 +75,6 @@ function EditOrder({ match }) {
       setter(loggedInfo);
       setIsLoading(false);
     };
-
     fetchData(`${urlGet}/${id_orden}`, header, setOrden);
   }, [user, history, urlGet]);
 
@@ -77,41 +105,48 @@ function EditOrder({ match }) {
 
   return (
     <MainLayout Tittle={`Editar orden #${id_orden}`}>
-      {isLoading ? (
-        <BackdropSpinner isLoading={!isLoading} />
-      ) : (
-        <Container maxWidth="lg">
-          <BackButton texto="Atras" ruta="/orders" />
-          <Grid container spacing={1}>
-            {orden ? (
-              <>
-                <OrderDetails
-                  orden={orden}
-                  handleChange={handleChange}
-                  ordenIsEditable={ordenIsEditable}
-                  toggleEditableDetails={toggleEditableDetails}
-                  refreshData={refreshData}
-                />
-                <DashboardOrdenes
-                  orden={orden}
-                  suma={suma}
-                  sumaPagos={sumaPagos}
-                />
-              </>
-            ) : (
-              "cargando..."
-            )}
-
-            <Grid item xs={12} md={6} lg={6}>
-              productos productos productos
-            </Grid>
-
-            <Grid item xs={12} md={6} lg={6}>
-              cobros cobros cobros
+      <Container
+        maxWidth="lg"
+        style={{
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+          flexDirection: "column",
+        }}
+      >
+        <BackButton texto="Atras" ruta="/orders" />
+        {orden ? (
+          <Grid container spacing={2}>
+            <OrderDetails
+              orden={orden}
+              handleChange={handleChangeTab}
+              ordenIsEditable={ordenIsEditable}
+              toggleEditableDetails={toggleEditableDetails}
+              refreshData={refreshData}
+            />
+            <DashboardOrdenes orden={orden} suma={suma} sumaPagos={sumaPagos} />
+            <Grid item xs={12} style={{ width: "100%" }}>
+              <Tabs
+                variant="fullWidth"
+                value={value}
+                onChange={handleChangeTab}
+                aria-label="simple tabs example"
+              >
+                <Tab label="Productos en la orden" {...a11yProps(0)} />
+                <Tab label="Pagos realizados" {...a11yProps(1)} />
+              </Tabs>
+              <TabPanel value={value} index={0}>
+                <ProductosTable orden={orden} setOrden={setOrden} />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                pagos pagos pagos pagos pagos
+              </TabPanel>
             </Grid>
           </Grid>
-        </Container>
-      )}
+        ) : (
+          <BackdropSpinner isLoading={!isLoading} />
+        )}
+      </Container>
     </MainLayout>
   );
 }

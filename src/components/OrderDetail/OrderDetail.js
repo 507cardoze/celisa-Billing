@@ -1,6 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
 import moment from "moment";
 import {
   Box,
@@ -8,18 +6,10 @@ import {
   CardContent,
   Divider,
   Typography,
-  makeStyles,
   Grid,
   Button,
   TextField,
 } from "@material-ui/core";
-
-const useStyles = makeStyles(() => ({
-  avatar: {
-    height: 100,
-    width: 100,
-  },
-}));
 
 const OrderDetails = ({
   className,
@@ -30,11 +20,9 @@ const OrderDetails = ({
   refreshData,
   ...rest
 }) => {
-  const classes = useStyles();
-
   return (
     <Grid item xs={12} md={7} lg={7}>
-      <Card className={clsx(classes.root, className)} {...rest}>
+      <Card className={className} {...rest}>
         <CardContent>
           <Grid container spacing={2} maxWidth="lg">
             {ordenIsEditable ? (
@@ -95,14 +83,14 @@ const OrderDetails = ({
                         {`Tel: ${orden.numero_vendedor}`}
                       </Typography>
                       <Typography color="textSecondary" variant="body1">
-                        {`Direccion: ${orden.direccion_vendedor}`}
+                        {`Dirección: ${orden.direccion_vendedor}`}
                       </Typography>
                     </Grid>
                   </Box>
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
                   <Box
-                    alignItems="flex-start"
+                    alignContent="flex-start"
                     display="flex"
                     flexDirection="column"
                   >
@@ -117,12 +105,12 @@ const OrderDetails = ({
                         {`Tel de contacto: ${orden.numero_cliente}`}
                       </Typography>
                       <Typography color="textSecondary" variant="body1">
-                        {`Direccion de la factura: ${orden.direccion_cliente}`}
+                        {`Dirección de la factura: ${orden.direccion_cliente}`}
                       </Typography>
                       <Typography color="textSecondary" variant="body1">
-                        {`Fecha de creacion: ${moment(
+                        {`Fecha de creación: ${moment(
                           orden.fecha_creacion,
-                        ).format("DD MMMM, YYYY")}`}
+                        ).format("DD-MM-YYYY")}`}
                       </Typography>
                       <Typography color="textSecondary" variant="body1">
                         {`Estado: ${orden.estado}`}
@@ -133,41 +121,54 @@ const OrderDetails = ({
               </>
             )}
             <Grid item xs={12}>
-              <Box
+              <Grid
                 alignItems="center"
                 display="flex"
-                justifyContent="space-around"
+                justifyContent="space-between"
+                width={`100%`}
+                container
               >
                 {ordenIsEditable ? (
                   <>
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        toggleEditableDetails();
-                        refreshData();
-                      }}
-                    >
-                      Cancelar
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={toggleEditableDetails}
-                    >
-                      Guardar Cambios
-                    </Button>
+                    <Grid item xs={6} md={6} lg={6}>
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          toggleEditableDetails();
+                          refreshData();
+                        }}
+                      >
+                        Cancelar
+                      </Button>
+                    </Grid>
+                    <Grid item xs={6} md={6} lg={6}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={toggleEditableDetails}
+                      >
+                        Guardar Cambios
+                      </Button>
+                    </Grid>
                   </>
                 ) : (
                   <>
-                    <Button variant="contained" color="primary">
-                      Mover al siguiente estado
-                    </Button>
-                    <Button variant="contained" onClick={toggleEditableDetails}>
-                      Editar datos de factura
-                    </Button>
+                    <Grid item xs={6} md={6} lg={6}>
+                      <Button variant="contained" color="primary">
+                        Mover al siguiente estado
+                      </Button>
+                    </Grid>
+                    <Grid item xs={6} md={6} lg={6}>
+                      <Button
+                        variant="contained"
+                        onClick={toggleEditableDetails}
+                      >
+                        Editar datos de factura
+                      </Button>
+                    </Grid>
                   </>
                 )}
-              </Box>
+              </Grid>
             </Grid>
           </Grid>
         </CardContent>
@@ -176,9 +177,4 @@ const OrderDetails = ({
     </Grid>
   );
 };
-
-OrderDetails.propTypes = {
-  className: PropTypes.string,
-};
-
 export default OrderDetails;
