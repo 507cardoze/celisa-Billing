@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as url from './urls';
 import { useHistory } from 'react-router-dom';
+import { useJwt } from 'react-jwt';
 
 export const requestHeader = (method, body = {}, token) => {
 	return {
@@ -27,25 +28,30 @@ export const fetchData = async (urls, header) => {
 	try {
 		const query = await fetch(urls, header);
 		const parsed = await query.json();
-		if (parsed === 'No esta autorizado') {
-			const body = JSON.stringify({
-				token: localStorage.refresh_token ? localStorage.refresh_token : '',
-			});
-			const TokenRenewServiceUrl = url.refreshTokenUrl();
-			const headerRT = requestHeader('POST', body, '');
-			const loggedInfo = await fetchData(TokenRenewServiceUrl, headerRT);
-			if (loggedInfo.accessToken) {
-				localStorage.setItem('token', loggedInfo.accessToken);
-				header.headers.Authorization = `Bearer ${loggedInfo.accessToken}`;
-				const requery = await fetch(urls, header);
-				const reparsed = await requery.json();
-				return reparsed;
-			} else {
-				return 'No esta autorizado';
-			}
-		} else {
-			return parsed;
-		}
+		return parsed;
+
+		// if (parsed === 'No esta autorizado') {
+		// 	const body = JSON.stringify({
+		// 		token: localStorage.refresh_token ? localStorage.refresh_token : null,
+		// 	});
+		// 	const TokenRenewServiceUrl = url.refreshTokenUrl();
+		// 	const headerRT = requestHeader('POST', body, '');
+		// 	const loggedInfo = await fetchData(TokenRenewServiceUrl, headerRT);
+		// 	if (loggedInfo.accessToken) {
+		// 		localStorage.setItem('token', loggedInfo.accessToken);
+		// 		header.headers.Authorization = `Bearer ${loggedInfo.accessToken}`;
+		// 		const requery = await fetch(urls, header);
+		// 		const reparsed = await requery.json();
+		// 		console.log('reparsed:', parsed);
+		// 		return reparsed;
+		// 	} else {
+		// 		console.log('No esta autorizado');
+		// 		return 'No esta autorizado';
+		// 	}
+		// } else {
+		// 	console.log('parsed:', parsed);
+		// 	return parsed;
+		// }
 	} catch (error) {
 		console.log('error: ', error);
 		return 'conexion error';
@@ -54,14 +60,23 @@ export const fetchData = async (urls, header) => {
 
 export const SubcriberRefreshToken = ({ children }) => {
 	const history = useHistory();
+	const { isExpired } = useJwt(localStorage.accessToken);
 	useEffect(() => {
 		const interval = setInterval(async () => {
-			if (localStorage.refresh_token === null || localStorage.token === null) {
-				localStorage.removeItem('token');
-				localStorage.removeItem('refresh_token');
-				history.push('/login');
+			if (isExpired && localStorage.refresh_token) {
+				const body = JSON.stringify({
+					token: localStorage.refresh_token,
+				});
+				const TokenRenewServiceUrl = url.refreshTokenUrl();
+				const headerRT = requestHeader('POST', body, '');
+				const loggedInfo = await fetchData(TokenRenewServiceUrl, headerRT);
+				if (loggedInfo.accessToken) {
+					localStorage.setItem('token', loggedInfo.accessToken);
+				} else {
+					return history.push('/login');
+				}
 			}
-		}, 10000);
+		}, 180000);
 
 		return () => {
 			clearInterval(interval);
