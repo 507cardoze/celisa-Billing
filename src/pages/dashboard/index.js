@@ -42,8 +42,9 @@ function Dashboard() {
 	}, [user, history]);
 
 	return (
-		<MainLayout Tittle="Consola de datos">
+		<MainLayout Tittle="Dashboard">
 			<BackdropSpinner isLoading={!isLoading} />
+
 			<Grid container spacing={2}>
 				<Grid item xs={12} md={5} lg={5}>
 					<Paper className={fixedHeightPaper}></Paper>

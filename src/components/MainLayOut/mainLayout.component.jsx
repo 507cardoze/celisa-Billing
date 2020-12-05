@@ -20,6 +20,7 @@ import * as styles from "../../helpers/styles";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useStickyState } from "../../helpers/fetch";
+import {Helmet} from "react-helmet";
 
 const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 
@@ -40,7 +41,6 @@ function MainLayout(props) {
     try {
       const query = await fetch(logout, header);
       const loggedInfo = await query.json();
-      console.log(loggedInfo);
       if (loggedInfo === "refresh token deleted.") {
         localStorage.removeItem("token");
         localStorage.removeItem("refresh_token");
@@ -80,6 +80,7 @@ function MainLayout(props) {
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}
       >
+        <Helmet title={props.Tittle} />
         <Toolbar className={classes.toolbar}>
           <IconButton
             edge="start"
@@ -102,7 +103,7 @@ function MainLayout(props) {
           >
             {props.Tittle}
           </Typography>
-
+          
           <IconButton color="inherit" onClick={handleLogout}>
             <ExitToAppIcon />
           </IconButton>

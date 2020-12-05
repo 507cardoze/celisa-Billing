@@ -93,3 +93,7 @@ export const UserRedirect = (user, history) => {
 	if (user && user.rol !== 'Administrador')
 		return history.push('/create-orders');
 };
+
+export const numberWithCommas = (x) => {
+	return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
+};

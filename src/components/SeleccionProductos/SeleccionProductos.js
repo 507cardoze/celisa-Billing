@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from 'uuid';
 import * as toast from '../../helpers/toast';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import * as fetch from '../../helpers/fetch';
 
 function SeleccionProductos() {
 	const [orden, setOrden] = useContext(OrderContext);
@@ -179,10 +180,16 @@ function SeleccionProductos() {
 										</ButtonGroup>
 									</TableCell>
 									<TableCell align="right">
-										{`$${producto.precio.toFixed(2)}`}
+										{`$${fetch.numberWithCommas(
+											parseFloat(producto.precio).toFixed(2),
+										)}`}
 									</TableCell>
 									<TableCell align="right">
-										{`$${(producto.precio * producto.cantidad).toFixed(2)}`}
+										{`$${fetch.numberWithCommas(
+											parseFloat(producto.precio * producto.cantidad).toFixed(
+												2,
+											),
+										)}`}
 									</TableCell>
 									<TableCell align="right">
 										<IconButton
@@ -210,15 +217,16 @@ function SeleccionProductos() {
 								</TableCell>
 								<TableCell align="right"></TableCell>
 								<TableCell align="right">Articulos: </TableCell>
-								<TableCell align="right">{`${orden.productos.reduce(
-									sumaArticulos,
-									0,
+								<TableCell align="right">{`${fetch.numberWithCommas(
+									orden.productos.reduce(sumaArticulos, 0),
 								)}`}</TableCell>
 								<TableCell align="right" style={{ fontWeight: 'bold' }}>
 									Total:
 								</TableCell>
 								<TableCell align="right" style={{ fontWeight: 'bold' }}>
-									{`$${orden.productos.reduce(suma, 0).toFixed(2)}`}
+									{`$${fetch.numberWithCommas(
+										orden.productos.reduce(suma, 0).toFixed(2),
+									)}`}
 								</TableCell>
 								<TableCell align="right"></TableCell>
 							</TableRow>

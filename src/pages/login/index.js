@@ -15,6 +15,7 @@ import { Redirect, useHistory } from 'react-router-dom';
 import { UserContext } from '../../Context/userContext';
 import { OrderContext } from '../../Context/OrderContext';
 import BackdropSpinner from '../../components/BackDrop/backDrop';
+import { Helmet } from 'react-helmet';
 
 const useStyles = makeStyles((theme) =>
 	styles.loginStyles(theme, fondoPrincipal),
@@ -98,6 +99,7 @@ function Login() {
 
 	return (
 		<Grid container component="main" className={classes.root}>
+			<Helmet title="Iniciar sesión" />
 			{localStorage.token && <Redirect to="/" />}
 			<Grid item xs={false} sm={4} md={7} className={classes.image} />
 			<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>

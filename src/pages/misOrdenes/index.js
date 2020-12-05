@@ -37,13 +37,10 @@ const MisOrdenes = () => {
 	const { total } = rows;
 
 	const columns = [
-		{ tittle: '# orden', atributo: 'orden_id' },
-		{ tittle: '# pedido', atributo: 'pedido_id' },
+		{ tittle: 'Orden', atributo: 'orden_id' },
+		{ tittle: 'Pedido', atributo: 'pedido_id' },
 		{ tittle: 'Nombre vendedor', atributo: 'nombre' },
-		{ tittle: 'Apellido vendedor', atributo: 'apellido' },
-		{ tittle: 'Nombre Cliente', atributo: 'nombre_cliente' },
-		{ tittle: 'Teléfono Cliente', atributo: 'numero_cliente' },
-		{ tittle: 'Dirección Cliente', atributo: 'direccion_cliente' },
+		{ tittle: 'Nombre de factura', atributo: 'nombre_cliente' },
 		{ tittle: 'Fecha', atributo: 'fecha' },
 		{ tittle: 'Estado', atributo: 'estatus' },
 	];
@@ -102,7 +99,7 @@ const MisOrdenes = () => {
 						ver
 						data={{
 							titles: [
-								{ text: 'Total de mis ordenes', estado: 0 },
+								{ text: 'Todas mis ordenes', estado: 0 },
 								{ text: 'Pendiente por aprobacion', estado: 1 },
 								{ text: 'Aprobadas', estado: 2 },
 								{ text: 'Llego al pais', estado: 3 },
@@ -142,16 +139,13 @@ const MisOrdenes = () => {
 							results.map((row) => (
 								<TableRow key={row.orden_id}>
 									<TableCell align="center">
-										<Link to={`/edit-orden/${row.orden_id}`}>
+										<Link to={`/edit-orders/${row.orden_id}`}>
 											{row.orden_id}
 										</Link>
 									</TableCell>
 									<TableCell align="center">{row.pedido_id}</TableCell>
-									<TableCell align="center">{row.nombre}</TableCell>
-									<TableCell align="center">{row.apellido}</TableCell>
+									<TableCell align="center">{`${row.nombre} ${row.apellido}`}</TableCell>
 									<TableCell align="center">{row.nombre_cliente}</TableCell>
-									<TableCell align="center">{row.numero_cliente}</TableCell>
-									<TableCell align="center">{row.direccion_cliente}</TableCell>
 									<TableCell align="center">
 										{moment(row.fecha).format('MMMM Do YYYY')}
 									</TableCell>
