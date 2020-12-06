@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 import * as fetch from '../../helpers/fetch';
 import moment from 'moment';
 
-function PagosRealizados({ orden, setOrden, editable = false }) {
+function PagosRealizados({ orden, editable = false }) {
 	const suma = (acc, cur) => {
 		return acc + Number(cur.cantidad);
 	};
@@ -26,9 +26,9 @@ function PagosRealizados({ orden, setOrden, editable = false }) {
 								<TableCell>Fecha de pago</TableCell>
 								<TableCell align="right">Monto&nbsp;($)</TableCell>
 								<TableCell align="right">Tipo de pago</TableCell>
-								<TableCell align="right">Factura</TableCell>
+								{editable && <TableCell align="right">Adjunto</TableCell>}
 								<TableCell align="right">Cobrador</TableCell>
-								<TableCell align="right">Eliminar</TableCell>
+								{editable && <TableCell align="right">Eliminar</TableCell>}
 							</TableRow>
 						</TableHead>
 						<TableBody>
@@ -43,16 +43,20 @@ function PagosRealizados({ orden, setOrden, editable = false }) {
 										)}`}
 									</TableCell>
 									<TableCell align="right">{pago.tipo}</TableCell>
-									<TableCell align="right">recibo de pago aqui</TableCell>
+									{editable && (
+										<TableCell align="right">comprobante aqui</TableCell>
+									)}
 									<TableCell align="right">{`${pago.name} ${pago.lastname}`}</TableCell>
-									<TableCell align="right">
-										<IconButton
-											aria-label="delete"
-											//onClick={() => deleteProducto(producto.id)}
-										>
-											<DeleteIcon />
-										</IconButton>
-									</TableCell>
+									{editable && (
+										<TableCell align="right">
+											<IconButton
+												aria-label="delete"
+												//onClick={() => deleteProducto(producto.id)}
+											>
+												<DeleteIcon />
+											</IconButton>
+										</TableCell>
+									)}
 								</TableRow>
 							))}
 							<TableRow>
@@ -69,71 +73,73 @@ function PagosRealizados({ orden, setOrden, editable = false }) {
 								>{`$${fetch.numberWithCommas(
 									orden.pagos.reduce(suma, 0),
 								)}`}</TableCell>
-								<TableCell align="right"></TableCell>
+								{editable && <TableCell align="right"></TableCell>}
 								<TableCell align="right" style={{ fontWeight: 'bold' }}>
 									Cantidad de pagos:
 								</TableCell>
 								<TableCell align="right" style={{ fontWeight: 'bold' }}>
 									{orden?.pagos.length}
 								</TableCell>
-								<TableCell align="right"></TableCell>
+								{editable && <TableCell align="right"></TableCell>}
 							</TableRow>
 						</TableBody>
 					</Table>
 				</TableContainer>
 			</Box>
 
-			<Grid
-				item
-				xs={12}
-				md={12}
-				lg={12}
-				container
-				spacing={2}
-				style={{
-					marginBottom: 20,
-					marginTop: 20,
-				}}
-				component={Paper}
-			>
-				<Grid item>
-					<TextField
-						variant="outlined"
-						type="number"
-						name="cantidad"
-						label="Cantidad*"
-						// value={productoInput.cantidad}
-						// onChange={handleChange}
-					/>
-				</Grid>
-				<Grid item>
-					<TextField
-						variant="outlined"
-						type="number"
-						name="cantidad"
-						label="Tipo de pago*"
-						// value={productoInput.cantidad}
-						// onChange={handleChange}
-					/>
-				</Grid>
-				<Grid item>
-					<TextField
-						variant="outlined"
-						type="number"
-						name="cantidad"
-						label="Subir factura*"
-						// value={productoInput.cantidad}
-						// onChange={handleChange}
-					/>
-				</Grid>
-				<Grid container item xs={12} md={12} lg={12}>
-					<Grid item xs={6} md={6} lg={6}>
-						<Button variant="contained" color="primary">
-							Agregar nuevo pago
-						</Button>
+			{editable && (
+				<Grid
+					item
+					xs={12}
+					md={12}
+					lg={12}
+					container
+					spacing={2}
+					style={{
+						marginBottom: 20,
+						marginTop: 20,
+					}}
+					component={Paper}
+				>
+					<Grid item>
+						<TextField
+							variant="outlined"
+							type="number"
+							name="cantidad"
+							label="Cantidad*"
+							// value={productoInput.cantidad}
+							// onChange={handleChange}
+						/>
+					</Grid>
+					<Grid item>
+						<TextField
+							variant="outlined"
+							type="number"
+							name="cantidad"
+							label="Tipo de pago*"
+							// value={productoInput.cantidad}
+							// onChange={handleChange}
+						/>
+					</Grid>
+					<Grid item>
+						<TextField
+							variant="outlined"
+							type="number"
+							name="cantidad"
+							label="Subir factura*"
+							// value={productoInput.cantidad}
+							// onChange={handleChange}
+						/>
+					</Grid>
+					<Grid container item xs={12} md={12} lg={12}>
+						<Grid item xs={6} md={6} lg={6}>
+							<Button variant="contained" color="primary">
+								Agregar nuevo pago
+							</Button>
+						</Grid>
 					</Grid>
 				</Grid>
-			</Grid>
+			)}
 		</Container>
 	);
 }

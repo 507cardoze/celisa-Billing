@@ -14,6 +14,7 @@ import PagosRealizados from '../../components/PagosRealizados/PagosRealizados';
 import { useStickyState } from '../../helpers/fetch';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import * as toast from '../../helpers/toast';
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -49,12 +50,17 @@ function EditOrder({ match }) {
 	const [user] = useContext(UserContext);
 	const [orden, setOrden] = useState(null);
 	const [ordenIsEditable, setOrdenIsEditable] = useState(false);
-
 	const [value, setValue] = useStickyState(0, 'value');
-
-	const handleChangeTab = (event, newValue) => {
-		setValue(newValue);
+	const producto_inicial = {
+		id: '',
+		descripcion: '',
+		talla: '',
+		color: '',
+		cantidad: 1,
+		precio: 0,
 	};
+
+	const [productoInput, setProductoInput] = useState(producto_inicial);
 
 	const urlGet = url.getByIdOrdenUrl();
 	const header = fetch.requestHeader('GET', null, localStorage.token);
@@ -65,19 +71,6 @@ function EditOrder({ match }) {
 		setter(loggedInfo);
 		setIsLoading(false);
 	};
-
-	useEffect(() => {
-		fetch.UserRedirect(user, history);
-		const header = fetch.requestHeader('GET', null, localStorage.token);
-		const fetchData = async (url, header, setter) => {
-			setIsLoading(true);
-			const loggedInfo = await fetch.fetchData(url, header);
-			fetch.UnauthorizedRedirect(loggedInfo, history);
-			setter(loggedInfo);
-			setIsLoading(false);
-		};
-		fetchData(`${urlGet}/${id_orden}`, header, setOrden);
-	}, [user, history, urlGet, id_orden]);
 
 	const toggleEditableDetails = () => {
 		return setOrdenIsEditable(!ordenIsEditable);
@@ -94,6 +87,163 @@ function EditOrder({ match }) {
 	const sumaPagos = (acc, cur) => {
 		return acc + Number(cur.cantidad);
 	};
+
+	const handleChangeTab = (event, newValue) => {
+		setValue(newValue);
+	};
+
+	const handleChange = (event) => {
+		setOrden({
+			...orden,
+			[event.target.name]: event.target.value,
+		});
+	};
+
+	const guardarCambiosDetallesFactura = async () => {
+		if (orden.nombre_cliente.trim() === '')
+			return toast.errorToast('Nombre de factura no puede ir vacio!');
+		if (orden.numero_cliente.trim() === '')
+			return toast.errorToast('Teléfono no puede ir vacio!');
+		if (orden.direccion_cliente.trim() === '')
+			return toast.errorToast('Dirección no puede ir vacio!');
+
+		const body = JSON.stringify({
+			id_orden: id_orden,
+			nombre_cliente: orden.nombre_cliente,
+			numero_cliente: orden.numero_cliente,
+			direccion_cliente: orden.direccion_cliente,
+		});
+		const header = fetch.requestHeader('PUT', body, localStorage.token);
+		const updateServiceUrl = url.updateOrdenDetailsUrl();
+		const loggedInfo = await fetch.fetchData(updateServiceUrl, header);
+		fetch.UnauthorizedRedirect(loggedInfo, history);
+		if (loggedInfo === 'Detalles Actualizados.') {
+			refreshData();
+			toggleEditableDetails();
+			toast.msgSuccess('Detalles Actualizados.');
+		} else {
+			toast.errorToast('error al actualizar los datos.');
+		}
+	};
+
+	const addProducto = async () => {
+		if (
+			productoInput.descripcion.trim().length === 0 &&
+			productoInput.talla.trim().length === 0 &&
+			productoInput.color.trim().length === 0
+		)
+			return toast.errorToast('Debe llenar todos los campos.');
+
+		if (orden.productos.length > 0) {
+			const verify = orden.productos.filter(
+				(producto) => producto.descripcion === productoInput.descripcion.trim(),
+			);
+			if (verify.length > 0)
+				return toast.errorToast('Ya existe un producto igual en la lista.');
+		}
+
+		try {
+			const body = JSON.stringify({
+				id_orden: id_orden,
+				pedido_id: orden.id_pedido,
+				producto: productoInput.descripcion,
+				talla: productoInput.talla,
+				color: productoInput.color,
+				cantidad: productoInput.cantidad,
+				precio: productoInput.precio,
+			});
+			const header = fetch.requestHeader('POST', body, localStorage.token);
+			const urlAddProducto = url.addProductoOrdenUrl();
+			const loggedInfo = await fetch.fetchData(urlAddProducto, header);
+			fetch.UnauthorizedRedirect(loggedInfo, history);
+			if (loggedInfo === 'Producto agregado.') {
+				refreshData();
+				setProductoInput(producto_inicial);
+			} else {
+				toast.errorToast('error al agregar producto.');
+			}
+		} catch (error) {
+			console.log(error);
+			toast.errorToast(error);
+		}
+	};
+
+	const sumarCantidadProducto = async (unique_id, cantidad) => {
+		try {
+			const body = JSON.stringify({
+				linea_id: unique_id,
+				decision: 1,
+				cantidad: cantidad,
+			});
+			const header = fetch.requestHeader('PUT', body, localStorage.token);
+			const urlCantidad = url.updateCantidadUrl();
+			const loggedInfo = await fetch.fetchData(urlCantidad, header);
+			fetch.UnauthorizedRedirect(loggedInfo, history);
+			if (loggedInfo === 'cantidad actualizada') {
+				refreshData();
+			} else {
+				toast.errorToast('error al sumando producto.');
+			}
+		} catch (error) {
+			console.log(error);
+			toast.errorToast(error);
+		}
+	};
+
+	const restarCantidadProducto = async (unique_id, cantidad) => {
+		try {
+			const body = JSON.stringify({
+				linea_id: unique_id,
+				decision: 0,
+				cantidad: cantidad,
+			});
+			const header = fetch.requestHeader('PUT', body, localStorage.token);
+			const urlCantidad = url.updateCantidadUrl();
+			const loggedInfo = await fetch.fetchData(urlCantidad, header);
+			fetch.UnauthorizedRedirect(loggedInfo, history);
+			if (loggedInfo === 'cantidad actualizada') {
+				refreshData();
+			} else {
+				toast.errorToast('error al sumando producto.');
+			}
+		} catch (error) {
+			console.log(error);
+			toast.errorToast(error);
+		}
+	};
+
+	const deleteProducto = async (unique_id) => {
+		try {
+			const body = JSON.stringify({
+				linea_id: unique_id,
+			});
+			const header = fetch.requestHeader('PUT', body, localStorage.token);
+			const urlDelete = url.deleteProductoUrl();
+			const loggedInfo = await fetch.fetchData(urlDelete, header);
+			fetch.UnauthorizedRedirect(loggedInfo, history);
+			if (loggedInfo === 'Detalles Actualizados.') {
+				refreshData();
+			} else {
+				toast.errorToast('error al eliminar producto.');
+			}
+		} catch (error) {
+			console.log(error);
+			toast.errorToast(error);
+		}
+	};
+
+	useEffect(() => {
+		fetch.UserRedirect(user, history);
+		const header = fetch.requestHeader('GET', null, localStorage.token);
+		const fetchData = async (url, header, setter) => {
+			setIsLoading(true);
+			const loggedInfo = await fetch.fetchData(url, header);
+			fetch.UnauthorizedRedirect(loggedInfo, history);
+			setter(loggedInfo);
+			setIsLoading(false);
+		};
+		fetchData(`${urlGet}/${id_orden}`, header, setOrden);
+	}, [user, history, urlGet, id_orden]);
 
 	console.log(orden);
 
@@ -113,10 +263,11 @@ function EditOrder({ match }) {
 					<Grid container spacing={2}>
 						<OrderDetails
 							orden={orden}
-							handleChange={handleChangeTab}
+							handleChange={handleChange}
 							ordenIsEditable={ordenIsEditable}
 							toggleEditableDetails={toggleEditableDetails}
 							refreshData={refreshData}
+							guardarCambiosDetallesFactura={guardarCambiosDetallesFactura}
 						/>
 						<DashboardOrdenes orden={orden} suma={suma} sumaPagos={sumaPagos} />
 						<Grid item xs={12} style={{ width: '100%' }}>
@@ -129,10 +280,23 @@ function EditOrder({ match }) {
 								<Tab label="Pagos realizados" {...a11yProps(1)} />
 							</Tabs>
 							<TabPanel value={value} index={0}>
-								<ProductosTable orden={orden} setOrden={setOrden} />
+								<ProductosTable
+									addProducto={addProducto}
+									orden={orden}
+									productoInput={productoInput}
+									setProductoInput={setProductoInput}
+									sumarCantidadProducto={sumarCantidadProducto}
+									restarCantidadProducto={restarCantidadProducto}
+									deleteProducto={deleteProducto}
+									editable={user?.rol === 'Administrador' ? true : false}
+								/>
 							</TabPanel>
 							<TabPanel value={value} index={1}>
-								<PagosRealizados orden={orden} setOrden={setOrden} />
+								<PagosRealizados
+									orden={orden}
+									setOrden={setOrden}
+									editable={user?.rol === 'Administrador' ? true : false}
+								/>
 							</TabPanel>
 						</Grid>
 					</Grid>

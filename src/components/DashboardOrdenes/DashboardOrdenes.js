@@ -36,7 +36,7 @@ const DashboardOrdenes = ({ orden, suma, sumaPagos }) => {
 						{orden?.pagos.length > 0 ? (
 							<Typography variant="h5" component="h2" gutterBottom gutterTop>
 								{`$${fetch.numberWithCommas(
-									orden.pagos[0].cantidad.toFixed(2),
+									orden?.pagos[0].cantidad.toFixed(2),
 								)}`}
 							</Typography>
 						) : (
