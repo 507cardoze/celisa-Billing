@@ -17,6 +17,8 @@ import * as toast from '../../helpers/toast';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import * as fetch from '../../helpers/fetch';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 function SeleccionProductos() {
 	const [orden, setOrden] = useContext(OrderContext);
@@ -56,7 +58,9 @@ function SeleccionProductos() {
 			if (orden.productos.length > 0) {
 				const verify = orden.productos.filter(
 					(producto) =>
-						producto.descripcion === productoInput.descripcion.trim(),
+						producto.descripcion === productoInput.descripcion.trim() &&
+						producto.talla === productoInput.talla.trim() &&
+						producto.color === productoInput.color.trim(),
 				);
 				if (verify.length > 0) {
 					toast.errorToast('Ya existe un producto igual en la lista.');
@@ -169,13 +173,13 @@ function SeleccionProductos() {
 											<Button
 												onClick={() => restarCantidadProducto(producto.id)}
 											>
-												-
+												<RemoveIcon fontSize="small" />
 											</Button>
 											<Button>{`${producto.cantidad}`}</Button>
 											<Button
 												onClick={() => sumarCantidadProducto(producto.id)}
 											>
-												+
+												<AddIcon fontSize="small" />
 											</Button>
 										</ButtonGroup>
 									</TableCell>

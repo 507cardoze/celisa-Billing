@@ -12,6 +12,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import * as fetch from '../../helpers/fetch';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 function ProductosTable({
 	orden,
@@ -22,6 +26,8 @@ function ProductosTable({
 	sumarCantidadProducto,
 	restarCantidadProducto,
 	deleteProducto,
+	proveedores,
+	onChangeProveedor,
 }) {
 	const handleChange = (event) => {
 		setProductoInput({
@@ -53,7 +59,10 @@ function ProductosTable({
 								<TableCell>Productos (articulo)</TableCell>
 								<TableCell align="right">Talla</TableCell>
 								<TableCell align="right">Color</TableCell>
-								<TableCell align="center">Cantidad</TableCell>
+								<TableCell align={editable ? 'center' : 'right'}>
+									Cantidad
+								</TableCell>
+								{editable && <TableCell align="right">Proveedor</TableCell>}
 								<TableCell align="right">Precio Unitario&nbsp;($)</TableCell>
 								<TableCell align="right">Precio Total&nbsp;($)</TableCell>
 								{editable && <TableCell align="right">Eliminar</TableCell>}
@@ -80,7 +89,7 @@ function ProductosTable({
 														}
 													}}
 												>
-													-
+													<RemoveIcon fontSize="small" />
 												</Button>
 												<Button>{`${producto.cantidad}`}</Button>
 												<Button
@@ -91,13 +100,40 @@ function ProductosTable({
 														)
 													}
 												>
-													+
+													<AddIcon fontSize="small" />
 												</Button>
 											</ButtonGroup>
 										) : (
 											producto.cantidad
 										)}
 									</TableCell>
+									{editable && (
+										<TableCell align="right">
+											<Select
+												label="Proveedor"
+												value={producto.proveedor_id}
+												onChange={(event) =>
+													onChangeProveedor(
+														event.target.value,
+														producto.linea_id,
+													)
+												}
+											>
+												<MenuItem value={null}>
+													<em>Sin proveedor</em>
+												</MenuItem>
+												{proveedores.map((proveedor) => (
+													<MenuItem
+														key={proveedor.proveedor_id}
+														value={proveedor.proveedor_id}
+													>
+														{proveedor.proveedor}
+													</MenuItem>
+												))}
+											</Select>
+										</TableCell>
+									)}
+
 									<TableCell align="right">
 										{`$${fetch.numberWithCommas(
 											parseFloat(producto.precio).toFixed(2),
@@ -129,8 +165,9 @@ function ProductosTable({
 								<TableCell align="right">{`${fetch.numberWithCommas(
 									orden.productos.reduce(sumaArticulos, 0),
 								)}`}</TableCell>
+								<TableCell align="right"></TableCell>
 								<TableCell align="right" style={{ fontWeight: 'bold' }}>
-									Total:
+									TOTAL:
 								</TableCell>
 								<TableCell align="right" style={{ fontWeight: 'bold' }}>
 									{`$${fetch.numberWithCommas(

@@ -49,6 +49,8 @@ function EditOrder({ match }) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [user] = useContext(UserContext);
 	const [orden, setOrden] = useState(null);
+	const [proveedores, setProveedores] = useState([]);
+	const [status, setStatus] = useState([]);
 	const [ordenIsEditable, setOrdenIsEditable] = useState(false);
 	const [value, setValue] = useStickyState(0, 'value');
 	const producto_inicial = {
@@ -63,6 +65,8 @@ function EditOrder({ match }) {
 	const [productoInput, setProductoInput] = useState(producto_inicial);
 
 	const urlGet = url.getByIdOrdenUrl();
+	const urlProveedores = url.getAllProveedoresUrl();
+	const urlStatus = url.getAllStatusUrl();
 	const header = fetch.requestHeader('GET', null, localStorage.token);
 	const fetchData = async (url, header, setter) => {
 		setIsLoading(true);
@@ -136,7 +140,10 @@ function EditOrder({ match }) {
 
 		if (orden.productos.length > 0) {
 			const verify = orden.productos.filter(
-				(producto) => producto.descripcion === productoInput.descripcion.trim(),
+				(producto) =>
+					producto.descripcion === productoInput.descripcion.trim() &&
+					producto.talla === productoInput.talla.trim() &&
+					producto.color === productoInput.color.trim(),
 			);
 			if (verify.length > 0)
 				return toast.errorToast('Ya existe un producto igual en la lista.');
@@ -232,6 +239,48 @@ function EditOrder({ match }) {
 		}
 	};
 
+	const onChangeProveedor = async (proveedor_id, unique_id) => {
+		try {
+			const body = JSON.stringify({
+				linea_id: unique_id,
+				proveedor_id: proveedor_id,
+			});
+			const header = fetch.requestHeader('PUT', body, localStorage.token);
+			const updateUrl = url.updateProveedorToProductoUrl();
+			const loggedInfo = await fetch.fetchData(updateUrl, header);
+			fetch.UnauthorizedRedirect(loggedInfo, history);
+			if (loggedInfo === 'Detalles Actualizados.') {
+				refreshData();
+			} else {
+				toast.errorToast('error al actualizar proveedor.');
+			}
+		} catch (error) {
+			console.log(error);
+			toast.errorToast(error);
+		}
+	};
+
+	const onChangeEstado = async (estado) => {
+		try {
+			const body = JSON.stringify({
+				id_orden: id_orden,
+				estado_id: estado,
+			});
+			const header = fetch.requestHeader('PUT', body, localStorage.token);
+			const updateUrl = url.updateEstadoUrl();
+			const loggedInfo = await fetch.fetchData(updateUrl, header);
+			fetch.UnauthorizedRedirect(loggedInfo, history);
+			if (loggedInfo === 'Detalles Actualizados.') {
+				refreshData();
+			} else {
+				toast.errorToast('error al actualizar estado.');
+			}
+		} catch (error) {
+			console.log(error);
+			toast.errorToast(error);
+		}
+	};
+
 	useEffect(() => {
 		fetch.UserRedirect(user, history);
 		const header = fetch.requestHeader('GET', null, localStorage.token);
@@ -243,7 +292,9 @@ function EditOrder({ match }) {
 			setIsLoading(false);
 		};
 		fetchData(`${urlGet}/${id_orden}`, header, setOrden);
-	}, [user, history, urlGet, id_orden]);
+		fetchData(urlProveedores, header, setProveedores);
+		fetchData(urlStatus, header, setStatus);
+	}, [user, history, urlGet, id_orden, urlProveedores, urlStatus]);
 
 	console.log(orden);
 
@@ -258,7 +309,10 @@ function EditOrder({ match }) {
 					flexDirection: 'column',
 				}}
 			>
-				<BackButton texto="Atras" ruta="/orders" />
+				<BackButton
+					texto="Atras"
+					ruta={user?.rol === 'Administrador' ? `/orders` : `/my-orders`}
+				/>
 				{orden ? (
 					<Grid container spacing={2}>
 						<OrderDetails
@@ -268,6 +322,8 @@ function EditOrder({ match }) {
 							toggleEditableDetails={toggleEditableDetails}
 							refreshData={refreshData}
 							guardarCambiosDetallesFactura={guardarCambiosDetallesFactura}
+							status={status}
+							onChangeEstado={onChangeEstado}
 						/>
 						<DashboardOrdenes orden={orden} suma={suma} sumaPagos={sumaPagos} />
 						<Grid item xs={12} style={{ width: '100%' }}>
@@ -276,8 +332,8 @@ function EditOrder({ match }) {
 								value={value}
 								onChange={handleChangeTab}
 							>
-								<Tab label="Productos en la orden" {...a11yProps(0)} />
-								<Tab label="Pagos realizados" {...a11yProps(1)} />
+								<Tab label="Productos en esta venta" {...a11yProps(0)} />
+								<Tab label="Pagos realizados a esta cuenta" {...a11yProps(1)} />
 							</Tabs>
 							<TabPanel value={value} index={0}>
 								<ProductosTable
@@ -288,6 +344,8 @@ function EditOrder({ match }) {
 									sumarCantidadProducto={sumarCantidadProducto}
 									restarCantidadProducto={restarCantidadProducto}
 									deleteProducto={deleteProducto}
+									proveedores={proveedores}
+									onChangeProveedor={onChangeProveedor}
 									editable={user?.rol === 'Administrador' ? true : false}
 								/>
 							</TabPanel>

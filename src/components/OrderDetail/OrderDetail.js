@@ -1,7 +1,6 @@
 import React from 'react';
 import moment from 'moment';
 import {
-	Box,
 	Card,
 	CardContent,
 	Divider,
@@ -10,6 +9,11 @@ import {
 	Button,
 	TextField,
 } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Chip from '@material-ui/core/Chip';
 
 const OrderDetails = ({
 	className,
@@ -19,6 +23,8 @@ const OrderDetails = ({
 	ordenIsEditable,
 	refreshData,
 	guardarCambiosDetallesFactura,
+	status,
+	onChangeEstado,
 	...rest
 }) => {
 	return (
@@ -64,60 +70,60 @@ const OrderDetails = ({
 							</Grid>
 						) : (
 							<>
-								<Grid item xs={12} md={6} lg={6}>
-									<Box
-										alignItems="flex-start"
-										display="flex"
-										flexDirection="column"
-									>
+								<Grid
+									item
+									xs={12}
+									md={6}
+									lg={6}
+									alignItems="flex-start"
+									display="flex"
+									flexDirection="column"
+									container
+									spacing={2}
+								>
+									<Grid xs={12} item>
 										<Typography color="textPrimary" gutterBottom variant="h3">
 											{`Pedido: ${orden.id_pedido}`}
 										</Typography>
-										<Grid xs={12}>
-											<Typography color="textSecondary" variant="body1">
-												{`Vendedor: ${orden.nombre_vendedor}`}
-											</Typography>
-											<Typography color="textSecondary" variant="body1">
-												{`Correo: ${orden.email_vendedor}`}
-											</Typography>
-											<Typography color="textSecondary" variant="body1">
-												{`Tel: ${orden.numero_vendedor}`}
-											</Typography>
-											<Typography color="textSecondary" variant="body1">
-												{`Dirección: ${orden.direccion_vendedor}`}
-											</Typography>
-										</Grid>
-									</Box>
+										<Typography color="textSecondary" variant="body1">
+											{`Vendedor: ${orden.nombre_vendedor}`}
+										</Typography>
+										<Typography color="textSecondary" variant="body1">
+											{`Tel de vendedor: ${orden.numero_vendedor}`}
+										</Typography>
+										<Typography color="textSecondary" variant="body1">
+											{`Fecha de creación: ${moment(
+												orden.fecha_creacion,
+											).format('DD-MM-YYYY')}`}
+										</Typography>
+										<Chip color="primary" label={orden.estado} />
+									</Grid>
 								</Grid>
-								<Grid item xs={12} md={6} lg={6}>
-									<Box
-										alignContent="flex-start"
-										display="flex"
-										flexDirection="column"
-									>
+								<Grid
+									item
+									xs={12}
+									md={6}
+									lg={6}
+									alignItems="flex-start"
+									display="flex"
+									flexDirection="column"
+									container
+									spacing={2}
+								>
+									<Grid xs={12} item>
 										<Typography color="textPrimary" gutterBottom variant="h3">
 											{`Orden: ${orden.id_orden}`}
 										</Typography>
-										<Grid xs={12}>
-											<Typography color="textSecondary" variant="body1">
-												{`A nombre de la factura: ${orden.nombre_cliente}`}
-											</Typography>
-											<Typography color="textSecondary" variant="body1">
-												{`Tel de contacto: ${orden.numero_cliente}`}
-											</Typography>
-											<Typography color="textSecondary" variant="body1">
-												{`Dirección de la factura: ${orden.direccion_cliente}`}
-											</Typography>
-											<Typography color="textSecondary" variant="body1">
-												{`Fecha de creación: ${moment(
-													orden.fecha_creacion,
-												).format('DD-MM-YYYY')}`}
-											</Typography>
-											<Typography color="textSecondary" variant="body1">
-												{`Estado: ${orden.estado}`}
-											</Typography>
-										</Grid>
-									</Box>
+										<Typography color="textSecondary" variant="body1">
+											{`A nombre de la factura: ${orden.nombre_cliente}`}
+										</Typography>
+										<Typography color="textSecondary" variant="body1">
+											{`Tel de contacto: ${orden.numero_cliente}`}
+										</Typography>
+										<Typography color="textSecondary" variant="body1">
+											{`Dirección de la factura: ${orden.direccion_cliente}`}
+										</Typography>
+									</Grid>
 								</Grid>
 							</>
 						)}
@@ -154,12 +160,37 @@ const OrderDetails = ({
 									</>
 								) : (
 									<>
-										<Grid item xs={6} md={6} lg={6}>
-											<Button variant="contained" color="primary">
-												Mover al siguiente estado
-											</Button>
+										<Grid item xs={12} md={12} lg={6}>
+											<FormControl
+												style={{
+													margin: 20,
+													minWidth: 120,
+												}}
+											>
+												<Select
+													labelId="estados-label"
+													id="select-estado"
+													value={orden.estado_id}
+													onChange={(event) =>
+														onChangeEstado(event.target.value)
+													}
+													style={{ marginTop: 20 }}
+												>
+													{status.map((estado) => (
+														<MenuItem
+															key={estado.status_id}
+															value={estado.status_id}
+														>
+															{estado.nombre_status}
+														</MenuItem>
+													))}
+												</Select>
+												<FormHelperText>
+													¡Aquí puedes cambiar el estado de la orden!
+												</FormHelperText>
+											</FormControl>
 										</Grid>
-										<Grid item xs={6} md={6} lg={6}>
+										<Grid item xs={12} md={12} lg={6}>
 											<Button
 												variant="contained"
 												onClick={toggleEditableDetails}

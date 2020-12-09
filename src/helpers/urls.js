@@ -112,4 +112,24 @@ export const updateCantidadUrl = () => {
 	return `${process.env.REACT_APP_BACK_END}/v1/ordenes/update-cantidad`;
 };
 
+export const updateProveedorToProductoUrl = () => {
+	return `${process.env.REACT_APP_BACK_END}/v1/ordenes/update-proveedor`;
+};
+
+export const updateEstadoUrl = () => {
+	return `${process.env.REACT_APP_BACK_END}/v1/ordenes/update-estado`;
+};
+
 //ORDENES
+
+//PROVEEDORES
+export const getAllProveedoresUrl = () => {
+	return `${process.env.REACT_APP_BACK_END}/v1/proveedores/all-proveedores`;
+};
+//PROVEEDORES
+
+//STATUS
+export const getAllStatusUrl = () => {
+	return `${process.env.REACT_APP_BACK_END}/v1/status/all-status`;
+};
+//STATUS

@@ -8,11 +8,11 @@ import TableCell from '@material-ui/core/TableCell';
 import * as url from '../../helpers/urls';
 import * as fetch from '../../helpers/fetch';
 import { useHistory } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { UserContext } from '../../Context/userContext';
 import BackdropSpinner from '../../components/BackDrop/backDrop';
 import NumericToolBar from '../../components/NumericToolBar/NumericToolBar';
+import Chip from '@material-ui/core/Chip';
 
 const Users = () => {
 	//state
@@ -156,9 +156,14 @@ const Users = () => {
 							results.map((row) => (
 								<TableRow key={row.user_id}>
 									<TableCell align="center">
-										<Link to={`/edit-user/${row.user_id}`}>
-											{`${row.name} ${row.lastname}`}
-										</Link>
+										<Chip
+											color="primary"
+											label={`${row.name} ${row.lastname}`}
+											clickable
+											onClick={() => {
+												history.push(`/edit-user/${row.user_id}`);
+											}}
+										/>
 									</TableCell>
 									<TableCell align="center">{row.username}</TableCell>
 									<TableCell align="center">{row.rol}</TableCell>

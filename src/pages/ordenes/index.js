@@ -8,11 +8,11 @@ import TableCell from '@material-ui/core/TableCell';
 import * as url from '../../helpers/urls';
 import * as fetch from '../../helpers/fetch';
 import { useHistory } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { UserContext } from '../../Context/userContext';
 import BackdropSpinner from '../../components/BackDrop/backDrop';
 import NumericToolBar from '../../components/NumericToolBar/NumericToolBar';
+import Chip from '@material-ui/core/Chip';
 
 const Ordenes = () => {
 	//state
@@ -103,7 +103,7 @@ const Ordenes = () => {
 								{ text: 'Aprobadas', estado: 2 },
 								{ text: 'Llego al pais', estado: 3 },
 								{ text: 'Saldo Pendiente', estado: 4 },
-								{ text: 'Completados', estado: 5 },
+								{ text: 'Entregados', estado: 5 },
 								{ text: 'Cancelados', estado: 6 },
 							],
 							values: Object.values(rows.dashboard),
@@ -140,9 +140,14 @@ const Ordenes = () => {
 							results.map((row) => (
 								<TableRow key={row.orden_id}>
 									<TableCell align="center">
-										<Link to={`/edit-orders/${row.orden_id}`}>
-											{row.orden_id}
-										</Link>
+										<Chip
+											color="primary"
+											label={row.orden_id}
+											clickable
+											onClick={() => {
+												history.push(`/edit-orders/${row.orden_id}`);
+											}}
+										/>
 									</TableCell>
 									<TableCell align="center">{row.pedido_id}</TableCell>
 									<TableCell align="center">{`${row.nombre} ${row.apellido}`}</TableCell>
@@ -150,7 +155,9 @@ const Ordenes = () => {
 									<TableCell align="center">
 										{moment(row.fecha).format('MMMM Do YYYY')}
 									</TableCell>
-									<TableCell align="center">{row.nombre_status}</TableCell>
+									<TableCell align="center">
+										<Chip label={row.nombre_status} />
+									</TableCell>
 								</TableRow>
 							))
 						) : (

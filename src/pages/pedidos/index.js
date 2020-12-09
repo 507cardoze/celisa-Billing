@@ -8,11 +8,11 @@ import TableCell from '@material-ui/core/TableCell';
 import * as url from '../../helpers/urls';
 import * as fetch from '../../helpers/fetch';
 import { useHistory } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { UserContext } from '../../Context/userContext';
 import BackdropSpinner from '../../components/BackDrop/backDrop';
 import * as toast from '../../helpers/toast';
+import Chip from '@material-ui/core/Chip';
 
 const Pedidos = () => {
 	//state
@@ -166,9 +166,14 @@ const Pedidos = () => {
 							results.map((row) => (
 								<TableRow key={row.pedido_id}>
 									<TableCell align="center">
-										<Link to={`/edit-pedido/${row.pedido_id}`}>
-											{row.pedido_id}
-										</Link>
+										<Chip
+											color="primary"
+											label={row.pedido_id}
+											clickable
+											onClick={() => {
+												history.push(`/edit-pedido/${row.pedido_id}`);
+											}}
+										/>
 									</TableCell>
 									<TableCell align="center">
 										{moment(row.fecha).format('MMMM Do YYYY')}
