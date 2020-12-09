@@ -65,7 +65,7 @@ function EditOrder({ match }) {
 
 	const pago_inicial = {
 		cantidad: 0,
-		tipoPago: null,
+		tipoPago: 0,
 		adjunto: null,
 		adjuntoNombre: null,
 	};
@@ -78,40 +78,30 @@ function EditOrder({ match }) {
 	const urlStatus = url.getAllStatusUrl();
 	const urlTipo = url.getAllTipoPagoUrl();
 	const header = fetch.requestHeader('GET', null, localStorage.token);
-	const fetchData = async (url, header, setter) => {
-		setIsLoading(true);
+	const fetchDataOff = async (url, header, setter) => {
+		setIsLoading(false);
 		const loggedInfo = await fetch.fetchData(url, header);
 		fetch.UnauthorizedRedirect(loggedInfo, history);
 		setter(loggedInfo);
-		setIsLoading(false);
+		setIsLoading(true);
 	};
 
-	const toggleEditableDetails = () => {
-		return setOrdenIsEditable(!ordenIsEditable);
-	};
+	const toggleEditableDetails = () => setOrdenIsEditable(!ordenIsEditable);
 
-	const refreshData = () => {
-		return fetchData(`${urlGet}/${id_orden}`, header, setOrden);
-	};
+	const refreshData = () =>
+		fetchDataOff(`${urlGet}/${id_orden}`, header, setOrden);
 
-	const suma = (acc, cur) => {
-		return acc + Number(cur.cantidad) * Number(cur.precio);
-	};
+	const suma = (acc, cur) => acc + Number(cur.cantidad) * Number(cur.precio);
 
-	const sumaPagos = (acc, cur) => {
-		return acc + Number(cur.cantidad);
-	};
+	const sumaPagos = (acc, cur) => acc + Number(cur.cantidad);
 
-	const handleChangeTab = (event, newValue) => {
-		setValue(newValue);
-	};
+	const handleChangeTab = (event, newValue) => setValue(newValue);
 
-	const handleChange = (event) => {
+	const handleChange = (event) =>
 		setOrden({
 			...orden,
 			[event.target.name]: event.target.value,
 		});
-	};
 
 	const guardarCambiosDetallesFactura = async () => {
 		if (orden.nombre_cliente.trim() === '')
@@ -132,7 +122,7 @@ function EditOrder({ match }) {
 		const loggedInfo = await fetch.fetchData(updateServiceUrl, header);
 		fetch.UnauthorizedRedirect(loggedInfo, history);
 		if (loggedInfo === 'Detalles Actualizados.') {
-			refreshData();
+			await refreshData();
 			toggleEditableDetails();
 			toast.msgSuccess('Detalles Actualizados.');
 		} else {
@@ -174,8 +164,9 @@ function EditOrder({ match }) {
 			const loggedInfo = await fetch.fetchData(urlAddProducto, header);
 			fetch.UnauthorizedRedirect(loggedInfo, history);
 			if (loggedInfo === 'Producto agregado.') {
-				refreshData();
+				await refreshData();
 				setProductoInput(producto_inicial);
+				toast.msgSuccess('Producto agregado correctamente.');
 			} else {
 				toast.errorToast('error al agregar producto.');
 			}
@@ -197,7 +188,7 @@ function EditOrder({ match }) {
 			const loggedInfo = await fetch.fetchData(urlCantidad, header);
 			fetch.UnauthorizedRedirect(loggedInfo, history);
 			if (loggedInfo === 'cantidad actualizada') {
-				refreshData();
+				await refreshData();
 			} else {
 				toast.errorToast('error al sumando producto.');
 			}
@@ -219,7 +210,7 @@ function EditOrder({ match }) {
 			const loggedInfo = await fetch.fetchData(urlCantidad, header);
 			fetch.UnauthorizedRedirect(loggedInfo, history);
 			if (loggedInfo === 'cantidad actualizada') {
-				refreshData();
+				await refreshData();
 			} else {
 				toast.errorToast('error al sumando producto.');
 			}
@@ -239,7 +230,7 @@ function EditOrder({ match }) {
 			const loggedInfo = await fetch.fetchData(urlDelete, header);
 			fetch.UnauthorizedRedirect(loggedInfo, history);
 			if (loggedInfo === 'Detalles Actualizados.') {
-				refreshData();
+				await refreshData();
 			} else {
 				toast.errorToast('error al eliminar producto.');
 			}
@@ -260,7 +251,7 @@ function EditOrder({ match }) {
 			const loggedInfo = await fetch.fetchData(updateUrl, header);
 			fetch.UnauthorizedRedirect(loggedInfo, history);
 			if (loggedInfo === 'Detalles Actualizados.') {
-				refreshData();
+				await refreshData();
 			} else {
 				toast.errorToast('error al actualizar proveedor.');
 			}
@@ -281,7 +272,7 @@ function EditOrder({ match }) {
 			const loggedInfo = await fetch.fetchData(updateUrl, header);
 			fetch.UnauthorizedRedirect(loggedInfo, history);
 			if (loggedInfo === 'Detalles Actualizados.') {
-				refreshData();
+				await refreshData();
 			} else {
 				toast.errorToast('error al actualizar estado.');
 			}
@@ -292,20 +283,33 @@ function EditOrder({ match }) {
 	};
 
 	const addPago = async () => {
+		if (pagoInput.tipoPago === 1) {
+			setPagoInput({
+				...pagoInput,
+				adjunto: null,
+				adjuntoNombre: null,
+				adjuntoSize: null,
+			});
+		}
+
 		try {
 			const body = JSON.stringify({
 				id_orden: id_orden,
 				adjunto: pagoInput.adjunto,
-				tipo: pagoInput.tipoPago,
+				id_tipo: pagoInput.tipoPago,
+				id_pedido: orden.id_pedido,
+				cantidad: pagoInput.cantidad,
 			});
 			const header = fetch.requestHeader('POST', body, localStorage.token);
 			const pagoUrl = url.agregarPagosUrl();
 			const loggedInfo = await fetch.fetchData(pagoUrl, header);
 			fetch.UnauthorizedRedirect(loggedInfo, history);
-			if (loggedInfo === 'Detalles Actualizados.') {
-				refreshData();
+			if (loggedInfo === 'Pago realizado.') {
+				await refreshData();
+				setPagoInput(pago_inicial);
+				toast.msgSuccess('Pago agregado correctamente.');
 			} else {
-				toast.errorToast('error al actualizar estado.');
+				toast.errorToast(loggedInfo);
 			}
 		} catch (error) {
 			console.log(error);
@@ -323,6 +327,7 @@ function EditOrder({ match }) {
 			setter(loggedInfo);
 			setIsLoading(false);
 		};
+
 		fetchData(`${urlGet}/${id_orden}`, header, setOrden);
 		fetchData(urlProveedores, header, setProveedores);
 		fetchData(urlStatus, header, setStatus);
@@ -397,7 +402,7 @@ function EditOrder({ match }) {
 						</Grid>
 					</Grid>
 				) : (
-					<BackdropSpinner isLoading={!isLoading} />
+					<BackdropSpinner isLoading={isLoading} />
 				)}
 			</Container>
 		</MainLayout>

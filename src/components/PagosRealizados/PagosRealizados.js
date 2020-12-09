@@ -15,6 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import * as toast from '../../helpers/toast';
+import DownloadButton from '../../components/DownloadButton/DownloadButton';
 
 function PagosRealizados({
 	orden,
@@ -68,7 +69,19 @@ function PagosRealizados({
 										)}`}
 									</TableCell>
 									<TableCell align="right">{pago.tipo}</TableCell>
-									{editable && <TableCell align="right"></TableCell>}
+									{editable && (
+										<TableCell align="right">
+											{pago.adjunto && (
+												<DownloadButton
+													base64={pago.adjunto}
+													filename={`pago#${pago.pago_id} ${moment(
+														pago.fecha_pago,
+													).format('DD-MM-YYYY')}-${pago.tipo}`}
+													label="Descargar"
+												/>
+											)}
+										</TableCell>
+									)}
 									<TableCell align="right">{`${pago.name} ${pago.lastname}`}</TableCell>
 									{editable && (
 										<TableCell align="right">
@@ -94,7 +107,7 @@ function PagosRealizados({
 									align="right"
 									style={{ fontWeight: 'bold' }}
 								>{`$${fetch.numberWithCommas(
-									orden.pagos.reduce(suma, 0),
+									orden.pagos.reduce(suma, 0).toFixed(2),
 								)}`}</TableCell>
 								{editable && <TableCell align="right"></TableCell>}
 								<TableCell align="right" style={{ fontWeight: 'bold' }}>
@@ -147,7 +160,10 @@ function PagosRealizados({
 							}}
 							value={pagoInput.cantidad}
 							onChange={(event) =>
-								setPagoInput({ ...pagoInput, cantidad: event.target.value })
+								setPagoInput({
+									...pagoInput,
+									cantidad: parseFloat(event.target.value),
+								})
 							}
 						/>
 					</Grid>
@@ -167,6 +183,9 @@ function PagosRealizados({
 								setPagoInput({ ...pagoInput, tipoPago: event.target.value })
 							}
 						>
+							<MenuItem value={0} disabled>
+								Selecione un tipo de pago
+							</MenuItem>
 							{tipoPago.map((tipo) => (
 								<MenuItem key={tipo.tipo_id} value={tipo.tipo_id}>
 									{tipo.tipo}
@@ -174,59 +193,74 @@ function PagosRealizados({
 							))}
 						</Select>
 					</Grid>
-					{pagoInput.tipoPago !== null && pagoInput.tipoPago !== 1 && (
-						<Grid
-							item
-							style={{
-								display: 'flex',
-								justifyContent: 'center',
-								alignItems: 'center',
-							}}
-						>
-							<Button variant="contained" component="label">
-								{pagoInput.adjuntoNombre
-									? `${pagoInput.adjuntoNombre} ${convertByteToMb(
-											pagoInput.adjuntoSize,
-									  )}MB`
-									: 'Subir adjunto'}
-								<input
-									type="file"
-									hidden
-									accept=".jpge, .png, .jpg, .pdf"
-									onChange={(event) => {
-										if (event.target.files[0]) {
-											if (
-												event.target.files[0].type === 'application/pdf' ||
-												event.target.files[0].type === 'application/png' ||
-												event.target.files[0].type === 'application/jpg' ||
-												event.target.files[0].type === 'application/jpge'
-											) {
-												if (event.target.files[0].size < parseInt(5242880)) {
-													getBase64(event.target.files[0]).then((data) =>
-														setPagoInput({
-															...pagoInput,
-															adjunto: btoa(data),
-															adjuntoNombre: event.target.files[0].name,
-															adjuntoSize: event.target.files[0].size,
-														}),
-													);
+					{pagoInput.tipoPago !== null &&
+						pagoInput.tipoPago !== 1 &&
+						pagoInput.tipoPago !== 0 && (
+							<Grid
+								item
+								style={{
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							>
+								<Button variant="contained" component="label">
+									{pagoInput.adjuntoNombre
+										? `${pagoInput.adjuntoNombre} ${convertByteToMb(
+												pagoInput.adjuntoSize,
+										  )}MB`
+										: 'Subir adjunto'}
+									<input
+										type="file"
+										hidden
+										accept=".jpge, .png, .jpg, .pdf"
+										onChange={(event) => {
+											if (event.target.files[0]) {
+												if (
+													event.target.files[0].type === 'application/pdf' ||
+													event.target.files[0].type === 'image/png' ||
+													event.target.files[0].type === 'image/jpg' ||
+													event.target.files[0].type === 'image/jpge'
+												) {
+													if (event.target.files[0].size < parseInt(5242880)) {
+														getBase64(event.target.files[0]).then((data) =>
+															setPagoInput({
+																...pagoInput,
+																adjunto: data,
+																adjuntoNombre: event.target.files[0].name,
+																adjuntoSize: event.target.files[0].size,
+															}),
+														);
+													} else {
+														return toast.errorToast(
+															'Archivo no puede superar los 5MB.',
+														);
+													}
 												} else {
-													return toast.errorToast(
-														'Archivo no puede superar los 5MB.',
-													);
+													return toast.errorToast('Archivo no soportado.');
 												}
-											} else {
-												return toast.errorToast('Archivo no soportado.');
 											}
-										}
-									}}
-								/>
-							</Button>
-						</Grid>
-					)}
+										}}
+									/>
+								</Button>
+							</Grid>
+						)}
 					<Grid container item xs={12} md={12} lg={12}>
 						<Grid item xs={6} md={6} lg={6}>
-							<Button variant="contained" color="primary" onClick={addPago}>
+							<Button
+								variant="contained"
+								color="primary"
+								onClick={addPago}
+								disabled={
+									pagoInput.cantidad > 0 && pagoInput.tipoPago
+										? pagoInput.tipoPago !== 1
+											? pagoInput.adjunto
+												? false
+												: true
+											: false
+										: true
+								}
+							>
 								Agregar nuevo pago
 							</Button>
 						</Grid>
