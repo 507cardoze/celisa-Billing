@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, memo } from 'react';
 import MainLayout from '../../components/MainLayOut/mainLayout.component';
 import { Container, Grid, Box, Typography } from '@material-ui/core';
 import BackdropSpinner from '../../components/BackDrop/backDrop';
@@ -51,6 +51,7 @@ function EditOrder({ match }) {
 	const [orden, setOrden] = useState(null);
 	const [proveedores, setProveedores] = useState([]);
 	const [status, setStatus] = useState([]);
+	const [tipoPago, setTipoPago] = useState([]);
 	const [ordenIsEditable, setOrdenIsEditable] = useState(false);
 	const [value, setValue] = useStickyState(0, 'value');
 	const producto_inicial = {
@@ -62,11 +63,20 @@ function EditOrder({ match }) {
 		precio: 0,
 	};
 
+	const pago_inicial = {
+		cantidad: 0,
+		tipoPago: null,
+		adjunto: null,
+		adjuntoNombre: null,
+	};
+
 	const [productoInput, setProductoInput] = useState(producto_inicial);
+	const [pagoInput, setPagoInput] = useState(pago_inicial);
 
 	const urlGet = url.getByIdOrdenUrl();
 	const urlProveedores = url.getAllProveedoresUrl();
 	const urlStatus = url.getAllStatusUrl();
+	const urlTipo = url.getAllTipoPagoUrl();
 	const header = fetch.requestHeader('GET', null, localStorage.token);
 	const fetchData = async (url, header, setter) => {
 		setIsLoading(true);
@@ -281,6 +291,28 @@ function EditOrder({ match }) {
 		}
 	};
 
+	const addPago = async () => {
+		try {
+			const body = JSON.stringify({
+				id_orden: id_orden,
+				adjunto: pagoInput.adjunto,
+				tipo: pagoInput.tipoPago,
+			});
+			const header = fetch.requestHeader('POST', body, localStorage.token);
+			const pagoUrl = url.agregarPagosUrl();
+			const loggedInfo = await fetch.fetchData(pagoUrl, header);
+			fetch.UnauthorizedRedirect(loggedInfo, history);
+			if (loggedInfo === 'Detalles Actualizados.') {
+				refreshData();
+			} else {
+				toast.errorToast('error al actualizar estado.');
+			}
+		} catch (error) {
+			console.log(error);
+			toast.errorToast(error);
+		}
+	};
+
 	useEffect(() => {
 		fetch.UserRedirect(user, history);
 		const header = fetch.requestHeader('GET', null, localStorage.token);
@@ -294,8 +326,10 @@ function EditOrder({ match }) {
 		fetchData(`${urlGet}/${id_orden}`, header, setOrden);
 		fetchData(urlProveedores, header, setProveedores);
 		fetchData(urlStatus, header, setStatus);
-	}, [user, history, urlGet, id_orden, urlProveedores, urlStatus]);
+		fetchData(urlTipo, header, setTipoPago);
+	}, [user, history, urlGet, id_orden, urlProveedores, urlStatus, urlTipo]);
 
+	console.log(pagoInput);
 	console.log(orden);
 
 	return (
@@ -354,6 +388,10 @@ function EditOrder({ match }) {
 									orden={orden}
 									setOrden={setOrden}
 									editable={user?.rol === 'Administrador' ? true : false}
+									tipoPago={tipoPago}
+									pagoInput={pagoInput}
+									setPagoInput={setPagoInput}
+									addPago={addPago}
 								/>
 							</TabPanel>
 						</Grid>
@@ -366,4 +404,4 @@ function EditOrder({ match }) {
 	);
 }
 
-export default EditOrder;
+export default memo(EditOrder);

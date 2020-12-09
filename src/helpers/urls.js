@@ -120,6 +120,10 @@ export const updateEstadoUrl = () => {
 	return `${process.env.REACT_APP_BACK_END}/v1/ordenes/update-estado`;
 };
 
+export const agregarPagosUrl = () => {
+	return `${process.env.REACT_APP_BACK_END}/v1/ordenes/agregar-pago`;
+};
+
 //ORDENES
 
 //PROVEEDORES
@@ -133,3 +137,10 @@ export const getAllStatusUrl = () => {
 	return `${process.env.REACT_APP_BACK_END}/v1/status/all-status`;
 };
 //STATUS
+
+//TIPO DE PAGOS
+
+export const getAllTipoPagoUrl = () => {
+	return `${process.env.REACT_APP_BACK_END}/v1/tipoPago/all-tipo-pagos`;
+};
+//TIPO DE PAGOS
