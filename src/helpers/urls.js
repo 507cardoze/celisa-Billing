@@ -124,6 +124,10 @@ export const agregarPagosUrl = () => {
 	return `${process.env.REACT_APP_BACK_END}/v1/ordenes/agregar-pago`;
 };
 
+export const deletePagoUrl = () => {
+	return `${process.env.REACT_APP_BACK_END}/v1/ordenes/delete-pago`;
+};
+
 //ORDENES
 
 //PROVEEDORES

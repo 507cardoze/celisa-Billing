@@ -317,6 +317,26 @@ function EditOrder({ match }) {
 		}
 	};
 
+	const deletePago = async (unique_id) => {
+		try {
+			const body = JSON.stringify({
+				pago_id: unique_id,
+			});
+			const header = fetch.requestHeader('PUT', body, localStorage.token);
+			const urlDelete = url.deletePagoUrl();
+			const loggedInfo = await fetch.fetchData(urlDelete, header);
+			fetch.UnauthorizedRedirect(loggedInfo, history);
+			if (loggedInfo === 'Detalles Actualizados.') {
+				await refreshData();
+			} else {
+				toast.errorToast('error al eliminar pago.');
+			}
+		} catch (error) {
+			console.log(error);
+			toast.errorToast(error);
+		}
+	};
+
 	useEffect(() => {
 		fetch.UserRedirect(user, history);
 		const header = fetch.requestHeader('GET', null, localStorage.token);
@@ -397,6 +417,7 @@ function EditOrder({ match }) {
 									pagoInput={pagoInput}
 									setPagoInput={setPagoInput}
 									addPago={addPago}
+									deletePago={deletePago}
 								/>
 							</TabPanel>
 						</Grid>

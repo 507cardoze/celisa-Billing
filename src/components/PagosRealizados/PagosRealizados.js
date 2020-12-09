@@ -24,6 +24,7 @@ function PagosRealizados({
 	pagoInput,
 	setPagoInput,
 	addPago,
+	deletePago,
 }) {
 	const suma = (acc, cur) => {
 		return acc + Number(cur.cantidad);
@@ -87,7 +88,7 @@ function PagosRealizados({
 										<TableCell align="right">
 											<IconButton
 												aria-label="delete"
-												//onClick={() => deleteProducto(producto.id)}
+												onClick={() => deletePago(pago.pago_id)}
 											>
 												<DeleteIcon />
 											</IconButton>
