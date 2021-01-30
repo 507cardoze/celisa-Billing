@@ -103,7 +103,7 @@ const getLinksContainer = (type, data, classes) => {
 						return (
 							<>
 								<Link
-									to={`/edit-orden/${row.orden_id}`}
+									to={`/edit-orders/${row.orden_id}`}
 									className={`${classes.a}`}
 									key={row.orden_id}
 								>
@@ -145,6 +145,13 @@ const Toolbar = ({
 	return (
 		<div className={clsx(classes.root, className)} {...rest}>
 			<Box display="flex" justifyContent="flex-end">
+				{ordenes && (
+					<CustomButton
+						text="Buscar por rango de fechas"
+						onClick={() => pedidos.add()}
+						style={{ marginRight: 20 }}
+					/>
+				)}
 				{dataExport && (
 					<ExportCSV
 						csvData={dataExport}

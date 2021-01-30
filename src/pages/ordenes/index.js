@@ -118,9 +118,10 @@ const Ordenes = () => {
 					searchField={searchField}
 					nav="Agregar Orden"
 					ruta="/create-orders"
-					searchLabel="Buscar ordenes"
+					searchLabel="Buscar entre todas las ordenes..."
 					dataExport={dataExport}
 					type="ordenes"
+					ordenes
 					filename={`ordenes / ${moment().format('MMMM Do YYYY, h:mm')}`}
 				/>
 				<Box mt={3}>

@@ -214,14 +214,14 @@ function PagosRealizados({
 									<input
 										type="file"
 										hidden
-										accept=".jpge, .png, .jpg, .pdf"
+										accept=".jpeg, .png, .jpg, .pdf"
 										onChange={(event) => {
 											if (event.target.files[0]) {
 												if (
 													event.target.files[0].type === 'application/pdf' ||
 													event.target.files[0].type === 'image/png' ||
 													event.target.files[0].type === 'image/jpg' ||
-													event.target.files[0].type === 'image/jpge'
+													event.target.files[0].type === 'image/jpeg'
 												) {
 													if (event.target.files[0].size < parseInt(5242880)) {
 														getBase64(event.target.files[0]).then((data) =>
@@ -238,7 +238,9 @@ function PagosRealizados({
 														);
 													}
 												} else {
-													return toast.errorToast('Archivo no soportado.');
+													return toast.errorToast(
+														'Archivo no soportado; Formatos soportados: .jpeg, .png, .jpg, .pdf ',
+													);
 												}
 											}
 										}}
