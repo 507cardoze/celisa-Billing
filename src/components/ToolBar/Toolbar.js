@@ -145,13 +145,13 @@ const Toolbar = ({
 	return (
 		<div className={clsx(classes.root, className)} {...rest}>
 			<Box display="flex" justifyContent="flex-end">
-				{ordenes && (
+				{/* {ordenes && (
 					<CustomButton
 						text="Buscar por rango de fechas"
 						onClick={() => pedidos.add()}
 						style={{ marginRight: 20 }}
 					/>
-				)}
+				)} */}
 				{dataExport && (
 					<ExportCSV
 						csvData={dataExport}
