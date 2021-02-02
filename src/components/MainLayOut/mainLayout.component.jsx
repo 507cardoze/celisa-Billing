@@ -20,7 +20,7 @@ import * as styles from "../../helpers/styles";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useStickyState } from "../../helpers/fetch";
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 
 const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 
@@ -103,7 +103,7 @@ function MainLayout(props) {
           >
             {props.Tittle}
           </Typography>
-          
+
           <IconButton color="inherit" onClick={handleLogout}>
             <ExitToAppIcon />
           </IconButton>
