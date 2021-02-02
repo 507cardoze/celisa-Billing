@@ -11,34 +11,18 @@ import {
   Divider,
   useTheme,
   makeStyles,
-  colors,
 } from "@material-ui/core";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 
 const useStyles = makeStyles(() => ({
   root: {},
 }));
 
-const DashboardGraphBar = ({ className, title, ...rest }) => {
+const DashboardGraphBar = ({ className, title, content, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
 
-  const data = {
-    datasets: [
-      {
-        backgroundColor: colors.indigo[500],
-        data: [18, 5, 19, 27, 29, 19, 20],
-        label: "This year",
-      },
-      {
-        backgroundColor: colors.grey[200],
-        data: [11, 20, 12, 29, 30, 25, 13],
-        label: "Last year",
-      },
-    ],
-    labels: ["1 Aug", "2 Aug", "3 Aug", "4 Aug", "5 Aug", "6 Aug"],
-  };
+  const data = content;
 
   const options = {
     animation: false,
@@ -114,12 +98,12 @@ const DashboardGraphBar = ({ className, title, ...rest }) => {
       <Divider />
       <Box display="flex" justifyContent="flex-end" p={2}>
         <Button
-          color="primary"
-          endIcon={<ArrowRightIcon />}
+          color="black"
+          endIcon={<ArrowDropDownIcon />}
           size="small"
           variant="text"
         >
-          Overview
+          Descargar
         </Button>
       </Box>
     </Card>

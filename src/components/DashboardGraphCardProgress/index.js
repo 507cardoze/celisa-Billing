@@ -7,33 +7,28 @@ import {
   Card,
   CardContent,
   Grid,
+  LinearProgress,
   Typography,
-  colors,
   makeStyles,
+  colors,
 } from "@material-ui/core";
+import InsertChartIcon from "@material-ui/icons/InsertChartOutlined";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     height: "100%",
   },
   avatar: {
-    backgroundColor: colors.green[600],
+    backgroundColor: colors.orange[600],
     height: 56,
     width: 56,
   },
 }));
 
-const numberWithCommas = (x) => {
-  return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-};
-
-const DashbordCard = ({
+const DashboardGraphCardProgress = ({
   className,
   title,
-  color,
-  Icon,
-  data,
-  description,
+  porcentaje,
   ...rest
 }) => {
   const classes = useStyles();
@@ -47,30 +42,25 @@ const DashbordCard = ({
               {title}
             </Typography>
             <Typography color="textPrimary" variant="h3">
-              {numberWithCommas(data)}
+              {`${porcentaje}%`}
             </Typography>
           </Grid>
           <Grid item>
-            <Avatar
-              className={classes.avatar}
-              style={{ backgroundColor: color, height: 56, width: 56 }}
-            >
-              <Icon />
+            <Avatar className={classes.avatar}>
+              <InsertChartIcon />
             </Avatar>
           </Grid>
         </Grid>
-        <Box mt={2} display="flex" alignItems="center">
-          <Typography color="textSecondary" variant="caption">
-            {description}
-          </Typography>
+        <Box mt={3}>
+          <LinearProgress value={porcentaje} variant="determinate" />
         </Box>
       </CardContent>
     </Card>
   );
 };
 
-DashbordCard.propTypes = {
+DashboardGraphCardProgress.propTypes = {
   className: PropTypes.string,
 };
 
-export default DashbordCard;
+export default DashboardGraphCardProgress;
