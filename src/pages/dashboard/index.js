@@ -29,7 +29,6 @@ function Dashboard() {
 
   useEffect(() => {
     fetch.UserRedirect(user, history);
-
     const urlGeneral = url.getDataReporteGeneral();
     const urlVendedores = url.getDataReporteVendedores();
     const urlProveedores = url.getDataReporteProveedores();
@@ -66,8 +65,8 @@ function Dashboard() {
   }, [user, history]);
 
   if (process.env.NODE_ENV === "development") {
-    //console.log(dataGeneral.por_fecha?.map((obj) => obj.ventas));
-    // console.log(dataVendedores);
+    console.log(dataGeneral);
+    console.log(dataVendedores);
     console.log(dataProveedores);
   }
 
@@ -145,7 +144,14 @@ function Dashboard() {
                       data: dataGeneral.por_fecha.map((obj) =>
                         parseFloat(obj.ventas),
                       ),
-                      label: "USD",
+                      label: "Vendido en USD",
+                    },
+                    {
+                      backgroundColor: colors.orange[600],
+                      data: dataGeneral.por_fecha.map((obj) =>
+                        parseFloat(obj.pagado),
+                      ),
+                      label: "Cobrado en USD",
                     },
                   ],
                   labels: dataGeneral.por_fecha.map((obj) => obj.fecha),
@@ -231,7 +237,14 @@ function Dashboard() {
                       data: dataVendedores.usuariosConVenta.map(
                         (obj) => obj.ventas_total,
                       ),
-                      label: "USD",
+                      label: "Vendido en USD",
+                    },
+                    {
+                      backgroundColor: colors.indigo[500],
+                      data: dataVendedores.usuariosConVenta.map(
+                        (obj) => obj.pagado,
+                      ),
+                      label: "Cobrado en USD",
                     },
                   ],
                   labels: dataVendedores.usuariosConVenta.map(
@@ -243,12 +256,16 @@ function Dashboard() {
             )}
           </Grid>
 
-          <Grid item lg={4} md={6} xl={3} xs={12}>
-            <DashboardTableProductos />
-          </Grid>
-          <Grid item lg={8} md={12} xl={9} xs={12}>
-            <DashboardTableOrdenes />
-          </Grid>
+          {process.env.NODE_ENV === "development" && (
+            <>
+              <Grid item lg={4} md={6} xl={3} xs={12}>
+                <DashboardTableProductos />
+              </Grid>
+              <Grid item lg={8} md={12} xl={9} xs={12}>
+                <DashboardTableOrdenes />
+              </Grid>
+            </>
+          )}
         </Grid>
       </Container>
     </MainLayout>
