@@ -15,6 +15,12 @@ import DashboardGraphCardProgress from "../../components/DashboardGraphCardProgr
 import DashboardTableProductos from "../../components/DashboardTableProductos";
 import DashboardTableOrdenes from "../../components/DashboardTableOrdenes";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import moment from "moment";
 
 function Dashboard() {
   const history = useHistory();
@@ -25,32 +31,22 @@ function Dashboard() {
   const [dataProveedores, setDataProveedores] = useState(null);
 
   const [searchFieldProductos, setSearchFieldProductos] = useState("");
+  const [searchFieldOrdenes, setSearchFieldOrdenes] = useState("");
 
-  const fechasDisponibles = {
-    last7: {
-      desde: "",
-      hasta: "",
-    },
-    lastWeek: {
-      desde: "",
-      hasta: "",
-    },
-    lastMonth: {
-      desde: "",
-      hasta: "",
-    },
-  };
+  const [desde, setDesde] = useState(
+    moment().subtract(7, "days").format("YYYY-MM-DD"),
+  );
 
-  const [desde, setDesde] = useState("2020-1-1");
-  const [hasta, setHasta] = useState("2021-12-31");
-
-  const handleChangeRangoFecha = (arg1) => {
-    setDesde(...desde, arg1.desde);
-    setHasta(...hasta, arg1.hasta);
+  const handleChangeRangoFecha = (fecha) => {
+    setDesde(fecha);
   };
 
   const onSearchChange = (event) => {
     setSearchFieldProductos(event.target.value);
+  };
+
+  const onSearchChangeOrdenes = (event) => {
+    setSearchFieldOrdenes(event.target.value);
   };
 
   useEffect(() => {
@@ -73,34 +69,99 @@ function Dashboard() {
     };
 
     fetchData(
-      `${urlGeneral}?desde=${`${desde}`}&hasta=${`${hasta}`}`,
+      `${urlGeneral}?desde=${`${desde}`}&hasta=${`${moment().format(
+        "YYYY-MM-DD",
+      )}`}`,
       header,
       setDataGeneral,
     );
     fetchData(
-      `${urlVendedores}?desde=${`${desde}`}&hasta=${`${hasta}`}`,
+      `${urlVendedores}?desde=${`${desde}`}&hasta=${`${moment().format(
+        "YYYY-MM-DD",
+      )}`}`,
       header,
       setDataVendedores,
     );
     fetchData(
-      `${urlProveedores}?desde=${`${desde}`}&hasta=${`${hasta}`}`,
+      `${urlProveedores}?desde=${`${desde}`}&hasta=${`${moment().format(
+        "YYYY-MM-DD",
+      )}`}`,
       header,
       setDataProveedores,
     );
-  }, [user, history, desde, hasta]);
-
-  if (process.env.NODE_ENV === "development") {
-    console.log(dataGeneral);
-    console.log(dataVendedores);
-    console.log(dataProveedores);
-  }
+  }, [user, history, desde]);
 
   return (
     <MainLayout Tittle="Dashboard">
       <BackdropSpinner isLoading={!isLoading} />
 
       <Container maxWidth={false}>
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
+          <Grid
+            item
+            xs={12}
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+            container
+          >
+            <FormControl
+              style={{
+                formControl: {
+                  margin: "25px",
+                  minWidth: 250,
+                },
+                selectEmpty: {
+                  marginTop: "25px",
+                },
+              }}
+              component={Grid}
+              item
+            >
+              <InputLabel>{`Desde ${desde} hasta hoy, ${moment().format(
+                "YYYY-MM-DD",
+              )}`}</InputLabel>
+              <Select
+                value={desde}
+                onChange={(e) => handleChangeRangoFecha(e.target.value)}
+                inputProps={{
+                  name: "fecha",
+                }}
+              >
+                <MenuItem aria-label="None" value="" />
+                <MenuItem
+                  value={moment().subtract(7, "days").format("YYYY-MM-DD")}
+                >
+                  Últimos 7 dias
+                </MenuItem>
+                <MenuItem
+                  value={moment().subtract(15, "days").format("YYYY-MM-DD")}
+                >
+                  Última 2 Semana
+                </MenuItem>
+                <MenuItem
+                  value={moment().subtract(1, "months").format("YYYY-MM-DD")}
+                >
+                  Último Mes
+                </MenuItem>
+                <MenuItem
+                  value={moment().subtract(6, "months").format("YYYY-MM-DD")}
+                >
+                  Últimos 6 Mes
+                </MenuItem>
+                <MenuItem
+                  value={moment().subtract(2, "years").format("YYYY-MM-DD")}
+                >
+                  Últimos 2 años
+                </MenuItem>
+              </Select>
+              <FormHelperText>
+                Al hacer cambios aqui, se afecta la información mostrada.
+              </FormHelperText>
+            </FormControl>
+          </Grid>
           <Grid item lg={4} sm={6} md={4} xl={4} xs={12}>
             <DashbordCard
               title="Ventas realizadas"
@@ -278,28 +339,37 @@ function Dashboard() {
             )}
           </Grid>
 
-          {process.env.NODE_ENV === "development" && (
-            <>
-              <Grid item lg={4} md={6} xl={3} xs={12}>
-                <DashboardTableProductos
-                  title="Productos vendidos"
-                  products={
-                    dataGeneral?.productosVendidos.length > 0
-                      ? dataGeneral?.productosVendidos.filter((producto) => {
-                          return producto.producto
-                            .toLowerCase()
-                            .includes(searchFieldProductos.toLowerCase());
-                        })
-                      : []
-                  }
-                  onSearchChange={onSearchChange}
-                />
-              </Grid>
-              <Grid item lg={8} md={12} xl={9} xs={12}>
-                <DashboardTableOrdenes />
-              </Grid>
-            </>
-          )}
+          <Grid item lg={4} md={12} xl={3} xs={12}>
+            <DashboardTableProductos
+              title="Productos: "
+              products={
+                dataGeneral?.productosVendidos.length > 0
+                  ? dataGeneral?.productosVendidos.filter((producto) => {
+                      return producto.producto
+                        .toLowerCase()
+                        .includes(searchFieldProductos.toLowerCase());
+                    })
+                  : []
+              }
+              onSearchChange={onSearchChange}
+            />
+          </Grid>
+
+          <Grid item lg={8} md={12} xl={9} xs={12}>
+            <DashboardTableOrdenes
+              title={`Ordenes: `}
+              data={
+                dataGeneral?.desglose
+                  ? dataGeneral.desglose.filter((ordenes) => {
+                      return ordenes.nombre_cliente
+                        .toLowerCase()
+                        .includes(searchFieldOrdenes.toLowerCase());
+                    })
+                  : []
+              }
+              onSearchChangeOrdenes={onSearchChangeOrdenes}
+            />
+          </Grid>
         </Grid>
       </Container>
     </MainLayout>

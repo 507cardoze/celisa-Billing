@@ -30,6 +30,17 @@ const useStyles = makeStyles({
     height: 48,
     width: 48,
   },
+  list: {
+    overflow: "auto",
+    maxHeight: "500px",
+  },
+  formControl: {
+    width: "75%",
+    minWidth: "300px",
+    display: "flex",
+    justifyContent: "center",
+    padding: "25px",
+  },
 });
 
 const DashboardTableProductos = ({
@@ -43,17 +54,9 @@ const DashboardTableProductos = ({
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <CardHeader title={`${title} / ${products.length} vendidos`} />
-      <FormControl
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          padding: "25px",
-        }}
-      >
+      <CardHeader title={`${title} ${products.length}`} />
+      <FormControl className={classes.formControl}>
         <Input
-          id="search-product"
           placeholder="Buscar..."
           onChange={onSearchChange}
           startAdornment={
@@ -64,7 +67,7 @@ const DashboardTableProductos = ({
         />
       </FormControl>
       <Divider />
-      <List style={{ overflow: "auto", maxHeight: "400px" }}>
+      <List className={classes.list}>
         {products.map((product, i) => (
           <ListItem divider={i < products.length - 1} key={product.linea_id}>
             <ListItemAvatar>
@@ -88,7 +91,7 @@ const DashboardTableProductos = ({
           size="small"
           variant="text"
         >
-          Descargar
+          Exportar
         </Button>
       </Box>
     </Card>

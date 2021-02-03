@@ -12,7 +12,7 @@ import {
   useTheme,
   makeStyles,
 } from "@material-ui/core";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -81,14 +81,7 @@ const DashboardGraphBar = ({ className, title, content, ...rest }) => {
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <CardHeader
-        action={
-          <Button endIcon={<ArrowDropDownIcon />} size="small" variant="text">
-            Last 7 days
-          </Button>
-        }
-        title={title}
-      />
+      <CardHeader title={title} />
       <Divider />
       <CardContent>
         <Box height={400} position="relative">
@@ -99,11 +92,11 @@ const DashboardGraphBar = ({ className, title, content, ...rest }) => {
       <Box display="flex" justifyContent="flex-end" p={2}>
         <Button
           color="default"
-          endIcon={<ArrowDropDownIcon />}
+          endIcon={<ArrowDownwardIcon />}
           size="small"
           variant="text"
         >
-          Descargar
+          Exportar
         </Button>
       </Box>
     </Card>

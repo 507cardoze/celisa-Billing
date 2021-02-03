@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import clsx from "clsx";
-import moment from "moment";
-import { v4 as uuid } from "uuid";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import {
@@ -16,132 +14,100 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableSortLabel,
-  Tooltip,
   makeStyles,
 } from "@material-ui/core";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
-
-const data = [
-  {
-    id: uuid(),
-    ref: "CDD1049",
-    amount: 30.5,
-    customer: {
-      name: "Ekaterina Tankova",
-    },
-    createdAt: 1555016400000,
-    status: "pending",
-  },
-  {
-    id: uuid(),
-    ref: "CDD1048",
-    amount: 25.1,
-    customer: {
-      name: "Cao Yu",
-    },
-    createdAt: 1555016400000,
-    status: "delivered",
-  },
-  {
-    id: uuid(),
-    ref: "CDD1047",
-    amount: 10.99,
-    customer: {
-      name: "Alexa Richardson",
-    },
-    createdAt: 1554930000000,
-    status: "refunded",
-  },
-  {
-    id: uuid(),
-    ref: "CDD1046",
-    amount: 96.43,
-    customer: {
-      name: "Anje Keizer",
-    },
-    createdAt: 1554757200000,
-    status: "pending",
-  },
-  {
-    id: uuid(),
-    ref: "CDD1045",
-    amount: 32.54,
-    customer: {
-      name: "Clarke Gillebert",
-    },
-    createdAt: 1554670800000,
-    status: "delivered",
-  },
-  {
-    id: uuid(),
-    ref: "CDD1044",
-    amount: 16.76,
-    customer: {
-      name: "Adam Denisov",
-    },
-    createdAt: 1554670800000,
-    status: "delivered",
-  },
-];
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import FormControl from "@material-ui/core/FormControl";
+import SearchIcon from "@material-ui/icons/Search";
+import Input from "@material-ui/core/Input";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 const useStyles = makeStyles(() => ({
-  root: {},
-  actions: {
-    justifyContent: "flex-end",
+  overflow: {
+    overflow: "auto",
+  },
+  formControl: {
+    width: "40%",
+    minWidth: "300px",
+    display: "flex",
+    justifyContent: "center",
+    padding: "25px",
   },
 }));
 
-const DashboardTableOrdenes = ({ className, ...rest }) => {
+const DashboardTableOrdenes = ({
+  className,
+  title,
+  data,
+  onSearchChangeOrdenes,
+  ...rest
+}) => {
   const classes = useStyles();
-  const [orders] = useState(data);
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <CardHeader title="Latest Orders" />
+      <CardHeader title={`${title} ${data.length}`} />
+      <FormControl className={classes.formControl}>
+        <Input
+          placeholder="Buscar..."
+          onChange={onSearchChangeOrdenes}
+          startAdornment={
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          }
+        />
+      </FormControl>
       <Divider />
       <PerfectScrollbar>
-        <Box minWidth={800}>
+        <Box minWidth={700} maxHeight={500} className={classes.overflow}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Order Ref</TableCell>
-                <TableCell>Customer</TableCell>
-                <TableCell sortDirection="desc">
-                  <Tooltip enterDelay={300} title="Sort">
-                    <TableSortLabel active direction="desc">
-                      Date
-                    </TableSortLabel>
-                  </Tooltip>
-                </TableCell>
-                <TableCell>Status</TableCell>
+                <TableCell>Ref Orden</TableCell>
+                <TableCell>Vendedor</TableCell>
+                <TableCell>Cliente</TableCell>
+                <TableCell>Fecha</TableCell>
+                <TableCell>Estado</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {orders.map((order) => (
-                <TableRow hover key={order.id}>
-                  <TableCell>{order.ref}</TableCell>
-                  <TableCell>{order.customer.name}</TableCell>
-                  <TableCell>
-                    {moment(order.createdAt).format("DD/MM/YYYY")}
-                  </TableCell>
-                  <TableCell>
-                    <Chip color="primary" label={order.status} size="small" />
-                  </TableCell>
-                </TableRow>
-              ))}
+            <TableBody className={classes.overflow}>
+              {data.map((obj, i) => {
+                return (
+                  <TableRow
+                    hover
+                    key={obj.orden_id}
+                    divider={i < data.length - 1}
+                  >
+                    <TableCell>
+                      <Chip color="primary" label={obj.orden_id} size="small" />
+                    </TableCell>
+                    <TableCell>{obj.vendedor}</TableCell>
+                    <TableCell>{obj.nombre_cliente}</TableCell>
+                    <TableCell>{obj.fecha}</TableCell>
+                    <TableCell>
+                      <Chip
+                        color="primary"
+                        label={obj.nombre_status}
+                        size="small"
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </Box>
       </PerfectScrollbar>
+      <Divider />
       <Box display="flex" justifyContent="flex-end" p={2}>
         <Button
-          color="primary"
-          endIcon={<ArrowRightIcon />}
+          color="default"
+          endIcon={<ArrowDownwardIcon />}
           size="small"
           variant="text"
         >
-          View all
+          Exportar
         </Button>
       </Box>
     </Card>
