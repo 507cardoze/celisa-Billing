@@ -167,7 +167,10 @@ function Dashboard() {
                 dataSet={{
                   datasets: [
                     {
-                      data: [822.5, 3348.38],
+                      data: [
+                        dataGeneral.pagosTotales,
+                        dataGeneral.saldosTotales,
+                      ],
                       backgroundColor: [colors.indigo[500], colors.red[600]],
                       borderWidth: 8,
                       borderColor: colors.common.white,
@@ -179,13 +182,13 @@ function Dashboard() {
                 devices={[
                   {
                     title: "Pagos recibidos",
-                    value: 822.5,
+                    value: dataGeneral.pagosTotales.toFixed(2),
                     icon: AttachMoneyIcon,
                     color: colors.indigo[500],
                   },
                   {
                     title: "Cobros pendientes",
-                    value: 3348.38,
+                    value: dataGeneral.saldosTotales.toFixed(2),
                     icon: AttachMoneyIcon,
                     color: colors.red[600],
                   },
