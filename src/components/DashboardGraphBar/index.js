@@ -98,7 +98,7 @@ const DashboardGraphBar = ({ className, title, content, ...rest }) => {
       <Divider />
       <Box display="flex" justifyContent="flex-end" p={2}>
         <Button
-          color="black"
+          color="default"
           endIcon={<ArrowDropDownIcon />}
           size="small"
           variant="text"

@@ -178,7 +178,7 @@ function ProfilePage() {
   return (
     <MainLayout Tittle="Perfil de usuario">
       {isLoading && <BackdropSpinner isLoading={!isLoading} />}
-      <Container maxWidth="lg">
+      <Container maxWidth="false">
         <Grid container spacing={3}>
           <Grid item lg={4} md={6} xs={12}>
             <Profile userDetails={user} />

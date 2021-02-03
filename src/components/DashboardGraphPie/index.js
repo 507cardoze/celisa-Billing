@@ -68,7 +68,7 @@ const DashboardGraphPie = ({ className, title, dataSet, devices, ...rest }) => {
                 {title}
               </Typography>
               <Typography style={{ color }} variant="h2">
-                {`$${value}`}
+                {`$${value ? value : 0}`}
               </Typography>
             </Box>
           ))}

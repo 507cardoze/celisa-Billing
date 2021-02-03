@@ -42,7 +42,7 @@ const DashboardGraphCardProgress = ({
               {title}
             </Typography>
             <Typography color="textPrimary" variant="h3">
-              {`${porcentaje}%`}
+              {`${porcentaje ? porcentaje : 0}%`}
             </Typography>
           </Grid>
           <Grid item>
@@ -52,7 +52,10 @@ const DashboardGraphCardProgress = ({
           </Grid>
         </Grid>
         <Box mt={3}>
-          <LinearProgress value={porcentaje} variant="determinate" />
+          <LinearProgress
+            value={porcentaje ? porcentaje : 0}
+            variant="determinate"
+          />
         </Box>
       </CardContent>
     </Card>

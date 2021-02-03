@@ -110,6 +110,7 @@ export const mainLayOutStyles = (theme) => {
     container: {
       paddingTop: theme.spacing(2),
       paddingBottom: theme.spacing(2),
+      maxWidth: "95%",
     },
     paper: {
       padding: theme.spacing(2),

@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import { v4 as uuid } from "uuid";
-import moment from "moment";
+import CollectionsIcon from "@material-ui/icons/Collections";
+import SearchIcon from "@material-ui/icons/Search";
+import Input from "@material-ui/core/Input";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
 import {
   Box,
   Button,
@@ -16,41 +19,8 @@ import {
   ListItemText,
   makeStyles,
 } from "@material-ui/core";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
-
-const data = [
-  {
-    id: uuid(),
-    name: "Dropbox",
-    imageUrl: "/static/images/products/product_1.png",
-    updatedAt: moment().subtract(2, "hours"),
-  },
-  {
-    id: uuid(),
-    name: "Medium Corporation",
-    imageUrl: "/static/images/products/product_2.png",
-    updatedAt: moment().subtract(2, "hours"),
-  },
-  {
-    id: uuid(),
-    name: "Slack",
-    imageUrl: "/static/images/products/product_3.png",
-    updatedAt: moment().subtract(3, "hours"),
-  },
-  {
-    id: uuid(),
-    name: "Lyft",
-    imageUrl: "/static/images/products/product_4.png",
-    updatedAt: moment().subtract(5, "hours"),
-  },
-  {
-    id: uuid(),
-    name: "GitHub",
-    imageUrl: "/static/images/products/product_5.png",
-    updatedAt: moment().subtract(9, "hours"),
-  },
-];
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import EditIcon from "@material-ui/icons/Edit";
 
 const useStyles = makeStyles({
   root: {
@@ -62,46 +32,63 @@ const useStyles = makeStyles({
   },
 });
 
-const DashboardTableProductos = ({ className, ...rest }) => {
+const DashboardTableProductos = ({
+  className,
+  title,
+  products,
+  onSearchChange,
+  ...rest
+}) => {
   const classes = useStyles();
-  const [products] = useState(data);
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <CardHeader
-        subtitle={`${products.length} in total`}
-        title="Latest Products"
-      />
+      <CardHeader title={`${title} / ${products.length} vendidos`} />
+      <FormControl
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          padding: "25px",
+        }}
+      >
+        <Input
+          id="search-product"
+          placeholder="Buscar..."
+          onChange={onSearchChange}
+          startAdornment={
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          }
+        />
+      </FormControl>
       <Divider />
-      <List>
+      <List style={{ overflow: "auto", maxHeight: "400px" }}>
         {products.map((product, i) => (
-          <ListItem divider={i < products.length - 1} key={product.id}>
+          <ListItem divider={i < products.length - 1} key={product.linea_id}>
             <ListItemAvatar>
-              <img
-                alt="Product"
-                className={classes.image}
-                src={product.imageUrl}
-              />
+              <CollectionsIcon alt="Product" className={classes.image} />
             </ListItemAvatar>
             <ListItemText
-              primary={product.name}
-              secondary={`Updated ${product.updatedAt.fromNow()}`}
+              primary={`${product.producto} / ${product.talla} / ${product.color}`}
+              secondary={`Vendido el dia: ${product.fecha}`}
             />
             <IconButton edge="end" size="small">
-              <MoreVertIcon />
+              <EditIcon />
             </IconButton>
           </ListItem>
         ))}
       </List>
-      <Divider />
+      <Divider p={2} />
       <Box display="flex" justifyContent="flex-end" p={2}>
         <Button
-          color="primary"
-          endIcon={<ArrowRightIcon />}
+          color="default"
+          endIcon={<ArrowDownwardIcon />}
           size="small"
           variant="text"
         >
-          View all
+          Descargar
         </Button>
       </Box>
     </Card>
