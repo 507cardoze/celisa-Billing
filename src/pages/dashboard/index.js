@@ -345,11 +345,11 @@ function Dashboard() {
               title="Productos: "
               products={
                 dataGeneral?.productosVendidos.length > 0
-                  ? dataGeneral?.productosVendidos.filter((producto) => {
-                      return producto.producto
+                  ? dataGeneral?.productosVendidos.filter((producto) =>
+                      producto.producto
                         .toLowerCase()
-                        .includes(searchFieldProductos.toLowerCase());
-                    })
+                        .includes(searchFieldProductos.toLowerCase()),
+                    )
                   : []
               }
               onSearchChange={onSearchChange}
@@ -361,11 +361,11 @@ function Dashboard() {
               title={`Ordenes: `}
               data={
                 dataGeneral?.desglose
-                  ? dataGeneral.desglose.filter((ordenes) => {
-                      return ordenes.nombre_cliente
+                  ? dataGeneral.desglose.filter((ordenes) =>
+                      ordenes.nombre_cliente
                         .toLowerCase()
-                        .includes(searchFieldOrdenes.toLowerCase());
-                    })
+                        .includes(searchFieldOrdenes.toLowerCase()),
+                    )
                   : []
               }
               onSearchChangeOrdenes={onSearchChangeOrdenes}

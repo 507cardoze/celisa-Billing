@@ -3,9 +3,9 @@ import clsx from "clsx";
 import PropTypes from "prop-types";
 import CollectionsIcon from "@material-ui/icons/Collections";
 import SearchIcon from "@material-ui/icons/Search";
-import Input from "@material-ui/core/Input";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormControl from "@material-ui/core/FormControl";
+import { Link } from "react-router-dom";
+import ExportCSV from "../ExportExcelButton/ExportExcelButton";
+import moment from "moment";
 import {
   Box,
   Card,
@@ -16,10 +16,10 @@ import {
   ListItemAvatar,
   ListItemText,
   makeStyles,
+  Input,
+  InputAdornment,
+  FormControl,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import ExportCSV from "../ExportExcelButton/ExportExcelButton";
-import moment from "moment";
 
 const useStyles = makeStyles({
   root: {
@@ -32,6 +32,14 @@ const useStyles = makeStyles({
   list: {
     overflow: "auto",
     maxHeight: "500px",
+  },
+  listItem: {
+    maxHeight: "80px",
+    textDecoration: "none",
+    color: "#646e7a",
+  },
+  ListItemText: {
+    color: "black",
   },
   formControl: {
     width: "75%",
@@ -65,17 +73,13 @@ const DashboardTableProductos = ({
           }
         />
       </FormControl>
-      <Divider />
+      <Divider p={2} />
       <List className={classes.list}>
         {products.map((product, i) => (
           <ListItem
             divider={i < products.length - 1}
-            key={product.linea_id}
-            style={{
-              maxHeight: "80px",
-              textDecoration: "none",
-              color: "#646e7a",
-            }}
+            key={i}
+            className={classes.listItem}
             component={Link}
             to={`./edit-orders/${product.orden_id}`}
           >
@@ -85,7 +89,7 @@ const DashboardTableProductos = ({
             <ListItemText
               primary={`${product.producto} / ${product.talla} / ${product.color}`}
               secondary={`Vendido el dia: ${product.fecha}`}
-              style={{ color: "black" }}
+              className={classes.ListItemText}
             />
           </ListItem>
         ))}

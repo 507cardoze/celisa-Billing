@@ -34,7 +34,6 @@ function App() {
     const interval = setInterval(async () => {
       if (localStorage.token && localStorage.refresh_token) {
         if (!isExpired) return;
-
         const body = JSON.stringify({
           token: localStorage.refresh_token,
         });
@@ -46,7 +45,6 @@ function App() {
             TokenRenewServiceUrl,
             headerRT,
           );
-          console.log(loggedInfo);
           if (loggedInfo.accessToken) {
             localStorage.setItem("token", loggedInfo.accessToken);
             const getUserData = url.getUserUrl();
