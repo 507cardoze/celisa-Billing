@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { ThemeProvider } from "@material-ui/core";
+import { ThemeProvider, CssBaseline } from "@material-ui/core";
 import theme from "./theme/";
+import { useJwt } from "react-jwt";
+import * as url from "./helpers/urls";
+import * as fetch from "./helpers/fetch";
+
+// paginas
 import { PrivateRoute } from "./components/PrivateRoute";
 import Login from "./pages/login/";
 import Dashboard from "./pages/dashboard/";
@@ -16,25 +20,21 @@ import Ordenes from "./pages/ordenes";
 import NewOrders from "./pages/ordenes/newOrders";
 import MisOrdenes from "./pages/misOrdenes/";
 import EditOrder from "./pages/ordenes/editOrders";
+
+// contexto
+
 import { UserProvider } from "./Context/userContext";
 import { OrderProvider } from "./Context/OrderContext";
-import { useJwt } from "react-jwt";
-import * as url from "./helpers/urls";
-import * as fetch from "./helpers/fetch";
 
 function App() {
   const history = useHistory();
   const { isExpired } = useJwt(localStorage.accessToken);
 
   useEffect(() => {
-    console.log("background job...");
     const interval = setInterval(async () => {
-      console.log("running...");
       if (localStorage.token && localStorage.refresh_token) {
-        console.log("both token exist...");
         if (!isExpired) return;
 
-        console.log("token is not expired...");
         const body = JSON.stringify({
           token: localStorage.refresh_token,
         });
@@ -56,7 +56,6 @@ function App() {
               loggedInfo.accessToken,
             );
             const userdata = await fetch.fetchData(getUserData, headerGetData);
-            console.log(userdata);
             if (userdata) {
               localStorage.removeItem("user");
               localStorage.setItem(
@@ -91,9 +90,9 @@ function App() {
     };
   });
   return (
-    <UserProvider>
-      <OrderProvider>
-        <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <UserProvider>
+        <OrderProvider>
           <CssBaseline />
           <Switch>
             <PrivateRoute exact path="/" component={Dashboard} />
@@ -109,9 +108,9 @@ function App() {
             <Route path="/login" component={Login} />
             <Route path="*" component={NotFoundView} />
           </Switch>
-        </ThemeProvider>
-      </OrderProvider>
-    </UserProvider>
+        </OrderProvider>
+      </UserProvider>
+    </ThemeProvider>
   );
 }
 

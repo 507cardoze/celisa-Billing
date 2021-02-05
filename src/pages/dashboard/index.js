@@ -21,6 +21,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import moment from "moment";
+import { useStickyState } from "../../helpers/fetch";
 
 function Dashboard() {
   const history = useHistory();
@@ -33,8 +34,9 @@ function Dashboard() {
   const [searchFieldProductos, setSearchFieldProductos] = useState("");
   const [searchFieldOrdenes, setSearchFieldOrdenes] = useState("");
 
-  const [desde, setDesde] = useState(
+  const [desde, setDesde] = useStickyState(
     moment().subtract(7, "days").format("YYYY-MM-DD"),
+    "desde",
   );
 
   const handleChangeRangoFecha = (fecha) => setDesde(fecha);

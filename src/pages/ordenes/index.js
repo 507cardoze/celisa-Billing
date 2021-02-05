@@ -153,7 +153,7 @@ const Ordenes = () => {
                   <TableCell align="center">{`${row.nombre} ${row.apellido}`}</TableCell>
                   <TableCell align="center">{row.nombre_cliente}</TableCell>
                   <TableCell align="center">
-                    {moment(row.fecha).format("MMMM Do YYYY")}
+                    {moment(row.fecha).locale("es").format("MMMM Do YYYY")}
                   </TableCell>
                   <TableCell align="center">
                     <Chip label={row.nombre_status} />
