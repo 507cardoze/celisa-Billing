@@ -37,17 +37,12 @@ function Dashboard() {
     moment().subtract(7, "days").format("YYYY-MM-DD"),
   );
 
-  const handleChangeRangoFecha = (fecha) => {
-    setDesde(fecha);
-  };
+  const handleChangeRangoFecha = (fecha) => setDesde(fecha);
 
-  const onSearchChange = (event) => {
-    setSearchFieldProductos(event.target.value);
-  };
+  const onSearchChange = (event) => setSearchFieldProductos(event.target.value);
 
-  const onSearchChangeOrdenes = (event) => {
+  const onSearchChangeOrdenes = (event) =>
     setSearchFieldOrdenes(event.target.value);
-  };
 
   useEffect(() => {
     fetch.UserRedirect(user, history);
@@ -63,7 +58,6 @@ function Dashboard() {
         setter(loggedInfo);
         setIsLoading(false);
       } catch (error) {
-        setIsLoading(false);
         console.log(error);
       }
     };
@@ -75,6 +69,7 @@ function Dashboard() {
       header,
       setDataGeneral,
     );
+
     fetchData(
       `${urlVendedores}?desde=${`${desde}`}&hasta=${`${moment().format(
         "YYYY-MM-DD",
@@ -117,7 +112,6 @@ function Dashboard() {
                   marginTop: "25px",
                 },
               }}
-              component={Grid}
               item
             >
               <InputLabel>{`Desde ${desde} hasta hoy, ${moment().format(
@@ -130,7 +124,6 @@ function Dashboard() {
                   name: "fecha",
                 }}
               >
-                <MenuItem aria-label="None" value="" />
                 <MenuItem
                   value={moment().subtract(7, "days").format("YYYY-MM-DD")}
                 >
@@ -243,44 +236,49 @@ function Dashboard() {
                   labels: dataGeneral.por_fecha.map((obj) => obj.fecha),
                 }}
                 title="Desglose por fecha"
+                source={dataGeneral.por_fecha}
               />
             )}
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
-            <DashboardGraphPie
-              title="Porcentajes de venta"
-              dataSet={{
-                datasets: [
+            {dataGeneral?.pagosTotales && (
+              <DashboardGraphPie
+                title="Porcentajes de venta"
+                dataSet={{
+                  datasets: [
+                    {
+                      data: [
+                        dataGeneral?.pagosTotales
+                          ? dataGeneral.pagosTotales
+                          : 0,
+                        dataGeneral?.saldosTotales
+                          ? dataGeneral.saldosTotales
+                          : 0,
+                      ],
+                      backgroundColor: [colors.indigo[500], colors.red[600]],
+                      borderWidth: 8,
+                      borderColor: colors.common.white,
+                      hoverBorderColor: colors.common.white,
+                    },
+                  ],
+                  labels: ["Pagos recibidos", "Cobros pendientes"],
+                }}
+                devices={[
                   {
-                    data: [
-                      dataGeneral?.pagosTotales ? dataGeneral.pagosTotales : 0,
-                      dataGeneral?.saldosTotales
-                        ? dataGeneral.saldosTotales
-                        : 0,
-                    ],
-                    backgroundColor: [colors.indigo[500], colors.red[600]],
-                    borderWidth: 8,
-                    borderColor: colors.common.white,
-                    hoverBorderColor: colors.common.white,
+                    title: "Pagos recibidos",
+                    value: dataGeneral?.pagosTotales?.toFixed(2),
+                    icon: AttachMoneyIcon,
+                    color: colors.indigo[500],
                   },
-                ],
-                labels: ["Pagos recibidos", "Cobros pendientes"],
-              }}
-              devices={[
-                {
-                  title: "Pagos recibidos",
-                  value: dataGeneral?.pagosTotales?.toFixed(2),
-                  icon: AttachMoneyIcon,
-                  color: colors.indigo[500],
-                },
-                {
-                  title: "Cobros pendientes",
-                  value: dataGeneral?.saldosTotales?.toFixed(2),
-                  icon: AttachMoneyIcon,
-                  color: colors.red[600],
-                },
-              ]}
-            />
+                  {
+                    title: "Cobros pendientes",
+                    value: dataGeneral?.saldosTotales?.toFixed(2),
+                    icon: AttachMoneyIcon,
+                    color: colors.red[600],
+                  },
+                ]}
+              />
+            )}
           </Grid>
 
           <Grid item lg={4} md={6} xl={3} xs={12}>
@@ -335,6 +333,7 @@ function Dashboard() {
                   ),
                 }}
                 title="Desglose por vendedor"
+                source={dataVendedores.usuariosConVenta}
               />
             )}
           </Grid>

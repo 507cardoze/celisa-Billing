@@ -1,10 +1,9 @@
-import React from "react";
+import React, { memo } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 import {
   Box,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -12,18 +11,16 @@ import {
   useTheme,
   makeStyles,
 } from "@material-ui/core";
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import ExportCSV from "../ExportExcelButton/ExportExcelButton";
+import moment from "moment";
 
 const useStyles = makeStyles(() => ({
   root: {},
 }));
 
-const DashboardGraphBar = ({ className, title, content, ...rest }) => {
+const DashboardGraphBar = ({ className, title, content, source, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
-
-  const data = content;
-
   const options = {
     animation: false,
     cornerRadius: 20,
@@ -85,19 +82,16 @@ const DashboardGraphBar = ({ className, title, content, ...rest }) => {
       <Divider />
       <CardContent>
         <Box height={400} position="relative">
-          <Bar data={data} options={options} />
+          <Bar data={content} options={options} />
         </Box>
       </CardContent>
       <Divider />
       <Box display="flex" justifyContent="flex-end" p={2}>
-        <Button
-          color="default"
-          endIcon={<ArrowDownwardIcon />}
-          size="small"
-          variant="text"
-        >
-          Exportar
-        </Button>
+        <ExportCSV
+          label="Exportar"
+          csvData={source}
+          fileName={`reporte de ventas / ${moment().format("YYYY/MM/DD")}`}
+        />
       </Box>
     </Card>
   );
@@ -107,4 +101,4 @@ DashboardGraphBar.propTypes = {
   className: PropTypes.string,
 };
 
-export default DashboardGraphBar;
+export default memo(DashboardGraphBar);

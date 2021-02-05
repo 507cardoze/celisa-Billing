@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { Doughnut } from "react-chartjs-2";
@@ -82,4 +82,4 @@ DashboardGraphPie.propTypes = {
   className: PropTypes.string,
 };
 
-export default DashboardGraphPie;
+export default memo(DashboardGraphPie);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import {
@@ -12,7 +12,9 @@ import {
   makeStyles,
 } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+import { numberWithCommas } from "../../helpers/fetch";
+
+const useStyles = makeStyles({
   root: {
     height: "100%",
   },
@@ -21,11 +23,7 @@ const useStyles = makeStyles((theme) => ({
     height: 56,
     width: 56,
   },
-}));
-
-const numberWithCommas = (x) => {
-  return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-};
+});
 
 const DashbordCard = ({
   className,
@@ -41,7 +39,7 @@ const DashbordCard = ({
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <CardContent>
-        <Grid container justify="space-between" spacing={3}>
+        <Grid container justify="space-between" spacing={1}>
           <Grid item>
             <Typography color="textSecondary" gutterBottom variant="h4">
               {title}
@@ -53,13 +51,13 @@ const DashbordCard = ({
           <Grid item>
             <Avatar
               className={classes.avatar}
-              style={{ backgroundColor: color, height: 56, width: 56 }}
+              style={{ backgroundColor: color }}
             >
               <Icon />
             </Avatar>
           </Grid>
         </Grid>
-        <Box mt={2} display="flex" alignItems="center">
+        <Box mt={1} display="flex" alignItems="center">
           <Typography color="textSecondary" variant="caption">
             {description}
           </Typography>
@@ -73,4 +71,4 @@ DashbordCard.propTypes = {
   className: PropTypes.string,
 };
 
-export default DashbordCard;
+export default memo(DashbordCard);

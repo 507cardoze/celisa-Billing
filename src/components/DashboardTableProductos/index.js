@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import CollectionsIcon from "@material-ui/icons/Collections";
@@ -8,19 +8,18 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import {
   Box,
-  Button,
   Card,
   CardHeader,
   Divider,
-  IconButton,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   makeStyles,
 } from "@material-ui/core";
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
-import EditIcon from "@material-ui/icons/Edit";
+import { Link } from "react-router-dom";
+import ExportCSV from "../ExportExcelButton/ExportExcelButton";
+import moment from "moment";
 
 const useStyles = makeStyles({
   root: {
@@ -69,30 +68,38 @@ const DashboardTableProductos = ({
       <Divider />
       <List className={classes.list}>
         {products.map((product, i) => (
-          <ListItem divider={i < products.length - 1} key={product.linea_id}>
+          <ListItem
+            divider={i < products.length - 1}
+            key={product.linea_id}
+            style={{
+              maxHeight: "80px",
+              textDecoration: "none",
+              color: "#646e7a",
+            }}
+            component={Link}
+            to={`./edit-orders/${product.orden_id}`}
+          >
             <ListItemAvatar>
               <CollectionsIcon alt="Product" className={classes.image} />
             </ListItemAvatar>
             <ListItemText
               primary={`${product.producto} / ${product.talla} / ${product.color}`}
               secondary={`Vendido el dia: ${product.fecha}`}
+              style={{ color: "black" }}
             />
-            <IconButton edge="end" size="small">
-              <EditIcon />
-            </IconButton>
           </ListItem>
         ))}
       </List>
       <Divider p={2} />
       <Box display="flex" justifyContent="flex-end" p={2}>
-        <Button
-          color="default"
-          endIcon={<ArrowDownwardIcon />}
-          size="small"
-          variant="text"
-        >
-          Exportar
-        </Button>
+        <ExportCSV
+          label="Exportar"
+          csvData={products.map((producto) => {
+            delete producto.linea_id;
+            return producto;
+          })}
+          fileName={`reporte de productos / ${moment().format("YYYY/MM/DD")}`}
+        />
       </Box>
     </Card>
   );
@@ -102,4 +109,4 @@ DashboardTableProductos.propTypes = {
   className: PropTypes.string,
 };
 
-export default DashboardTableProductos;
+export default memo(DashboardTableProductos);

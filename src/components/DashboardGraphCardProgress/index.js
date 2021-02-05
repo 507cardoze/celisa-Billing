@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import {
@@ -66,4 +66,4 @@ DashboardGraphCardProgress.propTypes = {
   className: PropTypes.string,
 };
 
-export default DashboardGraphCardProgress;
+export default memo(DashboardGraphCardProgress);

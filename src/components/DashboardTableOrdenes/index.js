@@ -1,10 +1,9 @@
-import React from "react";
+import React, { memo } from "react";
 import clsx from "clsx";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import {
   Box,
-  Button,
   Card,
   CardHeader,
   Chip,
@@ -16,11 +15,13 @@ import {
   TableRow,
   makeStyles,
 } from "@material-ui/core";
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import FormControl from "@material-ui/core/FormControl";
 import SearchIcon from "@material-ui/icons/Search";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import { Link } from "react-router-dom";
+import ExportCSV from "../ExportExcelButton/ExportExcelButton";
+import moment from "moment";
 
 const useStyles = makeStyles(() => ({
   overflow: {
@@ -61,14 +62,14 @@ const DashboardTableOrdenes = ({
       <Divider />
       <PerfectScrollbar>
         <Box minWidth={700} maxHeight={500} className={classes.overflow}>
-          <Table>
+          <Table size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
-                <TableCell>Ref Orden</TableCell>
-                <TableCell>Vendedor</TableCell>
-                <TableCell>Cliente</TableCell>
-                <TableCell>Fecha</TableCell>
-                <TableCell>Estado</TableCell>
+                <TableCell align="left">Ref Orden</TableCell>
+                <TableCell align="left">Vendedor</TableCell>
+                <TableCell align="left">Cliente</TableCell>
+                <TableCell align="left">Fecha</TableCell>
+                <TableCell align="left">Estado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody className={classes.overflow}>
@@ -78,14 +79,26 @@ const DashboardTableOrdenes = ({
                     hover
                     key={obj.orden_id}
                     divider={i < data.length - 1}
+                    className={classes.overflow}
                   >
-                    <TableCell>
-                      <Chip color="primary" label={obj.orden_id} size="small" />
+                    <TableCell align="left">
+                      <Chip
+                        color="primary"
+                        label={obj.orden_id}
+                        size="small"
+                        component={Link}
+                        to={`./edit-orders/${obj.orden_id}`}
+                        style={{
+                          cursor: "pointer",
+                          textDecoration: "none",
+                          color: "black",
+                        }}
+                      />
                     </TableCell>
-                    <TableCell>{obj.vendedor}</TableCell>
-                    <TableCell>{obj.nombre_cliente}</TableCell>
-                    <TableCell>{obj.fecha}</TableCell>
-                    <TableCell>
+                    <TableCell align="left">{obj.vendedor}</TableCell>
+                    <TableCell align="left">{obj.nombre_cliente}</TableCell>
+                    <TableCell align="left">{obj.fecha}</TableCell>
+                    <TableCell align="left">
                       <Chip
                         color="primary"
                         label={obj.nombre_status}
@@ -101,14 +114,15 @@ const DashboardTableOrdenes = ({
       </PerfectScrollbar>
       <Divider />
       <Box display="flex" justifyContent="flex-end" p={2}>
-        <Button
-          color="default"
-          endIcon={<ArrowDownwardIcon />}
-          size="small"
-          variant="text"
-        >
-          Exportar
-        </Button>
+        <ExportCSV
+          label="Exportar"
+          csvData={data.map((orden) => {
+            delete orden.pedido_id;
+            delete orden.estado;
+            return orden;
+          })}
+          fileName={`reporte de ordenes / ${moment().format("YYYY/MM/DD")}`}
+        />
       </Box>
     </Card>
   );
@@ -118,4 +132,4 @@ DashboardTableOrdenes.propTypes = {
   className: PropTypes.string,
 };
 
-export default DashboardTableOrdenes;
+export default memo(DashboardTableOrdenes);
