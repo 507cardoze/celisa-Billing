@@ -4,7 +4,7 @@ import Typography from "@material-ui/core/Typography";
 export const loginStyles = (theme, fondo) => {
   return {
     root: {
-      height: "100vh",
+      minHeight: "100vh",
     },
     image: {
       backgroundImage: `url(${fondo})`,

@@ -7,6 +7,8 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import fondoPrincipal from "../../static/fondo-principal.jpg";
+import fondoPrincipal2 from "../../static/fondo-principal2.jpg";
+import fondoPrincipal3 from "../../static/fondo-principal3.jpg";
 import * as fetch from "../../helpers/fetch";
 import * as styles from "../../helpers/styles";
 import * as toast from "../../helpers/toast";
@@ -17,9 +19,13 @@ import { OrderContext } from "../../Context/OrderContext";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
 import { Helmet } from "react-helmet";
 
-const useStyles = makeStyles((theme) =>
-  styles.loginStyles(theme, fondoPrincipal),
-);
+const useStyles = makeStyles((theme) => {
+  const fondos = [fondoPrincipal, fondoPrincipal2, fondoPrincipal3];
+  return styles.loginStyles(
+    theme,
+    fondos[Math.floor(Math.random() * fondos.length)],
+  );
+});
 
 function Login() {
   const classes = useStyles();
@@ -105,7 +111,7 @@ function Login() {
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-            CelisaStore Billing
+            CELISASTORE BILLING
           </Typography>
           <form className={classes.form} onSubmit={handleOnSubmit}>
             <TextField
@@ -117,7 +123,7 @@ function Login() {
               value={username}
               onChange={(e) => setUserName(e.target.value)}
               autoFocus
-              disabled={isLoading}
+              name="username"
             />
             <TextField
               variant="outlined"
@@ -127,6 +133,7 @@ function Login() {
               type="password"
               autoComplete="current-password"
               value={password}
+              name="password"
               onChange={(e) => setPassword(e.target.value)}
               disabled={isLoading}
             />

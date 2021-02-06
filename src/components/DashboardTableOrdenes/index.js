@@ -88,11 +88,7 @@ const DashboardTableOrdenes = ({
                         size="small"
                         component={Link}
                         to={`./edit-orders/${obj.orden_id}`}
-                        style={{
-                          cursor: "pointer",
-                          textDecoration: "none",
-                          color: "black",
-                        }}
+                        clickable
                       />
                     </TableCell>
                     <TableCell align="left">{obj.vendedor}</TableCell>

@@ -40,31 +40,11 @@ function MainLayout(props) {
 
     try {
       const query = await fetch(logout, header);
-      const loggedInfo = await query.json();
-      if (loggedInfo === "refresh token deleted.") {
-        localStorage.removeItem("token");
-        localStorage.removeItem("refresh_token");
-        localStorage.removeItem("user");
-        localStorage.removeItem("orden");
-        localStorage.removeItem("productoInput");
-        localStorage.removeItem("activeStep");
-        history.push("/login");
-      } else {
-        localStorage.removeItem("token");
-        localStorage.removeItem("refresh_token");
-        localStorage.removeItem("user");
-        localStorage.removeItem("orden");
-        localStorage.removeItem("productoInput");
-        localStorage.removeItem("activeStep");
-        history.push("/login");
-      }
+      await query.json();
+      localStorage.clear();
+      history.push("/login");
     } catch (error) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("refresh_token");
-      localStorage.removeItem("user");
-      localStorage.removeItem("orden");
-      localStorage.removeItem("productoInput");
-      localStorage.removeItem("activeStep");
+      localStorage.clear();
       history.push("/login");
     }
   };
@@ -80,7 +60,7 @@ function MainLayout(props) {
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}
       >
-        <Helmet title={props.Tittle} />
+        <Helmet title={props.Tittle.toUpperCase()} />
         <Toolbar className={classes.toolbar}>
           <IconButton
             edge="start"
@@ -101,10 +81,19 @@ function MainLayout(props) {
             noWrap
             className={classes.title}
           >
-            {props.Tittle}
+            {props.Tittle.toUpperCase()}
           </Typography>
 
           <IconButton color="inherit" onClick={handleLogout}>
+            <Typography
+              component="h1"
+              variant="h6"
+              color="inherit"
+              noWrap
+              style={{ marginRight: 15 }}
+            >
+              {`Cerrar sesion`}
+            </Typography>
             <ExitToAppIcon />
           </IconButton>
         </Toolbar>
