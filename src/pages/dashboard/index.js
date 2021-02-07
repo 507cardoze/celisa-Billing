@@ -126,6 +126,9 @@ function Dashboard() {
                   name: "fecha",
                 }}
               >
+                <MenuItem value={null}>
+                  <em>Seleccione una rango de fecha</em>
+                </MenuItem>
                 <MenuItem
                   value={moment().subtract(7, "days").format("YYYY-MM-DD")}
                 >

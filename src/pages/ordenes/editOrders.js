@@ -1,20 +1,17 @@
 import React, { useState, useEffect, useContext, memo } from "react";
-import MainLayout from "../../components/MainLayOut/mainLayout.component";
-import { Container, Grid, Box, Typography } from "@material-ui/core";
-import BackdropSpinner from "../../components/BackDrop/backDrop";
+import { Container, Grid, Box, Typography, Tabs, Tab } from "@material-ui/core";
+import * as toast from "../../helpers/toast";
 import * as url from "../../helpers/urls";
 import * as fetch from "../../helpers/fetch";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../Context/userContext";
+import MainLayout from "../../components/MainLayOut/mainLayout.component";
+import BackdropSpinner from "../../components/BackDrop/backDrop";
 import BackButton from "../../components/BackButton/BackButton";
 import OrderDetails from "../../components/OrderDetail/OrderDetail";
 import DashboardOrdenes from "../../components/DashboardOrdenes/DashboardOrdenes";
 import ProductosTable from "../../components/ProductosTable/ProductosTable";
 import PagosRealizados from "../../components/PagosRealizados/PagosRealizados";
-import { useStickyState } from "../../helpers/fetch";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import * as toast from "../../helpers/toast";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -53,7 +50,7 @@ function EditOrder({ match }) {
   const [status, setStatus] = useState([]);
   const [tipoPago, setTipoPago] = useState([]);
   const [ordenIsEditable, setOrdenIsEditable] = useState(false);
-  const [value, setValue] = useStickyState(0, "value");
+  const [value, setValue] = fetch.useStickyState(0, "value");
   const producto_inicial = {
     id: "",
     descripcion: "",
@@ -352,6 +349,11 @@ function EditOrder({ match }) {
     fetchData(urlProveedores, header, setProveedores);
     fetchData(urlStatus, header, setStatus);
     fetchData(urlTipo, header, setTipoPago);
+
+    console.log("entrando... one two check check");
+    return () => {
+      console.log("saliendo... one two check check");
+    };
   }, [user, history, urlGet, id_orden, urlProveedores, urlStatus, urlTipo]);
 
   return (
