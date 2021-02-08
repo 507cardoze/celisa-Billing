@@ -16,6 +16,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
+import EditIcon from "@material-ui/icons/Edit";
+import { Link } from "react-router-dom";
 
 function ProductosTable({
   orden,
@@ -28,6 +30,7 @@ function ProductosTable({
   deleteProducto,
   proveedores,
   onChangeProveedor,
+  match,
 }) {
   const handleChange = (event) => {
     setProductoInput({
@@ -61,7 +64,7 @@ function ProductosTable({
                 {editable && <TableCell align="right">Proveedor</TableCell>}
                 <TableCell align="right">Precio Unitario&nbsp;($)</TableCell>
                 <TableCell align="right">Precio Total&nbsp;($)</TableCell>
-                {editable && <TableCell align="right">Eliminar</TableCell>}
+                {editable && <TableCell align="right">Accion</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -143,7 +146,17 @@ function ProductosTable({
                     )}`}
                   </TableCell>
                   {editable && (
-                    <TableCell align="right">
+                    <TableCell
+                      align="center"
+                      style={{ display: "flex", flexWrap: "nowrap" }}
+                    >
+                      <IconButton
+                        aria-label="edit"
+                        component={Link}
+                        to={`${producto.orden_id}/editar/${producto.linea_id}`}
+                      >
+                        <EditIcon />
+                      </IconButton>
                       <IconButton
                         aria-label="delete"
                         onClick={() => deleteProducto(producto.linea_id)}

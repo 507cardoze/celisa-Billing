@@ -3,7 +3,7 @@ import { Container, Grid, Box, Typography, Tabs, Tab } from "@material-ui/core";
 import * as toast from "../../helpers/toast";
 import * as url from "../../helpers/urls";
 import * as fetch from "../../helpers/fetch";
-import { useHistory } from "react-router-dom";
+import { useHistory, Route } from "react-router-dom";
 import { UserContext } from "../../Context/userContext";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
@@ -12,6 +12,7 @@ import OrderDetails from "../../components/OrderDetail/OrderDetail";
 import DashboardOrdenes from "../../components/DashboardOrdenes/DashboardOrdenes";
 import ProductosTable from "../../components/ProductosTable/ProductosTable";
 import PagosRealizados from "../../components/PagosRealizados/PagosRealizados";
+import EditProducto from "../../components/EditProducto/EditProducto";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -20,8 +21,8 @@ function TabPanel(props) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      id={`tabpanel-${index}`}
+      aria-labelledby={`tab-${index}`}
       {...other}
     >
       {value === index && (
@@ -35,12 +36,13 @@ function TabPanel(props) {
 
 function a11yProps(index) {
   return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    id: `tab-${index}`,
+    "aria-controls": `tabpanel-${index}`,
   };
 }
 
-function EditOrder({ match }) {
+function EditOrder(props) {
+  const { match } = props;
   const id_orden = parseInt(match.params.id);
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
@@ -349,11 +351,6 @@ function EditOrder({ match }) {
     fetchData(urlProveedores, header, setProveedores);
     fetchData(urlStatus, header, setStatus);
     fetchData(urlTipo, header, setTipoPago);
-
-    console.log("entrando... one two check check");
-    return () => {
-      console.log("saliendo... one two check check");
-    };
   }, [user, history, urlGet, id_orden, urlProveedores, urlStatus, urlTipo]);
 
   return (
@@ -394,17 +391,30 @@ function EditOrder({ match }) {
                 <Tab label="Pagos realizados a esta cuenta" {...a11yProps(1)} />
               </Tabs>
               <TabPanel value={value} index={0}>
-                <ProductosTable
-                  addProducto={addProducto}
-                  orden={orden}
-                  productoInput={productoInput}
-                  setProductoInput={setProductoInput}
-                  sumarCantidadProducto={sumarCantidadProducto}
-                  restarCantidadProducto={restarCantidadProducto}
-                  deleteProducto={deleteProducto}
-                  proveedores={proveedores}
-                  onChangeProveedor={onChangeProveedor}
-                  editable={user?.rol === "Administrador" ? true : false}
+                <Route
+                  exact
+                  path={`${match.path}`}
+                  render={(props) => (
+                    <ProductosTable
+                      addProducto={addProducto}
+                      orden={orden}
+                      productoInput={productoInput}
+                      setProductoInput={setProductoInput}
+                      sumarCantidadProducto={sumarCantidadProducto}
+                      restarCantidadProducto={restarCantidadProducto}
+                      deleteProducto={deleteProducto}
+                      proveedores={proveedores}
+                      onChangeProveedor={onChangeProveedor}
+                      editable={user?.rol === "Administrador" ? true : false}
+                      {...props}
+                    />
+                  )}
+                />
+                <Route
+                  path={`${match.path}/editar/:linea_id`}
+                  render={(props) => (
+                    <EditProducto refreshData={refreshData} {...props} />
+                  )}
                 />
               </TabPanel>
               <TabPanel value={value} index={1}>

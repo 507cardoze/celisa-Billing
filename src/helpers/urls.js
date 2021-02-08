@@ -128,6 +128,10 @@ export const deletePagoUrl = () => {
   return `${process.env.REACT_APP_BACK_END}/v1/ordenes/delete-pago`;
 };
 
+export const getCamposProductosUrl = () => {
+  return `${process.env.REACT_APP_BACK_END}/v1/ordenes/byProducto`;
+};
+
 export const updateCamposProductosUrl = () => {
   return `${process.env.REACT_APP_BACK_END}/v1/ordenes/update-producto`;
 };

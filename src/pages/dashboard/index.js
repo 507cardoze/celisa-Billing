@@ -126,7 +126,7 @@ function Dashboard() {
                   name: "fecha",
                 }}
               >
-                <MenuItem value={null}>
+                <MenuItem value={desde}>
                   <em>Seleccione una rango de fecha</em>
                 </MenuItem>
                 <MenuItem
