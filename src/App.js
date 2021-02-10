@@ -20,6 +20,8 @@ import Ordenes from "./pages/ordenes";
 import NewOrders from "./pages/ordenes/newOrders";
 import MisOrdenes from "./pages/misOrdenes/";
 import EditOrder from "./pages/ordenes/editOrders";
+import Clientes from "./pages/clientes/";
+import EditCliente from "./pages/clientes/clienteEdit";
 
 // contexto
 
@@ -94,15 +96,20 @@ function App() {
           <CssBaseline />
           <Switch>
             <PrivateRoute exact path="/" component={Dashboard} />
-            <PrivateRoute path="/profile" component={ProfilePage} />
-            <PrivateRoute path="/users" component={Users} />
-            <PrivateRoute path="/pedidos" component={Pedidos} />
-            <PrivateRoute path="/orders" component={Ordenes} />
+            <PrivateRoute exact path="/profile" component={ProfilePage} />
+            <PrivateRoute exact path="/users" component={Users} />
+            <PrivateRoute exact path="/pedidos" component={Pedidos} />
+            <PrivateRoute exact path="/orders" component={Ordenes} />
             <PrivateRoute path="/edit-orders/:id" component={EditOrder} />
             <PrivateRoute path="/create-orders" component={NewOrders} />
             <PrivateRoute path="/my-orders" component={MisOrdenes} />
             <PrivateRoute path="/create-user" component={UsersCreate} />
             <PrivateRoute path="/edit-user/:id" component={UsersEdit} />
+            <PrivateRoute exact path="/clientes" component={Clientes} />
+            <PrivateRoute
+              path="/clientes/:id_cliente"
+              component={EditCliente}
+            />
             <Route path="/login" component={Login} />
             <Route path="*" component={NotFoundView} />
           </Switch>

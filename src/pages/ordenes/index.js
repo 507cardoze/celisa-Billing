@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext, memo } from "react";
-import { Box, Container } from "@material-ui/core";
+import { Box, Container, Chip, TableRow, TableCell } from "@material-ui/core";
 import Toolbar from "../../components/ToolBar/Toolbar";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
 import DataTable from "../../components/DataTable/databable";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
 import * as url from "../../helpers/urls";
 import * as fetch from "../../helpers/fetch";
 import { useHistory } from "react-router-dom";
@@ -12,7 +10,6 @@ import moment from "moment";
 import { UserContext } from "../../Context/userContext";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
 import NumericToolBar from "../../components/NumericToolBar/NumericToolBar";
-import Chip from "@material-ui/core/Chip";
 
 const Ordenes = () => {
   //state
@@ -87,8 +84,6 @@ const Ordenes = () => {
       setRows,
     );
   }, [user, history, page, limit, atrib, order, getAllURL, estado]);
-
-  console.log(page);
 
   return (
     <MainLayout Tittle="Ordenes">

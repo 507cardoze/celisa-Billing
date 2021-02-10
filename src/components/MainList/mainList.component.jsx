@@ -13,6 +13,7 @@ import ControlPointIcon from "@material-ui/icons/ControlPoint";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import PieChartIcon from "@material-ui/icons/PieChart";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 
 import { UserContext } from "../../Context/userContext";
 
@@ -55,6 +56,15 @@ function MainList() {
                 <AssignmentIcon />
               </ListItemIcon>
               <ListItemText primary="PEDIDOS" />
+            </ListItem>
+          </NavLink>
+
+          <NavLink to="/clientes" className={classes.links}>
+            <ListItem button className="list-fix-padding">
+              <ListItemIcon>
+                <EmojiPeopleIcon />
+              </ListItemIcon>
+              <ListItemText primary="CLIENTES" />
             </ListItem>
           </NavLink>
 
