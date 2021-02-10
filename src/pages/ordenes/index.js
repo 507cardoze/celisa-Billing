@@ -20,13 +20,13 @@ const Ordenes = () => {
   const [rows, setRows] = useState({});
   const [resultados, setResultados] = useState([]);
   const [searchField, setSearchField] = useState("");
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(50);
+  const [page, setPage] = fetch.useStickyState(1, "orders_page");
+  const [limit, setLimit] = fetch.useStickyState(50, "orders_limit");
   const [atrib, setAtrib] = useState("orden_id");
   const [order, setOrder] = useState("desc");
   const [estado, setEstado] = useState(0);
 
-  const handleChangePage = (page) => setPage(page++);
+  const handleChangePage = (page) => setPage(page + 1);
   const handleChangeLimit = (limit) => setLimit(limit);
   const handleChangeAtrib = (atrib) => setAtrib(atrib);
   const handleChangeOrder = (order) => setOrder(order);
@@ -87,6 +87,8 @@ const Ordenes = () => {
       setRows,
     );
   }, [user, history, page, limit, atrib, order, getAllURL, estado]);
+
+  console.log(page);
 
   return (
     <MainLayout Tittle="Ordenes">

@@ -38,16 +38,20 @@ function DataTable({
         rowsPerPageOptions={[50, 100, 200]}
         labelRowsPerPage="Filas por página"
         labelDisplayedRows={({ from, to, count }) => {
-          return `${from}-${to} de ${count}`;
+          return `${from}-${to} de ${count ? count : 0}`;
         }}
         component="div"
-        count={total && total}
+        count={total ? total : 0}
         rowsPerPage={limit}
         onChangeRowsPerPage={(event) =>
           handleChangeLimit(parseInt(event.target.value))
         }
         page={page - 1}
-        onChangePage={(event, page) => handleChangePage(page)}
+        onChangePage={(event, page) => {
+          console.log("event.target.value: ", event.target);
+          console.log("page: ", page);
+          handleChangePage(page);
+        }}
       />
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
@@ -76,10 +80,10 @@ function DataTable({
         rowsPerPageOptions={[50, 100, 200]}
         labelRowsPerPage="Filas por página"
         labelDisplayedRows={({ from, to, count }) => {
-          return `${from}-${to} de ${count}`;
+          return `${from}-${to} de ${count ? count : 0}`;
         }}
         component="div"
-        count={total && total}
+        count={total ? total : 0}
         rowsPerPage={limit}
         onChangeRowsPerPage={(event) =>
           handleChangeLimit(parseInt(event.target.value))

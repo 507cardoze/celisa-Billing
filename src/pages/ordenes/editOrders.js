@@ -51,7 +51,6 @@ function EditOrder(props) {
   const [proveedores, setProveedores] = useState([]);
   const [status, setStatus] = useState([]);
   const [tipoPago, setTipoPago] = useState([]);
-  const [ordenIsEditable, setOrdenIsEditable] = useState(false);
   const [value, setValue] = fetch.useStickyState(0, "value");
   const producto_inicial = {
     id: "",
@@ -85,8 +84,6 @@ function EditOrder(props) {
     setIsLoading(true);
   };
 
-  const toggleEditableDetails = () => setOrdenIsEditable(!ordenIsEditable);
-
   const refreshData = () =>
     fetchDataOff(`${urlGet}/${id_orden}`, header, setOrden);
 
@@ -101,33 +98,6 @@ function EditOrder(props) {
       ...orden,
       [event.target.name]: event.target.value,
     });
-
-  const guardarCambiosDetallesFactura = async () => {
-    if (orden.nombre_cliente.trim() === "")
-      return toast.errorToast("Nombre de factura no puede ir vacio!");
-    if (orden.numero_cliente.trim() === "")
-      return toast.errorToast("Teléfono no puede ir vacio!");
-    if (orden.direccion_cliente.trim() === "")
-      return toast.errorToast("Dirección no puede ir vacio!");
-
-    const body = JSON.stringify({
-      id_orden: id_orden,
-      nombre_cliente: orden.nombre_cliente,
-      numero_cliente: orden.numero_cliente,
-      direccion_cliente: orden.direccion_cliente,
-    });
-    const header = fetch.requestHeader("PUT", body, localStorage.token);
-    const updateServiceUrl = url.updateOrdenDetailsUrl();
-    const loggedInfo = await fetch.fetchData(updateServiceUrl, header);
-    fetch.UnauthorizedRedirect(loggedInfo, history);
-    if (loggedInfo === "Detalles Actualizados.") {
-      await refreshData();
-      toggleEditableDetails();
-      toast.msgSuccess("Detalles Actualizados.");
-    } else {
-      toast.errorToast("error al actualizar los datos.");
-    }
-  };
 
   const addProducto = async () => {
     if (
@@ -373,12 +343,10 @@ function EditOrder(props) {
             <OrderDetails
               orden={orden}
               handleChange={handleChange}
-              ordenIsEditable={ordenIsEditable}
-              toggleEditableDetails={toggleEditableDetails}
               refreshData={refreshData}
-              guardarCambiosDetallesFactura={guardarCambiosDetallesFactura}
               status={status}
               onChangeEstado={onChangeEstado}
+              admin={user?.rol === "Administrador" ? true : false}
             />
             <DashboardOrdenes orden={orden} suma={suma} sumaPagos={sumaPagos} />
             <Grid item xs={12} style={{ width: "100%" }}>
