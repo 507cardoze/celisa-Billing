@@ -64,35 +64,65 @@ function Login() {
       localStorage.setItem("refresh_token", loggedInfo.refreshToken);
 
       const getUserData = url.getUserUrl();
+      const verifyUrl = url.verifyLoggedUser();
       const headerGetData = fetch.requestHeader(
         "GET",
         null,
         loggedInfo.accessToken,
       );
-      const userdata = await fetch.fetchData(getUserData, headerGetData);
-      setUser({
-        user_id: userdata[0].user_id,
-        name: userdata[0].name,
-        lastname: userdata[0].lastname,
-        email: userdata[0].correo_electronico,
-        number: userdata[0].contact_number,
-        id_pais: userdata[0].id_pais,
-        address: userdata[0].address,
-        pais: userdata[0].pais,
-        estado: userdata[0].estado,
-        rol: userdata[0].rol,
-        username: userdata[0].username,
-      });
-      setOrden({
-        id_pedido: null,
-        productos: [],
-        nombre_cliente: `${userdata[0].name} ${userdata[0].lastname}`,
-        numero_cliente: userdata[0].contact_number,
-        direccion_cliente: userdata[0].address,
-      });
 
+      const userdata = await fetch.fetchData(getUserData, headerGetData);
       if (userdata[0].estado === 0)
         return toast.msgWarn("Usuario desactivado.");
+      if (userdata[0].rol !== "Administrador") {
+        const cliente_id = await fetch.fetchData(verifyUrl, headerGetData);
+        setOrden({
+          id_pedido: null,
+          id_cliente: cliente_id,
+          productos: [],
+          nombre_cliente: `${userdata[0].name} ${userdata[0].lastname}`,
+          numero_cliente: userdata[0].contact_number,
+          direccion_cliente: userdata[0].address,
+        });
+        setUser({
+          user_id: userdata[0].user_id,
+          name: userdata[0].name,
+          lastname: userdata[0].lastname,
+          email: userdata[0].correo_electronico,
+          number: userdata[0].contact_number,
+          id_pais: userdata[0].id_pais,
+          address: userdata[0].address,
+          pais: userdata[0].pais,
+          estado: userdata[0].estado,
+          rol: userdata[0].rol,
+          username: userdata[0].username,
+          id_cliente: cliente_id,
+        });
+      } else {
+        setOrden({
+          id_pedido: null,
+          id_cliente: null,
+          productos: [],
+          nombre_cliente: "",
+          numero_cliente: "",
+          direccion_cliente: "",
+        });
+        setUser({
+          user_id: userdata[0].user_id,
+          name: userdata[0].name,
+          lastname: userdata[0].lastname,
+          email: userdata[0].correo_electronico,
+          number: userdata[0].contact_number,
+          id_pais: userdata[0].id_pais,
+          address: userdata[0].address,
+          pais: userdata[0].pais,
+          estado: userdata[0].estado,
+          rol: userdata[0].rol,
+          username: userdata[0].username,
+          id_cliente: null,
+        });
+      }
+
       history.push("/");
     } else if (loggedInfo === "conexion error") {
       toast.msgWarn("Verifique su conexion a internet.");

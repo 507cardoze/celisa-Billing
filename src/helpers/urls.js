@@ -170,3 +170,13 @@ export const getDataReporteVendedores = () => {
 export const getDataReporteProveedores = () => {
   return `${process.env.REACT_APP_BACK_END}/v1/reportes/ranking-proveedores`;
 };
+
+//CLIENTES
+
+export const getClientes = () => {
+  return `${process.env.REACT_APP_BACK_END}/v1/clientes/all-clientes`;
+};
+
+export const verifyLoggedUser = () => {
+  return `${process.env.REACT_APP_BACK_END}/v1/clientes/verify-loggedUser`;
+};

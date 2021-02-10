@@ -94,13 +94,7 @@ function NewOrders() {
             color="primary"
             onClick={handleNext}
             className={classes.button}
-            disabled={
-              orden?.nombre_cliente === "" &&
-              orden?.numero_cliente === "" &&
-              orden?.direccion_cliente === ""
-                ? true
-                : false
-            }
+            disabled={orden?.id_cliente === null ? true : false}
           >
             Siguiente
           </Button>
@@ -146,10 +140,12 @@ function NewOrders() {
   const handleResetOrden = () =>
     setOrden({
       id_pedido: null,
+      id_cliente: user.rol === "Administrador" ? null : user.id_cliente,
+      nombre_cliente:
+        user.rol === "Administrador" ? null : `${user.name} ${user.lastname}`,
+      numero_cliente: user.rol === "Administrador" ? null : user.number,
+      direccion_cliente: user.rol === "Administrador" ? null : user.address,
       productos: [],
-      nombre_cliente: `${user.name} ${user.lastname}`,
-      numero_cliente: user.number,
-      direccion_cliente: user.address,
     });
 
   const getdataURL = url.activosPedidosUrl();
@@ -173,13 +169,7 @@ function NewOrders() {
   const handleCompletarOrden = async () => {
     //validar que todo este correcto
     if (!orden.id_pedido) return handleReset();
-
-    if (
-      orden?.nombre_cliente === "" ||
-      orden?.numero_cliente === "" ||
-      orden?.direccion_cliente === ""
-    )
-      return handleMovingSteps(1);
+    if (!orden.id_cliente) return handleMovingSteps(1);
     if (orden?.productos?.length <= 0) return handleMovingSteps(2);
 
     // verificar que el pedido este aun activo antes de crear la orden
@@ -208,23 +198,8 @@ function NewOrders() {
 
   useEffect(() => {
     const handleMovingSteps = (num) => setActiveStep(num);
-    if (
-      orden?.nombre_cliente === "" &&
-      orden?.numero_cliente === "" &&
-      orden?.direccion_cliente === ""
-    ) {
-      setOrden({
-        ...orden,
-        nombre_cliente: `${user.name} ${user.lastname}`,
-        numero_cliente: user.number,
-        direccion_cliente: user.address,
-      });
-    }
-
-    if (!orden?.id_pedido) {
-      handleMovingSteps(0);
-    }
-  }, [orden, setOrden, user, setActiveStep]);
+    if (!orden?.id_pedido) return handleMovingSteps(0);
+  }, [orden, setOrden, user, setActiveStep, history]);
 
   return (
     <MainLayout Tittle="Crear Orden">
