@@ -6,12 +6,14 @@ import {
   Divider,
   Typography,
   Grid,
+  Button,
+  MenuItem,
+  FormHelperText,
+  FormControl,
+  Select,
+  Chip,
 } from "@material-ui/core";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Chip from "@material-ui/core/Chip";
+import { useHistory } from "react-router-dom";
 
 const OrderDetails = ({
   className,
@@ -23,6 +25,7 @@ const OrderDetails = ({
   onChangeEstado,
   ...rest
 }) => {
+  const history = useHistory();
   return (
     <Grid item xs={12} md={7} lg={7}>
       <Card className={className} {...rest}>
@@ -82,6 +85,20 @@ const OrderDetails = ({
                   {`Dirección de la factura: ${orden.direccion_cliente}`}
                 </Typography>
               </Grid>
+              {admin && (
+                <Grid xs={12} item>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ margin: "10px" }}
+                    onClick={() => {
+                      history.push(`/clientes/editar/${orden.id_cliente}`);
+                    }}
+                  >
+                    Modificar cliente
+                  </Button>
+                </Grid>
+              )}
             </Grid>
             <Grid item xs={12}>
               <Grid
