@@ -180,3 +180,11 @@ export const getClientes = () => {
 export const verifyLoggedUser = () => {
   return `${process.env.REACT_APP_BACK_END}/v1/clientes/verify-loggedUser`;
 };
+
+export const getClientDetails = () => {
+  return `${process.env.REACT_APP_BACK_END}/v1/clientes/clientDetails`;
+};
+
+export const getClientSearch = () => {
+  return `${process.env.REACT_APP_BACK_END}/v1/clientes/clientSearch`;
+};

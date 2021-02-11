@@ -5,6 +5,7 @@ import {
   Select,
   MenuItem,
   FormHelperText,
+  Button,
 } from "@material-ui/core";
 import { OrderContext } from "../../Context/OrderContext";
 import { UserContext } from "../../Context/userContext";
@@ -33,38 +34,25 @@ function ClientDataForm() {
     fetchData(getClientsUrl, header, setClientes);
   }, [user, history]);
 
-  console.log(user);
-
   return (
-    <Grid container spacing={2} xs={12} md={12} lg={12}>
+    <Grid container xs={12} md={12} lg={12}>
       <BackdropSpinner isLoading={!isLoading} />
       <Grid item xs={12} md={4} lg={4}>
-        <FormControl
-          style={{
-            formControl: {
-              margin: "25px",
-              minWidth: 250,
-            },
-            selectEmpty: {
-              marginTop: "25px",
-            },
-          }}
-          item
-        >
+        <FormControl item>
           <Select
             variant="outlined"
             fullWidth
             value={orden.id_cliente}
             onChange={(e) => {
-              const clienteData = clientes.filter(
+              const clienteData = clientes.find(
                 (cliente) => cliente.cliente_id === parseInt(e.target.value),
               );
               setOrden({
                 ...orden,
                 id_cliente: parseInt(e.target.value),
-                nombre_cliente: clienteData[0].nombre,
-                numero_cliente: clienteData[0].numero,
-                direccion_cliente: clienteData[0].direccion,
+                nombre_cliente: clienteData.nombre,
+                numero_cliente: clienteData.numero,
+                direccion_cliente: clienteData.direccion,
               });
             }}
             inputProps={{
@@ -81,7 +69,19 @@ function ClientDataForm() {
             ))}
           </Select>
           {user.rol === "Administrador" && (
-            <FormHelperText>Listado de clientes.</FormHelperText>
+            <>
+              <FormHelperText>Listado de clientes.</FormHelperText>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ margin: "10px" }}
+                onClick={() => {
+                  history.push(`/clientes/crear`);
+                }}
+              >
+                Crear Cliente
+              </Button>
+            </>
           )}
         </FormControl>
       </Grid>

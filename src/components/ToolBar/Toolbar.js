@@ -118,6 +118,29 @@ const getLinksContainer = (type, data, classes) => {
           })}
         </List>
       );
+    case "clientes":
+      return (
+        <List component="nav" aria-label="results">
+          {data.map((row) => {
+            return (
+              <>
+                <ListItem
+                  button
+                  component={Link}
+                  to={`/clientes/${row.cliente_id}`}
+                  className={`${classes.a}`}
+                  key={row.cliente_id}
+                >
+                  <ListItemText
+                    primary={`#${row.cliente_id} - cliente: ${row.nombre}`}
+                  />
+                </ListItem>
+                <Divider light />
+              </>
+            );
+          })}
+        </List>
+      );
     default:
       return null;
   }
@@ -136,6 +159,7 @@ const Toolbar = ({
   filename,
   pedidos,
   ordenes,
+  clientes,
   type,
   ...rest
 }) => {

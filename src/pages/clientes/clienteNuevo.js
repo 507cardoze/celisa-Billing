@@ -25,14 +25,19 @@ import BackdropSpinner from "../../components/BackDrop/backDrop";
 
 const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 
-function EditCliente({ className, match, ...rest }) {
+function CrearCliente({ className, ...rest }) {
   const classes = useStyles();
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [user] = useContext(UserContext);
   const [paises, setPaises] = useState([]);
-  const [userData, setUserData] = useState(null);
-  const cliente_id = match.params.cliente_id;
+  const [userData, setUserData] = useState({
+    nombre: "",
+    direccion: "",
+    numero: "+507",
+    id_pais: null,
+    observacion: "",
+  });
 
   const handleChange = (event) => {
     setUserData({
@@ -44,28 +49,28 @@ function EditCliente({ className, match, ...rest }) {
   const handleOnSubmit = async (event) => {
     event.preventDefault();
 
-    if (!userData.nombre) return toast.errorToast("Nombre no puede ir vacio!");
-    if (!userData.direccion)
+    if (!userData.nombre.trim().length > 0)
+      return toast.errorToast("Nombre no puede ir vacio!");
+    if (!userData.direccion.trim().length > 0)
       return toast.errorToast("Apellido no puede ir vacio!");
-    if (!userData.numero)
+    if (!userData.numero.trim().length > 0)
       return toast.errorToast("Correo electrónico no puede ir vacio!");
     if (!userData.id_pais) return toast.errorToast("Pais no puede ir vacio!");
 
     const body = JSON.stringify(userData);
 
-    const header = fetch.requestHeader("PUT", body, localStorage.token);
+    const header = fetch.requestHeader("POST", body, localStorage.token);
     const getClientDetails = url.getClientDetails();
 
     setIsLoading(true);
     fetch.UserRedirect(user, history);
     const loggedInfo = await fetch.fetchData(getClientDetails, header);
     fetch.UnauthorizedRedirect(loggedInfo, history);
-    if (loggedInfo === "Detalles Actualizados.") {
-      // fetchUserData(getUserData, headerGetData, setUser);
-      // fetchData(getPaisData, headerGetData, setPaises);
-      toast.msgSuccess("Detalles Actualizados.");
+    if (loggedInfo === "Cliente Creado.") {
+      history.push("/clientes");
+      toast.msgSuccess("Cliente Creado.");
     } else {
-      toast.errorToast("error al actualizar los datos.");
+      toast.errorToast("error al crear usuario");
     }
 
     setIsLoading(false);
@@ -75,7 +80,6 @@ function EditCliente({ className, match, ...rest }) {
     fetch.UserRedirect(user, history);
     const header = fetch.requestHeader("GET", null, localStorage.token);
     const getPaisData = url.getPaisesUrl();
-    const getClientDetails = url.getClientDetails();
     const fetchData = async (url, header, setter) => {
       setIsLoading(true);
       const loggedInfo = await fetch.fetchData(url, header);
@@ -83,26 +87,9 @@ function EditCliente({ className, match, ...rest }) {
       setter(loggedInfo);
       setIsLoading(false);
     };
-    const fetchUserData = async (url, header, setter) => {
-      const loggedInfo = await fetch.fetchData(url, header);
-      fetch.UnauthorizedRedirect(loggedInfo, history);
-      setter({
-        id_cliente: loggedInfo[0].cliente_id,
-        nombre: loggedInfo[0].nombre,
-        direccion: loggedInfo[0].direccion,
-        id_pais: loggedInfo[0].id_pais,
-        pais: loggedInfo[0].pais,
-        observacion: loggedInfo[0].observacion,
-        numero: loggedInfo[0].numero,
-      });
-    };
     fetchData(getPaisData, header, setPaises);
-    fetchUserData(
-      `${getClientDetails}?cliente_id=${cliente_id}`,
-      header,
-      setUserData,
-    );
-  }, [user, history, cliente_id]);
+  }, [user, history]);
+
   return (
     <>
       <BackdropSpinner isLoading={!isLoading} />
@@ -125,8 +112,8 @@ function EditCliente({ className, match, ...rest }) {
       >
         <Card>
           <CardHeader
-            subheader="La información del cliente se puede editar"
-            title="Editar Cliente"
+            subheader="Ingrese la información del cliente"
+            title="Crear Cliente"
           />
           <Divider />
           {userData && (
@@ -136,11 +123,11 @@ function EditCliente({ className, match, ...rest }) {
                   <TextField
                     fullWidth
                     helperText="Por favor especifique el nombre"
-                    label="Nombre"
+                    label="Nombre completo"
                     name="nombre"
                     onChange={handleChange}
                     required
-                    value={userData?.nombre}
+                    value={userData.nombre}
                     variant="outlined"
                   />
                 </Grid>
@@ -151,7 +138,7 @@ function EditCliente({ className, match, ...rest }) {
                     name="direccion"
                     onChange={handleChange}
                     required
-                    value={userData?.direccion}
+                    value={userData.direccion}
                     variant="outlined"
                   />
                 </Grid>
@@ -162,7 +149,7 @@ function EditCliente({ className, match, ...rest }) {
                     name="numero"
                     onChange={handleChange}
                     type="text"
-                    value={userData?.numero}
+                    value={userData.numero}
                     variant="outlined"
                   />
                 </Grid>
@@ -171,7 +158,7 @@ function EditCliente({ className, match, ...rest }) {
                     <Select
                       variant="outlined"
                       fullWidth
-                      value={userData?.id_pais}
+                      value={userData.id_pais}
                       onChange={handleChange}
                       inputProps={{
                         name: "id_pais",
@@ -189,11 +176,11 @@ function EditCliente({ className, match, ...rest }) {
                 <Grid item md={10} xs={12}>
                   <TextField
                     fullWidth
-                    label="Observacion"
+                    label="Observación"
                     name="observacion"
                     onChange={handleChange}
                     type="text"
-                    value={userData?.observacion}
+                    value={userData.observacion}
                     variant="outlined"
                     multiline={3}
                   />
@@ -230,4 +217,4 @@ function EditCliente({ className, match, ...rest }) {
   );
 }
 
-export default EditCliente;
+export default CrearCliente;
