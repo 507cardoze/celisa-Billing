@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, memo } from "react";
 import clsx from "clsx";
 import * as styles from "../../helpers/styles";
 import {
@@ -230,4 +230,4 @@ function EditCliente({ className, match, ...rest }) {
   );
 }
 
-export default EditCliente;
+export default memo(EditCliente);

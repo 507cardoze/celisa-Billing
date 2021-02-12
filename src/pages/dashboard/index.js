@@ -22,6 +22,9 @@ import DashboardGraphCardProgress from "../../components/DashboardGraphCardProgr
 import DashboardTableProductos from "../../components/DashboardTableProductos";
 import DashboardTableOrdenes from "../../components/DashboardTableOrdenes";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
+import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+import MoneyOffIcon from "@material-ui/icons/MoneyOff";
 import moment from "moment";
 import { useStickyState } from "../../helpers/fetch";
 
@@ -93,7 +96,6 @@ function Dashboard() {
   return (
     <MainLayout Tittle="Dashboard">
       <BackdropSpinner isLoading={!isLoading} />
-
       <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid
@@ -201,22 +203,41 @@ function Dashboard() {
               description="Total faltante por cobrar"
             />
           </Grid>
-          <Grid item lg={6} sm={6} md={6} xl={6} xs={12}>
+          <Grid item lg={4} sm={4} md={4} xl={4} xs={12}>
             <DashboardGraphCardProgress
               title="Se a cobrado el"
+              Icon={MoneyOffIcon}
+              color={colors.deepPurple[600]}
               porcentaje={Math.round(
                 (dataGeneral?.pagosTotales / dataGeneral?.ventasTotales) * 100,
               )}
             />
           </Grid>
-          <Grid item lg={6} sm={12} md={6} xl={6} xs={12}>
+          <Grid item lg={4} sm={4} md={4} xl={4} xs={12}>
             <DashboardGraphCardProgress
-              title="Porcentaje de productos sin proveedor"
+              title="Productos sin proveedor"
+              color={colors.teal[600]}
+              Icon={AddShoppingCartIcon}
+              onClick={() => history.push("/clientes")}
               porcentaje={Math.round(
                 (dataProveedores?.productosSinproveedor /
                   dataProveedores?.productosTotal) *
                   100,
               )}
+            />
+          </Grid>
+          <Grid item lg={4} sm={4} md={4} xl={4} xs={12}>
+            <DashbordCard
+              title="Clientes en el sistema"
+              color={colors.pink[600]}
+              Icon={EmojiPeopleIcon}
+              data={`${
+                dataGeneral?.totalClientes
+                  ? dataGeneral.totalClientes
+                  : `cargando ...`
+              }`}
+              description="Total de clientes registrados"
+              onClick={() => history.push("/clientes")}
             />
           </Grid>
 

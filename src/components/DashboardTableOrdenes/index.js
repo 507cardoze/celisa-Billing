@@ -46,7 +46,7 @@ const DashboardTableOrdenes = ({
   const classes = useStyles();
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest}>
+    <Card className={clsx(classes.root, className)} {...rest} raised>
       <CardHeader title={`${title} ${data.length}`} />
       <FormControl className={classes.formControl}>
         <Input

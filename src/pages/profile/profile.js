@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import moment from "moment";
@@ -55,4 +55,4 @@ Profile.propTypes = {
   className: PropTypes.string,
 };
 
-export default Profile;
+export default memo(Profile);

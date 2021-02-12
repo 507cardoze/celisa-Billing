@@ -12,7 +12,7 @@ const NumericToolBar = ({ setEstado = null, data, ver = false }) => {
   return (
     <Grid
       container
-      spacing={2}
+      spacing={1}
       style={{
         display: "flex",
         justifyContent: "flex-start",
@@ -21,7 +21,7 @@ const NumericToolBar = ({ setEstado = null, data, ver = false }) => {
     >
       {data?.titles.map((value, index) => (
         <Grid item key={index} xl={3} lg={3} md={4} xs={6}>
-          <Card style={{ maxHeight: "170px" }}>
+          <Card style={{ maxHeight: "170px" }} raised>
             <CardContent>
               <Typography color="textSecondary" gutterBottom>
                 {value.text}

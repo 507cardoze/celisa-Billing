@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, memo } from "react";
 import clsx from "clsx";
 import * as styles from "../../helpers/styles";
 import {
@@ -217,4 +217,4 @@ function CrearCliente({ className, ...rest }) {
   );
 }
 
-export default CrearCliente;
+export default memo(CrearCliente);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, memo } from "react";
 import { Box, TableRow, TableCell, Chip } from "@material-ui/core";
 import DataTable from "../../components/DataTable/databable";
 import Toolbar from "../../components/ToolBar/Toolbar";
@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { UserContext } from "../../Context/userContext";
 import * as fetch from "../../helpers/fetch";
 import * as url from "../../helpers/urls";
+import NumericToolBar from "../../components/NumericToolBar/NumericToolBar";
 
 function ClientTable() {
   const history = useHistory();
@@ -77,6 +78,12 @@ function ClientTable() {
   return (
     <>
       <BackdropSpinner isLoading={!isLoading} />
+      <NumericToolBar
+        data={{
+          titles: [{ text: "Total de clientes", estado: 0 }],
+          values: [total ? total : `cargando...`],
+        }}
+      />
       <Toolbar
         isLoading={isLoading}
         resultados={resultados}
@@ -137,4 +144,4 @@ function ClientTable() {
   );
 }
 
-export default ClientTable;
+export default memo(ClientTable);

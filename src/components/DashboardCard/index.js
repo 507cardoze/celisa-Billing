@@ -37,7 +37,7 @@ const DashbordCard = ({
   const classes = useStyles();
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest}>
+    <Card className={clsx(classes.root, className)} {...rest} raised>
       <CardContent>
         <Grid container justify="space-between" spacing={1}>
           <Grid item>

@@ -48,7 +48,7 @@ const DashboardGraphPie = ({ className, title, dataSet, devices, ...rest }) => {
   };
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest}>
+    <Card className={clsx(classes.root, className)} {...rest} raised>
       <CardHeader title={title} />
       <Divider />
       <CardContent>

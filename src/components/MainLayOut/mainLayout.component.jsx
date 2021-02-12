@@ -1,32 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import Container from "@material-ui/core/Container";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import {
+  makeStyles,
+  Drawer,
+  AppBar,
+  Toolbar,
+  List,
+  Typography,
+  Divider,
+  IconButton,
+  Container,
+} from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 import MainList from "../MainList/mainList.component";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import * as fetch from "../../helpers/fetch";
 import * as url from "../../helpers/urls";
-import { useHistory } from "react-router-dom";
 import * as styles from "../../helpers/styles";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { useStickyState } from "../../helpers/fetch";
 import { Helmet } from "react-helmet";
-
-const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import MenuIcon from "@material-ui/icons/ChevronLeft";
+import BackdropSpinner from "../../components/BackDrop/backDrop";
 
 function MainLayout(props) {
+  const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
   const classes = useStyles();
-  const [open, setOpen] = useStickyState(true, "open");
+  const [open, setOpen] = useStickyState(false, "open");
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +34,6 @@ function MainLayout(props) {
 
   const handleLogout = async () => {
     setIsLoading(true);
-
     const logout = url.logoutUrl();
     const header = fetch.requestHeader("DELETE", "", localStorage.token);
 
@@ -47,15 +46,13 @@ function MainLayout(props) {
       localStorage.clear();
       history.push("/login");
     }
+
+    setIsLoading(false);
   };
 
   return (
     <div className={classes.root}>
-      {isLoading && (
-        <Backdrop className={classes.backdrop} open={isLoading}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      )}
+      <BackdropSpinner isLoading={!isLoading} />
       <AppBar
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}
@@ -117,7 +114,7 @@ function MainLayout(props) {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
+        <Container maxWidth="false" className={classes.container}>
           {props.children}
         </Container>
       </main>
@@ -125,4 +122,4 @@ function MainLayout(props) {
   );
 }
 
-export default MainLayout;
+export default memo(MainLayout);

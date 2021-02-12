@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, memo } from "react";
 import { Grid, Container, Box } from "@material-ui/core";
 import { OrderContext } from "../../Context/OrderContext";
 import Table from "@material-ui/core/Table";
@@ -147,4 +147,4 @@ function PreviewOrden() {
   );
 }
 
-export default PreviewOrden;
+export default memo(PreviewOrden);

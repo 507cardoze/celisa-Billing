@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, memo } from "react";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
 import { Container, Grid, Box } from "@material-ui/core";
 import Profile from "./profile";
@@ -53,19 +53,17 @@ function ProfilePage() {
     setter(loggedInfo);
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event) =>
     setUser({
       ...user,
       [event.target.name]: event.target.value,
     });
-  };
 
-  const handleChangePassword = (event) => {
+  const handleChangePassword = (event) =>
     setPasswords({
       ...passwords,
       [event.target.name]: event.target.value,
     });
-  };
 
   const handleOnSubmit = async (event) => {
     event.preventDefault();
@@ -206,4 +204,4 @@ function ProfilePage() {
   );
 }
 
-export default ProfilePage;
+export default memo(ProfilePage);

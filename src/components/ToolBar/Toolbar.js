@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import {
@@ -182,11 +182,11 @@ const Toolbar = ({
         )}
       </Box>
       <Box mt={2}>
-        <Card>
+        <Card raised maxWidth={false}>
           <CardContent>
-            <Box maxWidth={500}>
+            <Box>
               <TextField
-                fullWidth
+                style={{ width: "55%" }}
                 disable={isLoading}
                 value={searchField}
                 onChange={handleOnChangeTextField}
@@ -206,15 +206,16 @@ const Toolbar = ({
           </CardContent>
         </Card>
       </Box>
-      <Box display="flex" justifyContent="flex-end"></Box>
-      <Card>
-        <CardContent className="search-box">
-          <Box className={`${classes.searchResults}`}>
-            {searchField.length > 0 &&
-              getLinksContainer(type, resultados, classes)}
-          </Box>
-        </CardContent>
-      </Card>
+      {searchField.length > 0 && (
+        <Card style={{ marginTop: "10px" }} raised>
+          <CardContent className="search-box">
+            <Box className={`${classes.searchResults}`}>
+              {searchField.length > 0 &&
+                getLinksContainer(type, resultados, classes)}
+            </Box>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
@@ -223,4 +224,4 @@ Toolbar.propTypes = {
   className: PropTypes.string,
 };
 
-export default Toolbar;
+export default memo(Toolbar);

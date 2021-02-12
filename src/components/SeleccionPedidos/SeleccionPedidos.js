@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, memo } from "react";
 import { Grid, Select, MenuItem } from "@material-ui/core";
 import { OrderContext } from "../../Context/OrderContext";
 import * as url from "../../helpers/urls";
@@ -56,4 +56,4 @@ function SeleccionPedidos() {
   );
 }
 
-export default SeleccionPedidos;
+export default memo(SeleccionPedidos);

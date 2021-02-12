@@ -85,6 +85,16 @@ const Ordenes = () => {
     );
   }, [user, history, page, limit, atrib, order, getAllURL, estado]);
 
+  const dashboard = [
+    { text: "Todas las ordenes", estado: 0 },
+    { text: "Pendiente por aprobacion", estado: 1 },
+    { text: "Aprobadas", estado: 2 },
+    { text: "Llego al pais", estado: 3 },
+    { text: "Saldo Pendiente", estado: 4 },
+    { text: "Entregados", estado: 5 },
+    { text: "Cancelados", estado: 6 },
+  ];
+
   return (
     <MainLayout Tittle="Ordenes">
       <BackdropSpinner isLoading={!isLoading} />
@@ -94,15 +104,7 @@ const Ordenes = () => {
             setEstado={setEstado}
             ver
             data={{
-              titles: [
-                { text: "Todas las ordenes", estado: 0 },
-                { text: "Pendiente por aprobacion", estado: 1 },
-                { text: "Aprobadas", estado: 2 },
-                { text: "Llego al pais", estado: 3 },
-                { text: "Saldo Pendiente", estado: 4 },
-                { text: "Entregados", estado: 5 },
-                { text: "Cancelados", estado: 6 },
-              ],
+              titles: dashboard,
               values: Object.values(rows.dashboard),
             }}
           />

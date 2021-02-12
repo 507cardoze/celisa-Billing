@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import * as styles from "../../helpers/styles";
@@ -183,4 +183,4 @@ RegisterForm.propTypes = {
   className: PropTypes.string,
 };
 
-export default RegisterForm;
+export default memo(RegisterForm);

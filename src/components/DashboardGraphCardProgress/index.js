@@ -10,31 +10,31 @@ import {
   LinearProgress,
   Typography,
   makeStyles,
-  colors,
 } from "@material-ui/core";
-import InsertChartIcon from "@material-ui/icons/InsertChartOutlined";
-
-const useStyles = makeStyles(() => ({
-  root: {
-    height: "100%",
-  },
-  avatar: {
-    backgroundColor: colors.orange[600],
-    height: 56,
-    width: 56,
-  },
-}));
 
 const DashboardGraphCardProgress = ({
   className,
   title,
   porcentaje,
+  color,
+  Icon,
   ...rest
 }) => {
+  const useStyles = makeStyles(() => ({
+    root: {
+      height: "100%",
+    },
+    avatar: {
+      backgroundColor: color,
+      height: 56,
+      width: 56,
+    },
+  }));
+
   const classes = useStyles();
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest}>
+    <Card className={clsx(classes.root, className)} {...rest} raised>
       <CardContent>
         <Grid container justify="space-between" spacing={3}>
           <Grid item>
@@ -47,7 +47,7 @@ const DashboardGraphCardProgress = ({
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <InsertChartIcon />
+              <Icon />
             </Avatar>
           </Grid>
         </Grid>

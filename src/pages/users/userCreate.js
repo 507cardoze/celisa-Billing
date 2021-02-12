@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, memo } from "react";
 import { Container, Grid, Box } from "@material-ui/core";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
 import * as url from "../../helpers/urls";
@@ -132,4 +132,4 @@ const UserCreate = () => {
   );
 };
 
-export default UserCreate;
+export default memo(UserCreate);

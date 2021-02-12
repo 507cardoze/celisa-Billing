@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import * as styles from '../../helpers/styles'
+import React, { memo } from "react";
+import PropTypes from "prop-types";
+import clsx from "clsx";
+import * as styles from "../../helpers/styles";
 import {
   Box,
   Button,
@@ -10,12 +10,18 @@ import {
   CardHeader,
   Divider,
   TextField,
-  makeStyles
-} from '@material-ui/core';
+  makeStyles,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => styles.passwordStyles(theme));
 
-const Password = ({ className,passwords,handleChangePassword,handleOnSubmitPassword, ...rest }) => {
+const Password = ({
+  className,
+  passwords,
+  handleChangePassword,
+  handleOnSubmitPassword,
+  ...rest
+}) => {
   const classes = useStyles();
 
   return (
@@ -27,10 +33,7 @@ const Password = ({ className,passwords,handleChangePassword,handleOnSubmitPassw
       {...rest}
     >
       <Card>
-        <CardHeader
-          subheader="Actualiza contraseña"
-          title="Contraseña"
-        />
+        <CardHeader subheader="Actualiza contraseña" title="Contraseña" />
         <Divider />
         <CardContent>
           <TextField
@@ -57,16 +60,12 @@ const Password = ({ className,passwords,handleChangePassword,handleOnSubmitPassw
           />
         </CardContent>
         <Divider />
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          p={2}
-        >
-           <Button
-           type="submit"
-           variant="contained"
-           color="primary"
-           className={classes.submit}
+        <Box display="flex" justifyContent="flex-end" p={2}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.submit}
           >
             Actualizar
           </Button>
@@ -77,7 +76,7 @@ const Password = ({ className,passwords,handleChangePassword,handleOnSubmitPassw
 };
 
 Password.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
-export default Password;
+export default memo(Password);

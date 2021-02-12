@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, memo } from "react";
 import {
   Grid,
   TextField,
@@ -371,4 +371,4 @@ function SeleccionProductos() {
   );
 }
 
-export default SeleccionProductos;
+export default memo(SeleccionProductos);

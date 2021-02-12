@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, memo } from "react";
 import {
   Grid,
   FormControl,
@@ -89,4 +89,4 @@ function ClientDataForm() {
   );
 }
 
-export default ClientDataForm;
+export default memo(ClientDataForm);

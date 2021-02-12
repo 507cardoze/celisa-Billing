@@ -77,7 +77,7 @@ const DashboardGraphBar = ({ className, title, content, source, ...rest }) => {
   };
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest}>
+    <Card className={clsx(classes.root, className)} {...rest} raised>
       <CardHeader title={title} />
       <Divider />
       <CardContent>

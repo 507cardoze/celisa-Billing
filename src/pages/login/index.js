@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, memo, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
@@ -19,15 +19,14 @@ import { OrderContext } from "../../Context/OrderContext";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
 import { Helmet } from "react-helmet";
 
-const useStyles = makeStyles((theme) => {
-  const fondos = [fondoPrincipal, fondoPrincipal2, fondoPrincipal3];
-  return styles.loginStyles(
-    theme,
-    fondos[Math.floor(Math.random() * fondos.length)],
-  );
-});
-
 function Login() {
+  const useStyles = makeStyles((theme) => {
+    const fondos = [fondoPrincipal, fondoPrincipal2, fondoPrincipal3];
+    return styles.loginStyles(
+      theme,
+      fondos[Math.floor(Math.random() * fondos.length)],
+    );
+  });
   const classes = useStyles();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -48,6 +47,8 @@ function Login() {
     if (password.length === 0)
       return toast.errorToast("Contraseña no puede ir vacio!");
 
+    setIsLoading(true);
+
     const body = JSON.stringify({
       username: username,
       password: password,
@@ -55,10 +56,8 @@ function Login() {
 
     const loginService = url.loginServiceUrl();
     const header = fetch.requestHeader("POST", body, "");
-
-    setIsLoading(true);
-
     const loggedInfo = await fetch.fetchData(loginService, header);
+
     if (loggedInfo.accessToken) {
       localStorage.setItem("token", loggedInfo.accessToken);
       localStorage.setItem("refresh_token", loggedInfo.refreshToken);
@@ -72,55 +71,60 @@ function Login() {
       );
 
       const userdata = await fetch.fetchData(getUserData, headerGetData);
+
       if (userdata[0].estado === 0)
         return toast.msgWarn("Usuario desactivado.");
-      if (userdata[0].rol !== "Administrador") {
-        const cliente_id = await fetch.fetchData(verifyUrl, headerGetData);
-        setOrden({
-          id_pedido: null,
-          id_cliente: cliente_id,
-          productos: [],
-          nombre_cliente: `${userdata[0].name} ${userdata[0].lastname}`,
-          numero_cliente: userdata[0].contact_number,
-          direccion_cliente: userdata[0].address,
-        });
-        setUser({
-          user_id: userdata[0].user_id,
-          name: userdata[0].name,
-          lastname: userdata[0].lastname,
-          email: userdata[0].correo_electronico,
-          number: userdata[0].contact_number,
-          id_pais: userdata[0].id_pais,
-          address: userdata[0].address,
-          pais: userdata[0].pais,
-          estado: userdata[0].estado,
-          rol: userdata[0].rol,
-          username: userdata[0].username,
-          id_cliente: cliente_id,
-        });
-      } else {
-        setOrden({
-          id_pedido: null,
-          id_cliente: null,
-          productos: [],
-          nombre_cliente: "",
-          numero_cliente: "",
-          direccion_cliente: "",
-        });
-        setUser({
-          user_id: userdata[0].user_id,
-          name: userdata[0].name,
-          lastname: userdata[0].lastname,
-          email: userdata[0].correo_electronico,
-          number: userdata[0].contact_number,
-          id_pais: userdata[0].id_pais,
-          address: userdata[0].address,
-          pais: userdata[0].pais,
-          estado: userdata[0].estado,
-          rol: userdata[0].rol,
-          username: userdata[0].username,
-          id_cliente: null,
-        });
+
+      switch (userdata[0].rol) {
+        case "Administrador":
+          setOrden({
+            id_pedido: null,
+            id_cliente: null,
+            productos: [],
+            nombre_cliente: "",
+            numero_cliente: "",
+            direccion_cliente: "",
+          });
+          setUser({
+            user_id: userdata[0].user_id,
+            name: userdata[0].name,
+            lastname: userdata[0].lastname,
+            email: userdata[0].correo_electronico,
+            number: userdata[0].contact_number,
+            id_pais: userdata[0].id_pais,
+            address: userdata[0].address,
+            pais: userdata[0].pais,
+            estado: userdata[0].estado,
+            rol: userdata[0].rol,
+            username: userdata[0].username,
+            id_cliente: null,
+          });
+          break;
+        default:
+          const cliente_id = await fetch.fetchData(verifyUrl, headerGetData);
+          setOrden({
+            id_pedido: null,
+            id_cliente: cliente_id,
+            productos: [],
+            nombre_cliente: `${userdata[0].name} ${userdata[0].lastname}`,
+            numero_cliente: userdata[0].contact_number,
+            direccion_cliente: userdata[0].address,
+          });
+          setUser({
+            user_id: userdata[0].user_id,
+            name: userdata[0].name,
+            lastname: userdata[0].lastname,
+            email: userdata[0].correo_electronico,
+            number: userdata[0].contact_number,
+            id_pais: userdata[0].id_pais,
+            address: userdata[0].address,
+            pais: userdata[0].pais,
+            estado: userdata[0].estado,
+            rol: userdata[0].rol,
+            username: userdata[0].username,
+            id_cliente: cliente_id,
+          });
+          break;
       }
 
       history.push("/");
@@ -133,15 +137,19 @@ function Login() {
     setIsLoading(false);
   };
 
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
   return (
     <Grid container component="main" className={classes.root}>
       <Helmet title="Iniciar sesión" />
-      {localStorage.token && <Redirect to="/" />}
+      {localStorage.token && localStorage.user && <Redirect to="/" />}
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-            CELISASTORE BILLING
+            CelisaStore Billing
           </Typography>
           <form className={classes.form} onSubmit={handleOnSubmit}>
             <TextField
@@ -190,4 +198,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default memo(Login);

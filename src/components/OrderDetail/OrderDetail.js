@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import moment from "moment";
 import {
   Card,
@@ -28,7 +28,7 @@ const OrderDetails = ({
   const history = useHistory();
   return (
     <Grid item xs={12} md={7} lg={7}>
-      <Card className={className} {...rest}>
+      <Card className={className} {...rest} raised>
         <CardContent>
           <Grid container spacing={2} maxWidth="false">
             <Grid
@@ -147,4 +147,4 @@ const OrderDetails = ({
     </Grid>
   );
 };
-export default OrderDetails;
+export default memo(OrderDetails);

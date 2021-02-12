@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Grid, TextField, IconButton, Container, Box } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Table from "@material-ui/core/Table";
@@ -286,4 +286,4 @@ function ProductosTable({
   );
 }
 
-export default ProductosTable;
+export default memo(ProductosTable);

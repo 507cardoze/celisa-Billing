@@ -13,6 +13,7 @@ import { UserContext } from "../../Context/userContext";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
 import * as toast from "../../helpers/toast";
 import Chip from "@material-ui/core/Chip";
+import NumericToolBar from "../../components/NumericToolBar/NumericToolBar";
 
 const Pedidos = () => {
   //state
@@ -139,8 +140,14 @@ const Pedidos = () => {
 
   return (
     <MainLayout Tittle="Pedidos">
-      <BackdropSpinner isLoading={!isLoading} />
       <Container maxWidth={false}>
+        <BackdropSpinner isLoading={!isLoading} />
+        <NumericToolBar
+          data={{
+            titles: [{ text: "Total de pedidos", estado: 0 }],
+            values: [total ? total : `cargando...`],
+          }}
+        />
         <Toolbar
           isLoading={isLoading}
           resultados={resultados}

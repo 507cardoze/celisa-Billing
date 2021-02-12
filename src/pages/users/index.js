@@ -111,6 +111,12 @@ const Users = () => {
     );
   }, [user, history, page, limit, atrib, order, getAllusersURL]);
 
+  const dashboard = [
+    { text: "Total de usuarios en el sistema" },
+    { text: "Administradores" },
+    { text: "Usuarios Regulares" },
+  ];
+
   return (
     <MainLayout Tittle="Usuarios">
       <BackdropSpinner isLoading={!isLoading} />
@@ -118,11 +124,7 @@ const Users = () => {
         {rows?.dashboard && (
           <NumericToolBar
             data={{
-              titles: [
-                { text: "Total de usuarios en el sistema" },
-                { text: "Administradores" },
-                { text: "Usuarios Regulares" },
-              ],
+              titles: dashboard,
               values: Object.values(rows.dashboard),
             }}
           />
