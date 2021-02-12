@@ -1,13 +1,20 @@
 import React, { useState, useEffect, useContext, memo } from "react";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
+import {
+  Grid,
+  Container,
+  colors,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormHelperText,
+} from "@material-ui/core";
 import { UserContext } from "../../Context/userContext";
 import { useHistory } from "react-router-dom";
 import * as fetch from "../../helpers/fetch";
 import * as url from "../../helpers/urls";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
-import { colors } from "@material-ui/core";
 import DashbordCard from "../../components/DashboardCard";
 import DashboardGraphBar from "../../components/DashboardGraphBar";
 import DashboardGraphPie from "../../components/DashboardGraphPie";
@@ -15,11 +22,6 @@ import DashboardGraphCardProgress from "../../components/DashboardGraphCardProgr
 import DashboardTableProductos from "../../components/DashboardTableProductos";
 import DashboardTableOrdenes from "../../components/DashboardTableOrdenes";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import moment from "moment";
 import { useStickyState } from "../../helpers/fetch";
 
@@ -286,47 +288,47 @@ function Dashboard() {
             )}
           </Grid>
 
-          <Grid item lg={4} md={6} xl={3} xs={12}>
-            <DashboardGraphPie
-              title="Ventas por proveedor "
-              dataSet={{
-                datasets: [
-                  {
-                    data: dataProveedores?.porFecha.map((obj) => obj.productos),
-                    backgroundColor: [
-                      colors.indigo[500],
-                      colors.orange[600],
-                      colors.red[600],
-                    ],
-                    borderWidth: 8,
-                    borderColor: colors.common.white,
-                    hoverBorderColor: colors.common.white,
-                  },
-                ],
-                labels: dataProveedores?.porFecha.map((obj) => obj.proveedor),
-              }}
-              devices={dataProveedores?.porFecha.map((obj) => ({
-                title: obj.proveedor,
-                value: obj.ventas,
-                icon: AttachMoneyIcon,
-                color: colors.indigo[500],
-              }))}
-            />
-          </Grid>
-          <Grid item lg={8} md={12} xl={9} xs={12}>
+          <Grid item lg={6} md={6} xl={6} xs={12}>
             {dataVendedores?.usuariosConVenta.length > 0 && (
               <DashboardGraphBar
                 content={{
                   datasets: [
                     {
                       backgroundColor: colors.green[600],
+                      data: dataProveedores?.porFecha.map((obj) => obj.ventas),
+                      label: "Vendido en USD",
+                    },
+                    {
+                      backgroundColor: colors.orange[600],
+                      data: dataProveedores?.porFecha.map(
+                        (obj) => obj.productos,
+                      ),
+                      label: "Cantidad de productos",
+                    },
+                  ],
+                  labels: dataProveedores?.proveedoresList.map(
+                    (obj) => obj.proveedor,
+                  ),
+                }}
+                title="Desglose por Proveedor"
+                source={dataProveedores?.porFecha}
+              />
+            )}
+          </Grid>
+          <Grid item lg={6} md={6} xl={6} xs={12}>
+            {dataVendedores?.usuariosConVenta.length > 0 && (
+              <DashboardGraphBar
+                content={{
+                  datasets: [
+                    {
+                      backgroundColor: colors.pink[600],
                       data: dataVendedores?.usuariosConVenta.map(
                         (obj) => obj.ventas_total,
                       ),
                       label: "Vendido en USD",
                     },
                     {
-                      backgroundColor: colors.indigo[500],
+                      backgroundColor: colors.teal[500],
                       data: dataVendedores?.usuariosConVenta.map(
                         (obj) => obj.pagado,
                       ),
