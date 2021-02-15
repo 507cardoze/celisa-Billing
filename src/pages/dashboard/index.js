@@ -172,7 +172,7 @@ function Dashboard() {
               data={`${
                 dataGeneral?.ventasTotales
                   ? `$${dataGeneral.ventasTotales.toFixed(2)}`
-                  : `cargando ...`
+                  : `$${0.0}`
               }`}
               description="Total de dinero entrante"
             />
@@ -185,7 +185,7 @@ function Dashboard() {
               data={`${
                 dataGeneral?.pagosTotales
                   ? `$${dataGeneral.pagosTotales.toFixed(2)}`
-                  : `cargando ...`
+                  : `$${0.0}`
               }`}
               description="Total de dinero cobrado"
             />
@@ -198,7 +198,7 @@ function Dashboard() {
               data={`${
                 dataGeneral?.saldosTotales
                   ? `$${dataGeneral.saldosTotales.toFixed(2)}`
-                  : `cargando ...`
+                  : `$${0.0}`
               }`}
               description="Total faltante por cobrar"
             />
