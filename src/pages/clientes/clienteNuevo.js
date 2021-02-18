@@ -195,13 +195,6 @@ function CrearCliente({ className, ...rest }) {
             p={2}
             alignItems="center"
           >
-            {/* <Button
-              variant="contained"
-              color="default"
-              style={{ margin: "5px" }}
-            >
-              Eliminar Cliente
-            </Button> */}
             <Button
               type="submit"
               variant="contained"

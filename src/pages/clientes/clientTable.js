@@ -134,7 +134,9 @@ function ClientTable() {
                   return <TableCell key={value.tittle}></TableCell>;
                 })
               ) : (
-                <BackdropSpinner isLoading={isLoading} />
+                <TableCell>
+                  <BackdropSpinner isLoading={isLoading} />
+                </TableCell>
               )}
             </TableRow>
           )}

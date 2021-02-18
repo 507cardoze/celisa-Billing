@@ -109,13 +109,13 @@ function EditProducto(props) {
             Cancelar
           </Button>
         </Grid>
-        <Grid item xs={12} container spacing={1}>
+        <Grid item container spacing={1}>
           <Grid item xs={12} sm={8} md={3}>
             <TextField
               variant="outlined"
               label="Descripción*"
               name="descripcion"
-              value={descripcion}
+              value={descripcion ? descripcion : ""}
               size="small"
               style={margin}
               fullWidth
@@ -127,7 +127,7 @@ function EditProducto(props) {
               variant="outlined"
               name="talla"
               label="Talla*"
-              value={talla}
+              value={talla ? talla : ""}
               size="small"
               style={margin}
               fullWidth
@@ -139,7 +139,7 @@ function EditProducto(props) {
               variant="outlined"
               name="color"
               label="Color*"
-              value={color}
+              value={color ? color : ""}
               size="small"
               style={margin}
               fullWidth
@@ -158,7 +158,7 @@ function EditProducto(props) {
                   <InputAdornment position="start">$</InputAdornment>
                 ),
               }}
-              value={precio}
+              value={precio ? precio : ""}
               style={margin}
               fullWidth
               onChange={(event) => setPrecio(parseFloat(event.target.value))}

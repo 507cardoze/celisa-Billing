@@ -96,7 +96,7 @@ function Dashboard() {
   return (
     <MainLayout Tittle="Dashboard">
       <BackdropSpinner isLoading={!isLoading} />
-      <Container maxWidth={false}>
+      <Container>
         <Grid container spacing={3}>
           <Grid
             item
@@ -118,7 +118,6 @@ function Dashboard() {
                   marginTop: "25px",
                 },
               }}
-              item
             >
               <InputLabel>{`Desde ${desde} hasta hoy, ${moment().format(
                 "YYYY-MM-DD",

@@ -24,9 +24,6 @@ import ExportCSV from "../ExportExcelButton/ExportExcelButton";
 import moment from "moment";
 
 const useStyles = makeStyles(() => ({
-  overflow: {
-    overflow: "auto",
-  },
   formControl: {
     width: "40%",
     minWidth: "300px",
@@ -61,7 +58,9 @@ const DashboardTableOrdenes = ({
       </FormControl>
       <Divider />
       <PerfectScrollbar>
-        <Box minWidth={700} maxHeight={500} className={classes.overflow}>
+        <Box
+          style={{ overflow: "auto", maxHeight: "500px", minHeight: "500px" }}
+        >
           <Table size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
@@ -72,15 +71,10 @@ const DashboardTableOrdenes = ({
                 <TableCell align="left">Estado</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody className={classes.overflow}>
+            <TableBody>
               {data.map((obj, i) => {
                 return (
-                  <TableRow
-                    hover
-                    key={obj.orden_id}
-                    divider={i < data.length - 1}
-                    className={classes.overflow}
-                  >
+                  <TableRow hover key={i}>
                     <TableCell align="left">
                       <Chip
                         color="primary"

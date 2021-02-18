@@ -74,14 +74,16 @@ const DashboardTableProductos = ({
         />
       </FormControl>
       <Divider p={2} />
-      <List className={classes.list}>
+      <List
+        className={classes.list}
+        style={{ overflow: "auto", maxHeight: "500px", minHeight: "500px" }}
+      >
         {products.map((product, i) => (
           <ListItem
-            divider={i < products.length - 1}
-            key={i}
             className={classes.listItem}
             component={Link}
             to={`./edit-orders/${product.orden_id}`}
+            key={i}
           >
             <ListItemAvatar>
               <CollectionsIcon alt="Product" className={classes.image} />
@@ -91,6 +93,7 @@ const DashboardTableProductos = ({
               secondary={`Vendido el dia: ${product.fecha}`}
               className={classes.ListItemText}
             />
+            {i < products.length - 1 && <Divider />}
           </ListItem>
         ))}
       </List>

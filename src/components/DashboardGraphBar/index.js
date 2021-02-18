@@ -1,5 +1,4 @@
 import React, { memo } from "react";
-import clsx from "clsx";
 import PropTypes from "prop-types";
 import { Bar } from "react-chartjs-2";
 import {
@@ -9,17 +8,11 @@ import {
   CardHeader,
   Divider,
   useTheme,
-  makeStyles,
 } from "@material-ui/core";
 import ExportCSV from "../ExportExcelButton/ExportExcelButton";
 import moment from "moment";
 
-const useStyles = makeStyles(() => ({
-  root: {},
-}));
-
 const DashboardGraphBar = ({ className, title, content, source, ...rest }) => {
-  const classes = useStyles();
   const theme = useTheme();
   const options = {
     animation: false,
@@ -77,7 +70,7 @@ const DashboardGraphBar = ({ className, title, content, source, ...rest }) => {
   };
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest} raised>
+    <Card className={className} {...rest} raised>
       <CardHeader title={title} />
       <Divider />
       <CardContent>

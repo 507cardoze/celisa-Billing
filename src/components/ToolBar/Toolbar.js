@@ -52,20 +52,18 @@ const getLinksContainer = (type, data, classes) => {
         <List component="nav" aria-label="results">
           {data.map((row) => {
             return (
-              <>
-                <ListItem
-                  button
-                  component={Link}
-                  to={`/edit-user/${row.user_id}`}
-                  className={`${classes.a}`}
-                  key={row.user_id}
-                >
-                  <ListItemText
-                    primary={`nombre: ${row.name} ${row.lastname} - direccion: ${row.address}`}
-                  />
-                </ListItem>
+              <ListItem
+                button
+                component={Link}
+                to={`/edit-user/${row.user_id}`}
+                className={`${classes.a}`}
+                key={row.user_id}
+              >
+                <ListItemText
+                  primary={`nombre: ${row.name} ${row.lastname} - direccion: ${row.address}`}
+                />
                 <Divider light />
-              </>
+              </ListItem>
             );
           })}
         </List>
@@ -75,22 +73,20 @@ const getLinksContainer = (type, data, classes) => {
         <List component="nav" aria-label="results">
           {data.map((row) => {
             return (
-              <>
-                <ListItem
-                  button
-                  component={Link}
-                  to={`/edit-pedido/${row.pedido_id}`}
-                  className={`${classes.a}`}
-                  key={row.pedido_id}
-                >
-                  <ListItemText
-                    primary={`#${row.pedido_id} - ${moment(row.fecha).format(
-                      "MMMM Do YYYY",
-                    )} - ${row.estatus ? "Abierto" : "Cerrado"}`}
-                  />
-                </ListItem>
+              <ListItem
+                button
+                component={Link}
+                to={`/edit-pedido/${row.pedido_id}`}
+                className={`${classes.a}`}
+                key={row.pedido_id}
+              >
+                <ListItemText
+                  primary={`#${row.pedido_id} - ${moment(row.fecha).format(
+                    "MMMM Do YYYY",
+                  )} - ${row.estatus ? "Abierto" : "Cerrado"}`}
+                />
                 <Divider light />
-              </>
+              </ListItem>
             );
           })}
         </List>
@@ -100,20 +96,18 @@ const getLinksContainer = (type, data, classes) => {
         <List component="nav" aria-label="results">
           {data.map((row) => {
             return (
-              <>
-                <ListItem
-                  button
-                  component={Link}
-                  to={`/edit-orders/${row.orden_id}`}
-                  className={`${classes.a}`}
-                  key={row.orden_id}
-                >
-                  <ListItemText
-                    primary={`#${row.orden_id} - vendedor: ${row.nombre} ${row.apellido} - cliente: ${row.nombre_cliente}`}
-                  />
-                </ListItem>
+              <ListItem
+                button
+                component={Link}
+                to={`/edit-orders/${row.orden_id}`}
+                className={`${classes.a}`}
+                key={row.orden_id}
+              >
+                <ListItemText
+                  primary={`#${row.orden_id} - vendedor: ${row.nombre} ${row.apellido} - cliente: ${row.nombre_cliente}`}
+                />
                 <Divider light />
-              </>
+              </ListItem>
             );
           })}
         </List>
@@ -123,20 +117,18 @@ const getLinksContainer = (type, data, classes) => {
         <List component="nav" aria-label="results">
           {data.map((row) => {
             return (
-              <>
-                <ListItem
-                  button
-                  component={Link}
-                  to={`/clientes/${row.cliente_id}`}
-                  className={`${classes.a}`}
-                  key={row.cliente_id}
-                >
-                  <ListItemText
-                    primary={`#${row.cliente_id} - cliente: ${row.nombre}`}
-                  />
-                </ListItem>
+              <ListItem
+                button
+                component={Link}
+                to={`/clientes/${row.cliente_id}`}
+                className={`${classes.a}`}
+                key={row.cliente_id}
+              >
+                <ListItemText
+                  primary={`#${row.cliente_id} - cliente: ${row.nombre}`}
+                />
                 <Divider light />
-              </>
+              </ListItem>
             );
           })}
         </List>
@@ -182,12 +174,11 @@ const Toolbar = ({
         )}
       </Box>
       <Box mt={2}>
-        <Card raised maxWidth={false}>
+        <Card raised>
           <CardContent>
             <Box>
               <TextField
                 style={{ width: "55%" }}
-                disable={isLoading}
                 value={searchField}
                 onChange={handleOnChangeTextField}
                 InputProps={{

@@ -165,7 +165,7 @@ function EditCliente({ className, match, ...rest }) {
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>
-                  <FormControl item>
+                  <FormControl>
                     <Select
                       variant="outlined"
                       fullWidth
@@ -206,13 +206,6 @@ function EditCliente({ className, match, ...rest }) {
             p={2}
             alignItems="center"
           >
-            {/* <Button
-              variant="contained"
-              color="default"
-              style={{ margin: "5px" }}
-            >
-              Eliminar Cliente
-            </Button> */}
             <Button
               type="submit"
               variant="contained"

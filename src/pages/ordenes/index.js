@@ -98,7 +98,7 @@ const Ordenes = () => {
   return (
     <MainLayout Tittle="Ordenes">
       <BackdropSpinner isLoading={!isLoading} />
-      <Container maxWidth={false}>
+      <Container>
         {rows?.dashboard && (
           <NumericToolBar
             setEstado={setEstado}
@@ -166,7 +166,9 @@ const Ordenes = () => {
                     return <TableCell key={value.tittle}></TableCell>;
                   })
                 ) : (
-                  <BackdropSpinner isLoading={isLoading} />
+                  <TableCell>
+                    <BackdropSpinner isLoading={isLoading} />
+                  </TableCell>
                 )}
               </TableRow>
             )}

@@ -9,7 +9,7 @@ import EditCliente from "./clienteEdit";
 function Clientes({ match }) {
   return (
     <MainLayout Tittle="Clientes">
-      <Container maxWidth={false}>
+      <Container>
         <Route
           exact
           path={`${match.path}`}

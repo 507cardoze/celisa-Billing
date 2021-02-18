@@ -68,8 +68,8 @@ function ProductosTable({
               </TableRow>
             </TableHead>
             <TableBody>
-              {orden?.productos?.map((producto) => (
-                <TableRow key={producto.id}>
+              {orden?.productos?.map((producto, i) => (
+                <TableRow key={i}>
                   <TableCell component="th" scope="row">
                     {producto.descripcion}
                   </TableCell>
@@ -110,7 +110,9 @@ function ProductosTable({
                     <TableCell align="right">
                       <Select
                         label="Proveedor"
-                        value={producto.proveedor_id}
+                        value={
+                          producto.proveedor_id ? producto.proveedor_id : ""
+                        }
                         onChange={(event) =>
                           onChangeProveedor(
                             event.target.value,
@@ -118,7 +120,7 @@ function ProductosTable({
                           )
                         }
                       >
-                        <MenuItem value={null}>
+                        <MenuItem value="">
                           <em>Sin proveedor</em>
                         </MenuItem>
                         {proveedores.map((proveedor) => (

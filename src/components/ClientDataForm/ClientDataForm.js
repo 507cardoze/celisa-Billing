@@ -35,14 +35,14 @@ function ClientDataForm() {
   }, [user, history]);
 
   return (
-    <Grid container xs={12} md={12} lg={12}>
+    <Grid container>
       <BackdropSpinner isLoading={!isLoading} />
       <Grid item xs={12} md={4} lg={4}>
-        <FormControl item>
+        <FormControl>
           <Select
             variant="outlined"
             fullWidth
-            value={orden.id_cliente}
+            value={orden.id_cliente ? orden.id_cliente : ""}
             onChange={(e) => {
               const clienteData = clientes.find(
                 (cliente) => cliente.cliente_id === parseInt(e.target.value),

@@ -114,9 +114,7 @@ function MainLayout(props) {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="false" className={classes.container}>
-          {props.children}
-        </Container>
+        <Container className={classes.container}>{props.children}</Container>
       </main>
     </div>
   );

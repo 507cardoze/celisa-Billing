@@ -30,15 +30,17 @@ const OrderDetails = ({
     <Grid item xs={12} md={7} lg={7}>
       <Card className={className} {...rest} raised>
         <CardContent>
-          <Grid container spacing={2} maxWidth="false">
+          <Grid container spacing={2}>
             <Grid
               item
               xs={12}
               md={6}
               lg={6}
-              alignItems="flex-start"
-              display="flex"
-              flexDirection="column"
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                flexDirection: "column",
+              }}
               container
               spacing={2}
             >
@@ -65,9 +67,11 @@ const OrderDetails = ({
               xs={12}
               md={6}
               lg={6}
-              alignItems="flex-start"
-              display="flex"
-              flexDirection="column"
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                flexDirection: "column",
+              }}
               container
               spacing={2}
             >
@@ -102,9 +106,11 @@ const OrderDetails = ({
             </Grid>
             <Grid item xs={12}>
               <Grid
-                alignItems="center"
-                display="flex"
-                justifyContent="space-between"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
                 width={`100%`}
                 container
               >
@@ -119,7 +125,7 @@ const OrderDetails = ({
                       <Select
                         labelId="estados-label"
                         id="select-estado"
-                        value={orden.estado_id}
+                        value={orden?.estado_id ? orden.estado_id : ""}
                         onChange={(event) => onChangeEstado(event.target.value)}
                         style={{ marginTop: 20 }}
                       >

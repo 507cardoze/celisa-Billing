@@ -120,7 +120,7 @@ const Users = () => {
   return (
     <MainLayout Tittle="Usuarios">
       <BackdropSpinner isLoading={!isLoading} />
-      <Container maxWidth={false}>
+      <Container>
         {rows?.dashboard && (
           <NumericToolBar
             data={{
@@ -198,7 +198,9 @@ const Users = () => {
                     return <TableCell key={value.tittle}></TableCell>;
                   })
                 ) : (
-                  <BackdropSpinner isLoading={isLoading} />
+                  <TableCell>
+                    <BackdropSpinner isLoading={isLoading} />
+                  </TableCell>
                 )}
               </TableRow>
             )}

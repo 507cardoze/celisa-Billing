@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, memo } from "react";
-import { Container, Grid, Box, Typography, Tabs, Tab } from "@material-ui/core";
+import { Container, Grid, Box, Tabs, Tab } from "@material-ui/core";
 import * as toast from "../../helpers/toast";
 import * as url from "../../helpers/urls";
 import * as fetch from "../../helpers/fetch";
@@ -25,11 +25,7 @@ function TabPanel(props) {
       aria-labelledby={`tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
 }
@@ -326,7 +322,6 @@ function EditOrder(props) {
   return (
     <MainLayout Tittle={`Orden ${id_orden}`}>
       <Container
-        maxWidth="lg"
         style={{
           display: "flex",
           justifyContent: "flex-start",

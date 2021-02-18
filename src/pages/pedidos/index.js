@@ -140,7 +140,7 @@ const Pedidos = () => {
 
   return (
     <MainLayout Tittle="Pedidos">
-      <Container maxWidth={false}>
+      <Container>
         <BackdropSpinner isLoading={!isLoading} />
         <NumericToolBar
           data={{
@@ -213,7 +213,9 @@ const Pedidos = () => {
                     return <TableCell key={value.tittle}></TableCell>;
                   })
                 ) : (
-                  <BackdropSpinner isLoading={isLoading} />
+                  <TableCell>
+                    <BackdropSpinner isLoading={isLoading} />
+                  </TableCell>
                 )}
               </TableRow>
             )}

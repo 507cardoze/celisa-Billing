@@ -139,6 +139,12 @@ function Login() {
 
   useEffect(() => {
     localStorage.clear();
+
+    return () => {
+      setUserName("");
+      setPassword("");
+      setIsLoading(false);
+    };
   }, []);
 
   return (

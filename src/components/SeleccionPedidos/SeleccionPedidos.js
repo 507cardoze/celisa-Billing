@@ -42,11 +42,11 @@ function SeleccionPedidos() {
           variant="outlined"
           fullWidth
           onChange={(event) => setIdPedido(parseInt(event.target.value))}
-          value={orden?.id_pedido}
+          value={orden.id_pedido ? orden.id_pedido : 0}
         >
           {pedidos.length > 0 &&
             pedidos.map((pedido) => (
-              <MenuItem value={pedido.pedido_id}>{`${
+              <MenuItem value={pedido.pedido_id} key={pedido.pedido_id}>{`${
                 pedido.pedido_id
               } - ${moment(pedido.fecha).format("MMMM D, YYYY")}`}</MenuItem>
             ))}

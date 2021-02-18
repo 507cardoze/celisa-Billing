@@ -34,13 +34,13 @@ const DashboardOrdenes = ({ orden, suma, sumaPagos }) => {
               Último pago:
             </Typography>
             {orden?.pagos.length > 0 ? (
-              <Typography variant="h5" component="h2" gutterBottom gutterTop>
+              <Typography variant="h5" component="h2" gutterBottom>
                 {`$${fetch.numberWithCommas(
                   orden?.pagos[0].cantidad.toFixed(2),
                 )}`}
               </Typography>
             ) : (
-              <Typography variant="h4" component="h2" gutterBottom gutterTop>
+              <Typography variant="h4" component="h2" gutterBottom>
                 No se registran pagos aún
               </Typography>
             )}
@@ -62,11 +62,11 @@ const DashboardOrdenes = ({ orden, suma, sumaPagos }) => {
               Última Fecha de pago:
             </Typography>
             {orden?.pagos.length > 0 ? (
-              <Typography variant="h5" component="h2" gutterBottom gutterTop>
+              <Typography variant="h5" component="h2" gutterBottom>
                 {moment(orden.pagos[0].fecha_pago).format("DD-MM-YYYY")}
               </Typography>
             ) : (
-              <Typography variant="h4" component="h2" gutterBottom gutterTop>
+              <Typography variant="h4" component="h2" gutterBottom>
                 No se registran pagos aún.
               </Typography>
             )}
@@ -88,13 +88,13 @@ const DashboardOrdenes = ({ orden, suma, sumaPagos }) => {
               Factura total:
             </Typography>
             {orden?.productos.length > 0 ? (
-              <Typography variant="h5" component="h2" gutterBottom gutterTop>
+              <Typography variant="h5" component="h2" gutterBottom>
                 {`$${fetch.numberWithCommas(
                   orden.productos.reduce(suma, 0).toFixed(2),
                 )}`}
               </Typography>
             ) : (
-              <Typography variant="h4" component="h2" gutterBottom gutterTop>
+              <Typography variant="h4" component="h2" gutterBottom>
                 No hay productos registrados en esta orden.
               </Typography>
             )}
@@ -116,7 +116,7 @@ const DashboardOrdenes = ({ orden, suma, sumaPagos }) => {
               Saldo pendiente:
             </Typography>
             {orden?.productos.length > 0 && orden?.pagos.length > 0 ? (
-              <Typography variant="h5" component="h2" gutterBottom gutterTop>
+              <Typography variant="h5" component="h2" gutterBottom>
                 {`$${fetch.numberWithCommas(
                   parseFloat(
                     parseFloat(orden.productos.reduce(suma, 0)) -
@@ -129,14 +129,13 @@ const DashboardOrdenes = ({ orden, suma, sumaPagos }) => {
                 variant="h5"
                 component="h2"
                 gutterBottom
-                gutterTop
               >{`$${fetch.numberWithCommas(
                 parseFloat(
                   0 - parseFloat(orden.pagos.reduce(sumaPagos, 0)),
                 ).toFixed(2),
               )}`}</Typography>
             ) : (
-              <Typography variant="h4" component="h2" gutterBottom gutterTop>
+              <Typography variant="h4" component="h2" gutterBottom>
                 {`${
                   orden?.productos.length === 0
                     ? `Agrege un producto ${
