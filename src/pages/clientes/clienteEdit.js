@@ -61,8 +61,6 @@ function EditCliente({ className, match, ...rest }) {
     const loggedInfo = await fetch.fetchData(getClientDetails, header);
     fetch.UnauthorizedRedirect(loggedInfo, history);
     if (loggedInfo === "Detalles Actualizados.") {
-      // fetchUserData(getUserData, headerGetData, setUser);
-      // fetchData(getPaisData, headerGetData, setPaises);
       toast.msgSuccess("Detalles Actualizados.");
     } else {
       toast.errorToast("error al actualizar los datos.");

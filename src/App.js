@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import { Switch, Route } from "react-router-dom";
 import { ThemeProvider, CssBaseline } from "@material-ui/core";
 import theme from "./theme/";
@@ -51,4 +51,4 @@ function App() {
   );
 }
 
-export default memo(App);
+export default App;
