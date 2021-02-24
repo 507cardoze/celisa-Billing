@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, memo } from "react";
+import React, { useState, useContext, memo } from "react";
 import { Box, Container, Chip, TableRow, TableCell } from "@material-ui/core";
 import Toolbar from "../../components/ToolBar/Toolbar";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
@@ -10,11 +10,11 @@ import moment from "moment";
 import { UserContext } from "../../Context/userContext";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
 import NumericToolBar from "../../components/NumericToolBar/NumericToolBar";
+import { useQuery } from "react-query";
+import { useIsFetching } from "react-query";
 
 const Ordenes = () => {
   //state
-  const [isLoading, setIsLoading] = useState(false);
-  const [rows, setRows] = useState({});
   const [resultados, setResultados] = useState([]);
   const [searchField, setSearchField] = useState("");
   const [page, setPage] = fetch.useStickyState(1, "orders_page");
@@ -22,6 +22,7 @@ const Ordenes = () => {
   const [atrib, setAtrib] = useState("orden_id");
   const [order, setOrder] = useState("desc");
   const [estado, setEstado] = useState(0);
+  const isFetching = useIsFetching();
 
   const handleChangePage = (page) => setPage(page + 1);
   const handleChangeLimit = (limit) => setLimit(limit);
@@ -30,8 +31,15 @@ const Ordenes = () => {
   const history = useHistory();
   const [user] = useContext(UserContext);
 
-  const { results } = rows;
-  const { total } = rows;
+  const dashboard = [
+    { text: "Todas las ordenes", estado: 0 },
+    { text: "Pendiente por aprobacion", estado: 1 },
+    { text: "Aprobadas", estado: 2 },
+    { text: "Llego al pais", estado: 3 },
+    { text: "Saldo Pendiente", estado: 4 },
+    { text: "Entregados", estado: 5 },
+    { text: "Cancelados", estado: 6 },
+  ];
 
   const columns = [
     { tittle: "Orden", atributo: "orden_id" },
@@ -44,7 +52,6 @@ const Ordenes = () => {
 
   //funciones
   const headerSearch = fetch.requestHeader("GET", null, localStorage.token);
-  const getAllURL = url.getOrdenesUrl();
   const searchUrl = url.searchOrdenesUrl();
 
   const handleOnChangeTextField = (event) => {
@@ -65,39 +72,33 @@ const Ordenes = () => {
     }
   };
 
-  //efectos
-
-  useEffect(() => {
-    fetch.UserRedirect(user, history);
+  const fetchOrden = async (url) => {
     const header = fetch.requestHeader("GET", null, localStorage.token);
-    const fetchData = async (url, header, setter) => {
-      setIsLoading(true);
-      const loggedInfo = await fetch.fetchData(url, header);
-      fetch.UnauthorizedRedirect(loggedInfo, history);
-      setter(loggedInfo);
-      setIsLoading(false);
-    };
+    fetch.UserRedirect(user, history);
+    const res = await window.fetch(url, header);
+    fetch.UnauthorizedRedirect(res, history);
+    return res.json();
+  };
 
-    fetchData(
+  const getAllURL = url.getOrdenesUrl();
+
+  const { data: rows } = useQuery(
+    [
+      "ordenes",
       `${getAllURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${estado}`,
-      header,
-      setRows,
-    );
-  }, [user, history, page, limit, atrib, order, getAllURL, estado]);
-
-  const dashboard = [
-    { text: "Todas las ordenes", estado: 0 },
-    { text: "Pendiente por aprobacion", estado: 1 },
-    { text: "Aprobadas", estado: 2 },
-    { text: "Llego al pais", estado: 3 },
-    { text: "Saldo Pendiente", estado: 4 },
-    { text: "Entregados", estado: 5 },
-    { text: "Cancelados", estado: 6 },
-  ];
+    ],
+    () =>
+      fetchOrden(
+        `${getAllURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${estado}`,
+      ),
+    {
+      staleTime: 300000,
+    },
+  );
 
   return (
     <MainLayout Tittle="Ordenes">
-      <BackdropSpinner isLoading={!isLoading} />
+      <BackdropSpinner isLoading={!isFetching} />
       <Container>
         {rows?.dashboard && (
           <NumericToolBar
@@ -111,7 +112,6 @@ const Ordenes = () => {
         )}
 
         <Toolbar
-          isLoading={isLoading}
           resultados={resultados}
           handleOnChangeTextField={handleOnChangeTextField}
           searchField={searchField}
@@ -125,7 +125,7 @@ const Ordenes = () => {
         <Box mt={3}>
           <DataTable
             columns={columns}
-            total={total}
+            total={rows?.total}
             page={page}
             limit={limit}
             atrib={atrib}
@@ -135,8 +135,8 @@ const Ordenes = () => {
             handleChangeAtrib={handleChangeAtrib}
             handleChangeOrder={handleChangeOrder}
           >
-            {results?.length > 0 ? (
-              results.map((row) => (
+            {rows?.results?.length ? (
+              rows.results.map((row) => (
                 <TableRow key={row.orden_id}>
                   <TableCell align="center">
                     <Chip
@@ -161,15 +161,9 @@ const Ordenes = () => {
               ))
             ) : (
               <TableRow>
-                {results?.length === 0 ? (
-                  columns.map((value) => {
-                    return <TableCell key={value.tittle}></TableCell>;
-                  })
-                ) : (
-                  <TableCell>
-                    <BackdropSpinner isLoading={isLoading} />
-                  </TableCell>
-                )}
+                {columns.map((value) => (
+                  <TableCell key={value.tittle}></TableCell>
+                ))}
               </TableRow>
             )}
           </DataTable>
