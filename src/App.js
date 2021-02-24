@@ -24,27 +24,36 @@ import Clientes from "./pages/clientes/";
 import { UserProvider } from "./Context/userContext";
 import { OrderProvider } from "./Context/OrderContext";
 
+//react query
+
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+
 function App() {
+  const queryClient = new QueryClient();
   return (
     <ThemeProvider theme={theme}>
       <UserProvider>
         <OrderProvider>
           <CssBaseline />
-          <Switch>
-            <PrivateRoute exact path="/" component={Dashboard} />
-            <PrivateRoute path="/profile" component={ProfilePage} />
-            <PrivateRoute path="/users" component={Users} />
-            <PrivateRoute path="/pedidos" component={Pedidos} />
-            <PrivateRoute path="/orders" component={Ordenes} />
-            <PrivateRoute path="/edit-orders/:id" component={EditOrder} />
-            <PrivateRoute path="/create-orders" component={NewOrders} />
-            <PrivateRoute path="/my-orders" component={MisOrdenes} />
-            <PrivateRoute path="/create-user" component={UsersCreate} />
-            <PrivateRoute path="/edit-user/:id" component={UsersEdit} />
-            <PrivateRoute path="/clientes" component={Clientes} />
-            <Route path="/login" component={Login} />
-            <PrivateRoute path="*" component={NotFoundView} />
-          </Switch>
+          <QueryClientProvider client={queryClient}>
+            <Switch>
+              <PrivateRoute exact path="/" component={Dashboard} />
+              <PrivateRoute path="/profile" component={ProfilePage} />
+              <PrivateRoute path="/users" component={Users} />
+              <PrivateRoute path="/pedidos" component={Pedidos} />
+              <PrivateRoute path="/orders" component={Ordenes} />
+              <PrivateRoute path="/edit-orders/:id" component={EditOrder} />
+              <PrivateRoute path="/create-orders" component={NewOrders} />
+              <PrivateRoute path="/my-orders" component={MisOrdenes} />
+              <PrivateRoute path="/create-user" component={UsersCreate} />
+              <PrivateRoute path="/edit-user/:id" component={UsersEdit} />
+              <PrivateRoute path="/clientes" component={Clientes} />
+              <Route path="/login" component={Login} />
+              <PrivateRoute path="*" component={NotFoundView} />
+            </Switch>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
         </OrderProvider>
       </UserProvider>
     </ThemeProvider>

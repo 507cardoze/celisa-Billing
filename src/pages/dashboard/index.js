@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, memo } from "react";
+import React, { useState, useContext, memo } from "react";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
 import {
   Grid,
@@ -27,14 +27,20 @@ import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import MoneyOffIcon from "@material-ui/icons/MoneyOff";
 import moment from "moment";
 import { useStickyState } from "../../helpers/fetch";
+import { useQuery } from "react-query";
+import { useIsFetching } from "react-query";
 
 function Dashboard() {
   const history = useHistory();
-  const [isLoading, setIsLoading] = useState(false);
   const [user] = useContext(UserContext);
-  const [dataGeneral, setDataGeneral] = useState(null);
-  const [dataVendedores, setDataVendedores] = useState(null);
-  const [dataProveedores, setDataProveedores] = useState(null);
+  const isFetching = useIsFetching();
+
+  const fetchReporte = async (url, header) => {
+    fetch.UserRedirect(user, history);
+    const res = await window.fetch(url, header);
+    fetch.UnauthorizedRedirect(res, history);
+    return res.json();
+  };
 
   const [searchFieldProductos, setSearchFieldProductos] = useState("");
   const [searchFieldOrdenes, setSearchFieldOrdenes] = useState("");
@@ -51,52 +57,64 @@ function Dashboard() {
   const onSearchChangeOrdenes = (event) =>
     setSearchFieldOrdenes(event.target.value);
 
-  useEffect(() => {
-    fetch.UserRedirect(user, history);
-    const urlGeneral = url.getDataReporteGeneral();
-    const urlVendedores = url.getDataReporteVendedores();
-    const urlProveedores = url.getDataReporteProveedores();
-    const header = fetch.requestHeader("GET", null, localStorage.token);
-    const fetchData = async (url, header, setter) => {
-      setIsLoading(true);
-      try {
-        const loggedInfo = await fetch.fetchData(url, header);
-        fetch.UnauthorizedRedirect(loggedInfo, history);
-        setter(loggedInfo);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const header = fetch.requestHeader("GET", null, localStorage.token);
+  const urlGeneral = url.getDataReporteGeneral();
+  const urlVendedores = url.getDataReporteVendedores();
+  const urlProveedores = url.getDataReporteProveedores();
 
-    fetchData(
-      `${urlGeneral}?desde=${`${desde}`}&hasta=${`${moment().format(
-        "YYYY-MM-DD",
-      )}`}`,
-      header,
-      setDataGeneral,
-    );
+  const { data: dataGeneral } = useQuery(
+    [
+      "reporteGeneral",
+      `${urlGeneral}?desde=${desde}&hasta=${moment().format("YYYY-MM-DD")}`,
+    ],
+    () =>
+      fetchReporte(
+        `${urlGeneral}?desde=${desde}&hasta=${moment().format("YYYY-MM-DD")}`,
+      ),
+    {
+      staleTime: 300000,
+    },
+    header,
+  );
 
-    fetchData(
-      `${urlVendedores}?desde=${`${desde}`}&hasta=${`${moment().format(
-        "YYYY-MM-DD",
-      )}`}`,
-      header,
-      setDataVendedores,
-    );
-    fetchData(
-      `${urlProveedores}?desde=${`${desde}`}&hasta=${`${moment().format(
-        "YYYY-MM-DD",
-      )}`}`,
-      header,
-      setDataProveedores,
-    );
-  }, [user, history, desde]);
+  const { data: dataVendedores } = useQuery(
+    [
+      "reporteVendedores",
+      `${urlVendedores}?desde=${desde}&hasta=${moment().format("YYYY-MM-DD")}`,
+    ],
+    () =>
+      fetchReporte(
+        `${urlVendedores}?desde=${desde}&hasta=${moment().format(
+          "YYYY-MM-DD",
+        )}`,
+      ),
+    {
+      staleTime: 300000,
+    },
+    header,
+  );
+
+  const { data: dataProveedores } = useQuery(
+    [
+      "reporteProveedores",
+      `${urlProveedores}?desde=${desde}&hasta=${moment().format("YYYY-MM-DD")}`,
+    ],
+    () =>
+      fetchReporte(
+        `${urlProveedores}?desde=${desde}&hasta=${moment().format(
+          "YYYY-MM-DD",
+        )}`,
+      ),
+    {
+      staleTime: 300000,
+    },
+    header,
+  );
 
   return (
     <MainLayout Tittle="Dashboard">
-      <BackdropSpinner isLoading={!isLoading} />
-      <Container>
+      <BackdropSpinner isLoading={!isFetching} />
+      <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid
             item
@@ -118,6 +136,7 @@ function Dashboard() {
                   marginTop: "25px",
                 },
               }}
+              item
             >
               <InputLabel>{`Desde ${desde} hasta hoy, ${moment().format(
                 "YYYY-MM-DD",
