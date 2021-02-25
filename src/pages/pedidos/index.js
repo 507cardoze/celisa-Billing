@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, memo } from "react";
+import React, { useState, useContext, memo } from "react";
 import { Box, Container } from "@material-ui/core";
 import Toolbar from "../../components/ToolBar/Toolbar";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
@@ -14,12 +14,11 @@ import BackdropSpinner from "../../components/BackDrop/backDrop";
 import * as toast from "../../helpers/toast";
 import Chip from "@material-ui/core/Chip";
 import NumericToolBar from "../../components/NumericToolBar/NumericToolBar";
+import { useQuery } from "react-query";
+import { useIsFetching } from "react-query";
 
 const Pedidos = () => {
   //state
-  const [isLoading, setIsLoading] = useState(false);
-  const [rows, setRows] = useState({});
-  const [dataExport, setDataExport] = useState([]);
   const [resultados, setResultados] = useState([]);
   const [searchField, setSearchField] = useState("");
   const [page, setPage] = useState(1);
@@ -33,9 +32,7 @@ const Pedidos = () => {
   const handleChangeOrder = (order) => setOrder(order);
   const history = useHistory();
   const [user] = useContext(UserContext);
-
-  const { results } = rows;
-  const { total } = rows;
+  const isFetching = useIsFetching();
 
   const columns = [
     { tittle: "#", atributo: "pedido_id" },
@@ -45,14 +42,9 @@ const Pedidos = () => {
   ];
 
   //funciones
-  const header = fetch.requestHeader("GET", null, localStorage.token);
-  const headerSearch = fetch.requestHeader("GET", null, localStorage.token);
-  const headerCrear = fetch.requestHeader("POST", null, localStorage.token);
-  const headerClose = fetch.requestHeader("PUT", null, localStorage.token);
 
   const getAllPedidoURL = url.getPedidosUrl();
-  const crearUrl = url.crearPedidoUrl();
-  const closeAllUrl = url.closeAllPedidoUrl();
+
   const searchUrl = url.searchPedidosUrl();
 
   const pedidos = {
@@ -60,103 +52,100 @@ const Pedidos = () => {
     closeAll: () => handleOnClickClosePedido(),
   };
 
-  const handleOnChangeTextField = (event) => {
+  const handleOnChangeTextField = async (event) => {
     setSearchField(event.target.value);
     if (searchField.length >= 0) {
-      const fetchData = async (url, header, setter) => {
-        const loggedInfo = await fetch.fetchData(url, header);
-        fetch.UnauthorizedRedirect(loggedInfo, history);
-        setter(loggedInfo);
-      };
-      fetchData(
-        `${searchUrl}?text=${searchField}`,
-        headerSearch,
-        setResultados,
-      );
+      const response = await searchPedido(`${searchUrl}?text=${searchField}`);
+      setResultados(response);
     } else {
       setResultados([]);
     }
   };
 
   const handleOnClickNuevoPedido = async () => {
-    const loggedInfo = await fetch.fetchData(crearUrl, headerCrear);
-    fetch.UnauthorizedRedirect(loggedInfo, history);
-    if (loggedInfo === "pedido creado") {
-      fetchData(
-        `${getAllPedidoURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
-        header,
-        setRows,
-      );
-      fetchData(`${getAllPedidoURL}?excel=${true}`, header, setDataExport);
+    const query = await addPedido();
+    if (query === "pedido creado") {
+      refetch();
     } else {
-      toast.errorToast(loggedInfo);
+      toast.errorToast(query);
     }
   };
 
   const handleOnClickClosePedido = async () => {
-    const loggedInfo = await fetch.fetchData(closeAllUrl, headerClose);
-    fetch.UnauthorizedRedirect(loggedInfo, history);
-    if (loggedInfo === "pedido creado") {
-      fetchData(
-        `${getAllPedidoURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
-        header,
-        setRows,
-      );
-      fetchData(`${getAllPedidoURL}?excel=${true}`, header, setDataExport);
+    const query = await closePedidos();
+    if (query === "pedido creado") {
+      refetch();
     } else {
-      toast.errorToast(loggedInfo);
+      toast.errorToast(query);
     }
   };
 
-  const fetchData = async (url, header, setter) => {
-    const loggedInfo = await fetch.fetchData(url, header);
-    fetch.UnauthorizedRedirect(loggedInfo, history);
-    setter(loggedInfo);
+  const fetchPedido = async (url) => {
+    const header = fetch.requestHeader("GET", null, localStorage.token);
+    fetch.UserRedirect(user, history);
+    const res = await window.fetch(url, header);
+    fetch.UnauthorizedRedirect(res, history);
+    return res.json();
   };
 
-  //efectos
-
-  useEffect(() => {
+  const addPedido = async () => {
+    const header = fetch.requestHeader("POST", null, localStorage.token);
     fetch.UserRedirect(user, history);
+    const res = await window.fetch(url.crearPedidoUrl(), header);
+    fetch.UnauthorizedRedirect(res, history);
+    return res.json();
+  };
+
+  const closePedidos = async () => {
+    const header = fetch.requestHeader("PUT", null, localStorage.token);
+    fetch.UserRedirect(user, history);
+    const res = await window.fetch(url.closeAllPedidoUrl(), header);
+    fetch.UnauthorizedRedirect(res, history);
+    return res.json();
+  };
+
+  const searchPedido = async (url) => {
     const header = fetch.requestHeader("GET", null, localStorage.token);
-    const fetchData = async (url, header, setter) => {
-      setIsLoading(true);
-      try {
-        const loggedInfo = await fetch.fetchData(url, header);
-        fetch.UnauthorizedRedirect(loggedInfo, history);
-        setter(loggedInfo);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData(
+    fetch.UserRedirect(user, history);
+    const res = await window.fetch(url, header);
+    fetch.UnauthorizedRedirect(res, history);
+    return res.json();
+  };
+
+  const { data: rows, refetch } = useQuery(
+    [
+      "pedido",
       `${getAllPedidoURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
-      header,
-      setRows,
-    );
-    fetchData(`${getAllPedidoURL}?excel=${true}`, header, setDataExport);
-  }, [user, history, page, limit, atrib, order, getAllPedidoURL]);
+    ],
+    () =>
+      fetchPedido(
+        `${getAllPedidoURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
+      ),
+    {
+      staleTime: 300000,
+      refetchOnWindowFocus: false,
+      enabled: true, // turned off by default, manual refetch is needed
+    },
+  );
 
   return (
     <MainLayout Tittle="Pedidos">
       <Container>
-        <BackdropSpinner isLoading={!isLoading} />
+        <BackdropSpinner isLoading={!isFetching} />
         <NumericToolBar
           data={{
             titles: [{ text: "Total de pedidos", estado: 0 }],
-            values: [total ? total : `cargando...`],
+            values: [rows?.total ? rows.total : `cargando...`],
           }}
         />
         <Toolbar
-          isLoading={isLoading}
+          isLoading={isFetching}
           resultados={resultados}
           handleOnChangeTextField={handleOnChangeTextField}
           searchField={searchField}
           nav="Agregar Pedido"
           ruta="/create-pedido"
           searchLabel="Buscar pedido"
-          dataExport={dataExport}
           filename={`pedidos / ${moment().format("MMMM Do YYYY, h:mm")}`}
           pedidos={pedidos}
           type="pedidos"
@@ -164,7 +153,7 @@ const Pedidos = () => {
         <Box mt={3}>
           <DataTable
             columns={columns}
-            total={total}
+            total={rows?.total}
             page={page}
             limit={limit}
             atrib={atrib}
@@ -174,8 +163,8 @@ const Pedidos = () => {
             handleChangeAtrib={handleChangeAtrib}
             handleChangeOrder={handleChangeOrder}
           >
-            {results?.length > 0 ? (
-              results.map((row) => (
+            {rows?.results?.length > 0 ? (
+              rows.results.map((row) => (
                 <TableRow key={row.pedido_id}>
                   <TableCell align="center">
                     <Chip
@@ -208,13 +197,13 @@ const Pedidos = () => {
               ))
             ) : (
               <TableRow>
-                {results?.length === 0 ? (
+                {rows?.results?.length === 0 ? (
                   columns.map((value) => {
                     return <TableCell key={value.tittle}></TableCell>;
                   })
                 ) : (
                   <TableCell>
-                    <BackdropSpinner isLoading={isLoading} />
+                    <BackdropSpinner isLoading={isFetching} />
                   </TableCell>
                 )}
               </TableRow>

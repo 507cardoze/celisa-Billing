@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, memo } from "react";
+import React, { useState, useContext, memo } from "react";
 import { Box, TableRow, TableCell, Chip } from "@material-ui/core";
 import DataTable from "../../components/DataTable/databable";
 import Toolbar from "../../components/ToolBar/Toolbar";
@@ -8,12 +8,14 @@ import { UserContext } from "../../Context/userContext";
 import * as fetch from "../../helpers/fetch";
 import * as url from "../../helpers/urls";
 import NumericToolBar from "../../components/NumericToolBar/NumericToolBar";
+import { useQuery } from "react-query";
+import { useIsFetching } from "react-query";
 
 function ClientTable() {
   const history = useHistory();
   const [user] = useContext(UserContext);
-  const [isLoading, setIsLoading] = useState(false);
-  const [rows, setRows] = useState({});
+  const isFetching = useIsFetching();
+  //const [rows, setRows] = useState({});
   const [resultados, setResultados] = useState([]);
   const [searchField, setSearchField] = useState("");
   const [page, setPage] = fetch.useStickyState(1, "clients_page");
@@ -25,8 +27,8 @@ function ClientTable() {
   const handleChangeAtrib = (atrib) => setAtrib(atrib);
   const handleChangeOrder = (order) => setOrder(order);
 
-  const { results } = rows;
-  const { total } = rows;
+  // const { results } = rows;
+  // const { total } = rows;
 
   const columns = [
     { tittle: "Cliente Ref", atributo: "cliente_id" },
@@ -57,35 +59,41 @@ function ClientTable() {
     }
   };
 
-  useEffect(() => {
-    fetch.UserRedirect(user, history);
+  const fetchClientes = async (url) => {
     const header = fetch.requestHeader("GET", null, localStorage.token);
-    const getClienteUrl = url.getClientes();
-    const fetchData = async (url, header, setter) => {
-      setIsLoading(true);
-      const loggedInfo = await fetch.fetchData(url, header);
-      fetch.UnauthorizedRedirect(loggedInfo, history);
-      setter(loggedInfo);
-      setIsLoading(false);
-    };
+    fetch.UserRedirect(user, history);
+    const res = await window.fetch(url, header);
+    fetch.UnauthorizedRedirect(res, history);
+    return res.json();
+  };
 
-    fetchData(
+  const getClienteUrl = url.getClientes();
+
+  const { data: rows } = useQuery(
+    [
+      "clientes",
       `${getClienteUrl}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${0}`,
-      header,
-      setRows,
-    );
-  }, [user, history, page, limit, atrib, order]);
+    ],
+    () =>
+      fetchClientes(
+        `${getClienteUrl}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${0}`,
+      ),
+    {
+      staleTime: 300000,
+    },
+  );
+
   return (
     <>
-      <BackdropSpinner isLoading={!isLoading} />
+      <BackdropSpinner isLoading={!isFetching} />
       <NumericToolBar
         data={{
           titles: [{ text: "Total de clientes", estado: 0 }],
-          values: [total ? total : `cargando...`],
+          values: [rows?.total ? rows.total : `cargando...`],
         }}
       />
       <Toolbar
-        isLoading={isLoading}
+        isLoading={isFetching}
         resultados={resultados}
         handleOnChangeTextField={handleOnChangeTextField}
         searchField={searchField}
@@ -98,7 +106,7 @@ function ClientTable() {
       <Box mt={3}>
         <DataTable
           columns={columns}
-          total={total}
+          total={rows?.total}
           page={page}
           limit={limit}
           atrib={atrib}
@@ -108,8 +116,8 @@ function ClientTable() {
           handleChangeAtrib={handleChangeAtrib}
           handleChangeOrder={handleChangeOrder}
         >
-          {results?.length > 0 ? (
-            results.map((row) => (
+          {rows?.results?.length ? (
+            rows.results.map((row) => (
               <TableRow key={row.cliente_id}>
                 <TableCell align="center">
                   <Chip
@@ -129,15 +137,9 @@ function ClientTable() {
             ))
           ) : (
             <TableRow>
-              {results?.length === 0 ? (
-                columns.map((value) => {
-                  return <TableCell key={value.tittle}></TableCell>;
-                })
-              ) : (
-                <TableCell>
-                  <BackdropSpinner isLoading={isLoading} />
-                </TableCell>
-              )}
+              {columns.map((value) => (
+                <TableCell key={value.tittle}></TableCell>
+              ))}
             </TableRow>
           )}
         </DataTable>
