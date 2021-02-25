@@ -163,7 +163,7 @@ const Pedidos = () => {
             handleChangeAtrib={handleChangeAtrib}
             handleChangeOrder={handleChangeOrder}
           >
-            {rows?.results?.length > 0 ? (
+            {rows?.results?.length ? (
               rows.results.map((row) => (
                 <TableRow key={row.pedido_id}>
                   <TableCell align="center">
