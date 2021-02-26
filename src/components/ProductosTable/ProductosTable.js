@@ -61,9 +61,10 @@ function ProductosTable({
                 <TableCell align={editable ? "center" : "right"}>
                   Cantidad
                 </TableCell>
-                {editable && <TableCell align="right">Proveedor</TableCell>}
+
                 <TableCell align="right">Precio Unitario&nbsp;($)</TableCell>
                 <TableCell align="right">Precio Total&nbsp;($)</TableCell>
+                {editable && <TableCell align="right">Proveedor</TableCell>}
                 {editable && <TableCell align="right">Accion</TableCell>}
               </TableRow>
             </TableHead>
@@ -106,6 +107,19 @@ function ProductosTable({
                       producto.cantidad
                     )}
                   </TableCell>
+
+                  <TableCell align="right">
+                    {`$${fetch.numberWithCommas(
+                      parseFloat(producto.precio).toFixed(2),
+                    )}`}
+                  </TableCell>
+                  <TableCell align="right">
+                    {`$${fetch.numberWithCommas(
+                      parseFloat(producto.precio * producto.cantidad).toFixed(
+                        2,
+                      ),
+                    )}`}
+                  </TableCell>
                   {editable && (
                     <TableCell align="right">
                       <Select
@@ -134,19 +148,6 @@ function ProductosTable({
                       </Select>
                     </TableCell>
                   )}
-
-                  <TableCell align="right">
-                    {`$${fetch.numberWithCommas(
-                      parseFloat(producto.precio).toFixed(2),
-                    )}`}
-                  </TableCell>
-                  <TableCell align="right">
-                    {`$${fetch.numberWithCommas(
-                      parseFloat(producto.precio * producto.cantidad).toFixed(
-                        2,
-                      ),
-                    )}`}
-                  </TableCell>
                   {editable && (
                     <TableCell
                       align="center"
@@ -176,7 +177,6 @@ function ProductosTable({
                 <TableCell align="right">{`${fetch.numberWithCommas(
                   orden.productos.reduce(sumaArticulos, 0),
                 )}`}</TableCell>
-                <TableCell align="right"></TableCell>
                 <TableCell align="right" style={{ fontWeight: "bold" }}>
                   TOTAL:
                 </TableCell>
@@ -185,6 +185,8 @@ function ProductosTable({
                     orden.productos.reduce(suma, 0).toFixed(2),
                   )}`}
                 </TableCell>
+                <TableCell align="right"></TableCell>
+
                 {editable && <TableCell align="right"></TableCell>}
               </TableRow>
             </TableBody>
