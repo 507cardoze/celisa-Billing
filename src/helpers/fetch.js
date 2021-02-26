@@ -109,5 +109,6 @@ export const UserRedirect = (user, history) => {
 };
 
 export const numberWithCommas = (x) => {
-  return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+  // return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+  return x;
 };
