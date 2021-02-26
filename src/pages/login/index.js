@@ -7,8 +7,6 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import fondoPrincipal from "../../static/fondo-principal.jpg";
-import fondoPrincipal2 from "../../static/fondo-principal2.jpg";
-import fondoPrincipal3 from "../../static/fondo-principal3.jpg";
 import * as fetch from "../../helpers/fetch";
 import * as styles from "../../helpers/styles";
 import * as toast from "../../helpers/toast";
@@ -21,11 +19,7 @@ import { Helmet } from "react-helmet";
 
 function Login() {
   const useStyles = makeStyles((theme) => {
-    const fondos = [fondoPrincipal, fondoPrincipal2, fondoPrincipal3];
-    return styles.loginStyles(
-      theme,
-      fondos[Math.floor(Math.random() * fondos.length)],
-    );
+    return styles.loginStyles(theme, fondoPrincipal);
   });
   const classes = useStyles();
   const [username, setUserName] = useState("");

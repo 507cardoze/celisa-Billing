@@ -63,8 +63,9 @@ function ClientTable() {
     const header = fetch.requestHeader("GET", null, localStorage.token);
     fetch.UserRedirect(user, history);
     const res = await window.fetch(url, header);
-    fetch.UnauthorizedRedirect(res, history);
-    return res.json();
+    const decoded = await res.json();
+    fetch.UnauthorizedRedirect(decoded, history);
+    return decoded;
   };
 
   const getClienteUrl = url.getClientes();

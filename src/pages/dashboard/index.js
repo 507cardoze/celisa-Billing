@@ -35,13 +35,6 @@ function Dashboard() {
   const [user] = useContext(UserContext);
   const isFetching = useIsFetching();
 
-  const fetchReporte = async (url, header) => {
-    fetch.UserRedirect(user, history);
-    const res = await window.fetch(url, header);
-    fetch.UnauthorizedRedirect(res, history);
-    return res.json();
-  };
-
   const [searchFieldProductos, setSearchFieldProductos] = useState("");
   const [searchFieldOrdenes, setSearchFieldOrdenes] = useState("");
 
@@ -61,6 +54,14 @@ function Dashboard() {
   const urlGeneral = url.getDataReporteGeneral();
   const urlVendedores = url.getDataReporteVendedores();
   const urlProveedores = url.getDataReporteProveedores();
+
+  const fetchReporte = async (url, header) => {
+    fetch.UserRedirect(user, history);
+    const res = await window.fetch(url, header);
+    const decoded = await res.json();
+    fetch.UnauthorizedRedirect(decoded, history);
+    return decoded;
+  };
 
   const { data: dataGeneral } = useQuery(
     [

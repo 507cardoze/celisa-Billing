@@ -120,7 +120,7 @@ const getLinksContainer = (type, data, classes) => {
               <ListItem
                 button
                 component={Link}
-                to={`/clientes/${row.cliente_id}`}
+                to={`/clientes/editar/${row.cliente_id}`}
                 className={`${classes.a}`}
                 key={row.cliente_id}
               >
