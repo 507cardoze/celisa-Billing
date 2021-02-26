@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Grid, TextField, Button } from "@material-ui/core";
 import BackButton from "../../components/BackButton/BackButton";
 import moment from "moment";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import * as url from "../../helpers/urls";
 
 //views
@@ -16,25 +16,14 @@ function ReporteContent({ match }) {
   const [selectedUser, setSelectedUser] = useState(0);
   const [selectedClient, setSelectedClient] = useState(0);
   const [selectedProveedor, setSelectedProveedor] = useState(0);
+  const history = useHistory();
 
   const getClientsUrl = url.getClientes();
   const getVendedoresUrl = url.getAllUsersUrl();
   const getProveedoresUrl = url.getAllProveedoresUrl();
 
-  const handleBuscar = (type, data) => {
-    switch (type) {
-      case "usuarios":
-        return alert(`${data} ${type}`);
-      case "clientes":
-        return alert(`${data} ${type}`);
-      case "proveedores":
-        return alert(`${data} ${type}`);
-      case "ventas":
-        return alert(`${data} ${type}`);
-      default:
-        return "Error";
-    }
-  };
+  const handleBuscar = (type, data) =>
+    history.push(`/reportes/preview/${desde}/${hasta}/${type}/${data}`);
 
   const getTypeDataSelector = (type) => {
     switch (type) {

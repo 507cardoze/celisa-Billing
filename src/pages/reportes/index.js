@@ -6,6 +6,7 @@ import ReporteMenu from "./Reporte-menu";
 import ReporteContent from "./Reporte-content";
 import { UserContext } from "../../Context/userContext";
 import * as fetch from "../../helpers/fetch";
+import ReportePreview from "./ReportePreview";
 
 function Reportes({ match }) {
   const history = useHistory();
@@ -22,14 +23,13 @@ function Reportes({ match }) {
           render={(props) => <ReporteMenu {...props} />}
         />
         <Route
-          exact
           path={`${match.path}/buscar/:type`}
           render={(props) => <ReporteContent {...props} />}
         />
-        {/* <Route
-            path={`${match.path}/editar/:cliente_id`}
-            render={(props) => <EditCliente {...props} />}
-          /> */}
+        <Route
+          path={`${match.path}/preview/:desde/:hasta/:type/:data`}
+          render={(props) => <ReportePreview {...props} />}
+        />
       </Container>
     </MainLayout>
   );

@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 
-const BackButton = ({ texto, ruta }) => {
+const BackButton = ({ texto, ruta, ...otherProps }) => {
   const history = useHistory();
   const classes = useStyles();
   const moveBack = () => history.push(ruta);
@@ -15,6 +15,7 @@ const BackButton = ({ texto, ruta }) => {
       color="primary"
       className={classes.submit}
       onClick={moveBack}
+      {...otherProps}
     >
       {texto}
     </Button>
