@@ -63,15 +63,11 @@ function Dashboard() {
     return decoded;
   };
 
+  const hoy = moment().format("YYYY-MM-DD");
+
   const { data: dataGeneral } = useQuery(
-    [
-      "reporteGeneral",
-      `${urlGeneral}?desde=${desde}&hasta=${moment().format("YYYY-MM-DD")}`,
-    ],
-    () =>
-      fetchReporte(
-        `${urlGeneral}?desde=${desde}&hasta=${moment().format("YYYY-MM-DD")}`,
-      ),
+    ["reporteGeneral", urlGeneral, desde],
+    () => fetchReporte(`${urlGeneral}?desde=${desde}&hasta=${hoy}`),
     {
       staleTime: 300000,
     },
@@ -79,16 +75,8 @@ function Dashboard() {
   );
 
   const { data: dataVendedores } = useQuery(
-    [
-      "reporteVendedores",
-      `${urlVendedores}?desde=${desde}&hasta=${moment().format("YYYY-MM-DD")}`,
-    ],
-    () =>
-      fetchReporte(
-        `${urlVendedores}?desde=${desde}&hasta=${moment().format(
-          "YYYY-MM-DD",
-        )}`,
-      ),
+    ["reporteVendedores", urlVendedores, desde],
+    () => fetchReporte(`${urlVendedores}?desde=${desde}&hasta=${hoy})}`),
     {
       staleTime: 300000,
     },
@@ -96,16 +84,8 @@ function Dashboard() {
   );
 
   const { data: dataProveedores } = useQuery(
-    [
-      "reporteProveedores",
-      `${urlProveedores}?desde=${desde}&hasta=${moment().format("YYYY-MM-DD")}`,
-    ],
-    () =>
-      fetchReporte(
-        `${urlProveedores}?desde=${desde}&hasta=${moment().format(
-          "YYYY-MM-DD",
-        )}`,
-      ),
+    ["reporteProveedores", urlProveedores, desde],
+    () => fetchReporte(`${urlProveedores}?desde=${desde}&hasta=${hoy}`),
     {
       staleTime: 300000,
     },

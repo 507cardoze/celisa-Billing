@@ -18,6 +18,7 @@ import NewOrders from "./pages/ordenes/newOrders";
 import MisOrdenes from "./pages/misOrdenes/";
 import EditOrder from "./pages/ordenes/editOrders";
 import Clientes from "./pages/clientes/";
+import Reportes from "./pages/reportes/";
 
 // contexto
 
@@ -49,6 +50,7 @@ function App() {
               <PrivateRoute path="/create-user" component={UsersCreate} />
               <PrivateRoute path="/edit-user/:id" component={UsersEdit} />
               <PrivateRoute path="/clientes" component={Clientes} />
+              <PrivateRoute path="/reportes" component={Reportes} />
               <Route path="/login" component={Login} />
               <PrivateRoute path="*" component={NotFoundView} />
             </Switch>

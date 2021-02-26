@@ -118,7 +118,7 @@ const Pedidos = () => {
 
   const { data: rows, refetch } = useQuery(
     [
-      "pedido",
+      "pedidoTable",
       `${getAllPedidoURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
     ],
     () =>

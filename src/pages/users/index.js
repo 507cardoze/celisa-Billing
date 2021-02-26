@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, memo } from "react";
+import React, { useState, useContext, memo } from "react";
 import { Box, Container, Switch } from "@material-ui/core";
 import Toolbar from "../../components/ToolBar/Toolbar";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
@@ -13,11 +13,13 @@ import { UserContext } from "../../Context/userContext";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
 import NumericToolBar from "../../components/NumericToolBar/NumericToolBar";
 import Chip from "@material-ui/core/Chip";
+import { useQuery } from "react-query";
+import { useIsFetching } from "react-query";
+import * as toast from "../../helpers/toast";
 
 const Users = () => {
   //state
-  const [isLoading, setIsLoading] = useState(false);
-  const [rows, setRows] = useState({});
+  const isFetching = useIsFetching();
   const [resultados, setResultados] = useState([]);
   const [searchField, setSearchField] = useState("");
   const [page, setPage] = useState(1);
@@ -32,9 +34,6 @@ const Users = () => {
   const history = useHistory();
   const [user] = useContext(UserContext);
 
-  const { results } = rows;
-  const { total } = rows;
-
   const columns = [
     { tittle: "Nombres", atributo: "name" },
     { tittle: "Usuario", atributo: "username" },
@@ -48,40 +47,19 @@ const Users = () => {
 
   const getAllusersURL = url.getAllUsersUrl();
   const getSearchUserURL = url.getSearchUsersUrl();
-  const headerSearch = fetch.requestHeader("GET", null, localStorage.token);
   const header = fetch.requestHeader("GET", null, localStorage.token);
   const changeServiceUrl = url.getUserEstadoChangeUrl();
 
   const handleOnChangeTextField = (event) => {
     setSearchField(event.target.value);
     if (searchField.length >= 3) {
-      const fetchData = async (url, header, setter) => {
-        const loggedInfo = await fetch.fetchData(url, header);
-        fetch.UnauthorizedRedirect(loggedInfo, history);
-        setter(loggedInfo);
-      };
       fetchData(
         `${getSearchUserURL}?text=${searchField}`,
-        headerSearch,
+        header,
         setResultados,
       );
     } else {
       setResultados([]);
-    }
-  };
-
-  const updateEstado = async (id, estado) => {
-    const loggedInfo = await fetch.fetchData(
-      `${changeServiceUrl}?estado=${!estado}&user_id=${id}`,
-      header,
-    );
-    fetch.UnauthorizedRedirect(loggedInfo, history);
-    if (loggedInfo === "changed") {
-      fetchData(
-        `${getAllusersURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
-        header,
-        setRows,
-      );
     }
   };
 
@@ -91,25 +69,44 @@ const Users = () => {
     setter(loggedInfo);
   };
 
-  //efectos
+  const updateEstado = async (id, estado) => {
+    const query = await changeEstado(id, estado);
+    if (query === "changed") {
+      refetch();
+    } else {
+      toast.errorToast(query);
+    }
+  };
 
-  useEffect(() => {
+  const changeEstado = async (id, estado) => {
     fetch.UserRedirect(user, history);
-    const header = fetch.requestHeader("GET", null, localStorage.token);
-    const fetchData = async (url, header, setter) => {
-      setIsLoading(true);
-      const loggedInfo = await fetch.fetchData(url, header);
-      fetch.UnauthorizedRedirect(loggedInfo, history);
-      setter(loggedInfo);
-      setIsLoading(false);
-    };
-
-    fetchData(
-      `${getAllusersURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
+    const res = await window.fetch(
+      `${changeServiceUrl}?estado=${!estado}&user_id=${id}`,
       header,
-      setRows,
     );
-  }, [user, history, page, limit, atrib, order, getAllusersURL]);
+    const decoded = await res.json();
+    fetch.UnauthorizedRedirect(decoded, history);
+    return decoded;
+  };
+
+  const fetchUsers = async (url) => {
+    fetch.UserRedirect(user, history);
+    const res = await window.fetch(url, header);
+    const decoded = await res.json();
+    fetch.UnauthorizedRedirect(decoded, history);
+    return decoded;
+  };
+
+  const { data: rows, refetch } = useQuery(
+    ["usuariosTable", getAllusersURL, page, limit, atrib, order],
+    () =>
+      fetchUsers(
+        `${getAllusersURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
+      ),
+    {
+      staleTime: 300000,
+    },
+  );
 
   const dashboard = [
     { text: "Total de usuarios en el sistema" },
@@ -119,18 +116,18 @@ const Users = () => {
 
   return (
     <MainLayout Tittle="Usuarios">
-      <BackdropSpinner isLoading={!isLoading} />
+      <BackdropSpinner isLoading={!isFetching} />
       <Container>
-        {rows?.dashboard && (
-          <NumericToolBar
-            data={{
-              titles: dashboard,
-              values: Object.values(rows.dashboard),
-            }}
-          />
-        )}
+        <NumericToolBar
+          data={{
+            titles: dashboard,
+            values: rows?.dashboard
+              ? Object.values(rows.dashboard)
+              : ["cargando..", "cargando..", "cargando.."],
+          }}
+        />
         <Toolbar
-          isLoading={isLoading}
+          isLoading={isFetching}
           resultados={resultados}
           handleOnChangeTextField={handleOnChangeTextField}
           searchField={searchField}
@@ -143,7 +140,7 @@ const Users = () => {
         <Box mt={3}>
           <DataTable
             columns={columns}
-            total={total}
+            total={rows?.total}
             page={page}
             limit={limit}
             atrib={atrib}
@@ -153,8 +150,8 @@ const Users = () => {
             handleChangeAtrib={handleChangeAtrib}
             handleChangeOrder={handleChangeOrder}
           >
-            {results?.length > 0 ? (
-              results.map((row) => (
+            {rows?.results?.length > 0 ? (
+              rows.results.map((row) => (
                 <TableRow key={row.user_id}>
                   <TableCell align="center">
                     <Chip
@@ -193,15 +190,9 @@ const Users = () => {
               ))
             ) : (
               <TableRow>
-                {results?.length === 0 ? (
-                  columns.map((value) => {
-                    return <TableCell key={value.tittle}></TableCell>;
-                  })
-                ) : (
-                  <TableCell>
-                    <BackdropSpinner isLoading={isLoading} />
-                  </TableCell>
-                )}
+                {columns.map((value) => (
+                  <TableCell key={value.tittle}></TableCell>
+                ))}
               </TableRow>
             )}
           </DataTable>

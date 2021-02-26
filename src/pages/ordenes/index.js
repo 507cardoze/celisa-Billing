@@ -21,7 +21,6 @@ const Ordenes = () => {
   const [limit, setLimit] = fetch.useStickyState(50, "orders_limit");
   const [atrib, setAtrib] = useState("orden_id");
   const [order, setOrder] = useState("desc");
-  const [estado, setEstado] = useState(0);
   const isFetching = useIsFetching();
 
   const handleChangePage = (page) => setPage(page + 1);
@@ -86,11 +85,11 @@ const Ordenes = () => {
   const { data: rows } = useQuery(
     [
       "ordenes",
-      `${getAllURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${estado}`,
+      `${getAllURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${0}`,
     ],
     () =>
       fetchOrden(
-        `${getAllURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${estado}`,
+        `${getAllURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${0}`,
       ),
     {
       staleTime: 300000,
@@ -101,16 +100,22 @@ const Ordenes = () => {
     <MainLayout Tittle="Ordenes">
       <BackdropSpinner isLoading={!isFetching} />
       <Container>
-        {rows?.dashboard && (
-          <NumericToolBar
-            setEstado={setEstado}
-            ver
-            data={{
-              titles: dashboard,
-              values: Object.values(rows.dashboard),
-            }}
-          />
-        )}
+        <NumericToolBar
+          data={{
+            titles: dashboard,
+            values: rows?.dashboard
+              ? Object.values(rows.dashboard)
+              : [
+                  "cargando..",
+                  "cargando..",
+                  "cargando..",
+                  "cargando..",
+                  "cargando..",
+                  "cargando..",
+                  "cargando..",
+                ],
+          }}
+        />
 
         <Toolbar
           resultados={resultados}

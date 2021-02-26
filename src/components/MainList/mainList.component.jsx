@@ -16,6 +16,7 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import PieChartIcon from "@material-ui/icons/PieChart";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
+import SearchIcon from "@material-ui/icons/Search";
 import { UserContext } from "../../Context/userContext";
 
 function MainList() {
@@ -44,6 +45,7 @@ function MainList() {
     { route: "/clientes", Icon: EmojiPeopleIcon, text: "clientes" },
     { route: "/orders", Icon: AddShoppingCartIcon, text: "Ordenes" },
     { route: "/users", Icon: PersonIcon, text: "Usuarios" },
+    { route: "/reportes", Icon: SearchIcon, text: "Reportes" },
   ];
 
   const publicLinks = [

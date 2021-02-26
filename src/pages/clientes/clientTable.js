@@ -15,7 +15,6 @@ function ClientTable() {
   const history = useHistory();
   const [user] = useContext(UserContext);
   const isFetching = useIsFetching();
-  //const [rows, setRows] = useState({});
   const [resultados, setResultados] = useState([]);
   const [searchField, setSearchField] = useState("");
   const [page, setPage] = fetch.useStickyState(1, "clients_page");
@@ -26,9 +25,6 @@ function ClientTable() {
   const handleChangeLimit = (limit) => setLimit(limit);
   const handleChangeAtrib = (atrib) => setAtrib(atrib);
   const handleChangeOrder = (order) => setOrder(order);
-
-  // const { results } = rows;
-  // const { total } = rows;
 
   const columns = [
     { tittle: "Cliente Ref", atributo: "cliente_id" },
@@ -72,7 +68,7 @@ function ClientTable() {
 
   const { data: rows } = useQuery(
     [
-      "clientes",
+      "clientesTable",
       `${getClienteUrl}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${0}`,
     ],
     () =>
