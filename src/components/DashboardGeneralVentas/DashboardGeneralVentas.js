@@ -12,13 +12,19 @@ import DashboardGraphCardProgress from "../../components/DashboardGraphCardProgr
 import DashboardTableProductos from "../../components/DashboardTableProductos";
 import DashboardTableOrdenes from "../../components/DashboardTableOrdenes";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import MoneyOffIcon from "@material-ui/icons/MoneyOff";
 import { useQuery } from "react-query";
 import { useIsFetching } from "react-query";
 
-function DashboardGeneralVentas({ desde, hasta }) {
+function DashboardGeneralVentas({
+  desde,
+  hasta,
+  ventas,
+  proveedores,
+  vendedores,
+  desglose,
+}) {
   const history = useHistory();
   const [user] = useContext(UserContext);
   const isFetching = useIsFetching();
@@ -73,149 +79,153 @@ function DashboardGeneralVentas({ desde, hasta }) {
   return (
     <Grid container spacing={3}>
       <BackdropSpinner isLoading={!isFetching} />
-      <Grid item lg={4} sm={6} md={4} xl={4} xs={12}>
-        <DashbordCard
-          title="Ventas realizadas"
-          color={`colors.green[600]`}
-          Icon={AttachMoneyIcon}
-          data={`${
-            dataGeneral?.ventasTotales
-              ? `$${dataGeneral.ventasTotales.toFixed(2)}`
-              : `$${0.0}`
-          }`}
-          description="Total de dinero entrante"
-        />
-      </Grid>
-      <Grid item lg={4} sm={6} md={4} xl={4} xs={12}>
-        <DashbordCard
-          title="Pagos recibidos"
-          color={colors.blue[600]}
-          Icon={AttachMoneyIcon}
-          data={`${
-            dataGeneral?.pagosTotales
-              ? `$${dataGeneral.pagosTotales.toFixed(2)}`
-              : `$${0.0}`
-          }`}
-          description="Total de dinero cobrado"
-        />
-      </Grid>
-      <Grid item lg={4} sm={6} md={4} xl={4} xs={12}>
-        <DashbordCard
-          title="Cobros pendientes"
-          color={colors.red[600]}
-          Icon={AttachMoneyIcon}
-          data={`${
-            dataGeneral?.saldosTotales
-              ? `$${dataGeneral.saldosTotales.toFixed(2)}`
-              : `$${0.0}`
-          }`}
-          description="Total faltante por cobrar"
-        />
-      </Grid>
-      <Grid item lg={4} sm={4} md={4} xl={4} xs={12}>
-        <DashboardGraphCardProgress
-          title="Se a cobrado el"
-          Icon={MoneyOffIcon}
-          color={colors.deepPurple[600]}
-          porcentaje={Math.round(
-            (dataGeneral?.pagosTotales / dataGeneral?.ventasTotales) * 100,
-          )}
-        />
-      </Grid>
-      <Grid item lg={4} sm={4} md={4} xl={4} xs={12}>
-        <DashboardGraphCardProgress
-          title="Productos sin proveedor"
-          color={colors.teal[600]}
-          Icon={AddShoppingCartIcon}
-          onClick={() => history.push("/clientes")}
-          porcentaje={Math.round(
-            (dataProveedores?.productosSinproveedor /
-              dataProveedores?.productosTotal) *
-              100,
-          )}
-        />
-      </Grid>
-      <Grid item lg={4} sm={4} md={4} xl={4} xs={12}>
-        <DashbordCard
-          title="Clientes en el sistema"
-          color={colors.pink[600]}
-          Icon={EmojiPeopleIcon}
-          data={`${
-            dataGeneral?.totalClientes
-              ? dataGeneral.totalClientes
-              : `cargando ...`
-          }`}
-          description="Total de clientes registrados"
-          onClick={() => history.push("/clientes")}
-        />
-      </Grid>
+      {ventas ? (
+        <>
+          <Grid item lg={4} sm={6} md={4} xl={4} xs={12}>
+            <DashbordCard
+              title="Ventas realizadas"
+              color={`colors.green[600]`}
+              Icon={AttachMoneyIcon}
+              data={`${
+                dataGeneral?.ventasTotales
+                  ? `$${dataGeneral.ventasTotales.toFixed(2)}`
+                  : `$${0.0}`
+              }`}
+              description="Total de dinero entrante"
+            />
+          </Grid>
+          <Grid item lg={4} sm={6} md={4} xl={4} xs={12}>
+            <DashbordCard
+              title="Pagos recibidos"
+              color={colors.blue[600]}
+              Icon={AttachMoneyIcon}
+              data={`${
+                dataGeneral?.pagosTotales
+                  ? `$${dataGeneral.pagosTotales.toFixed(2)}`
+                  : `$${0.0}`
+              }`}
+              description="Total de dinero cobrado"
+            />
+          </Grid>
+          <Grid item lg={4} sm={6} md={4} xl={4} xs={12}>
+            <DashbordCard
+              title="Cobros pendientes"
+              color={colors.red[600]}
+              Icon={AttachMoneyIcon}
+              data={`${
+                dataGeneral?.saldosTotales
+                  ? `$${dataGeneral.saldosTotales.toFixed(2)}`
+                  : `$${0.0}`
+              }`}
+              description="Total faltante por cobrar"
+            />
+          </Grid>
+          <Grid item lg={6} sm={6} md={6} xl={6} xs={12}>
+            <DashboardGraphCardProgress
+              title="Se a cobrado el"
+              Icon={MoneyOffIcon}
+              color={colors.deepPurple[600]}
+              porcentaje={Math.round(
+                (dataGeneral?.pagosTotales / dataGeneral?.ventasTotales) * 100,
+              )}
+            />
+          </Grid>
+          <Grid item lg={6} sm={6} md={6} xl={6} xs={12}>
+            <DashboardGraphCardProgress
+              title="Productos sin proveedor"
+              color={colors.teal[600]}
+              Icon={AddShoppingCartIcon}
+              onClick={() => history.push("/clientes")}
+              porcentaje={
+                dataProveedores?.porFecha.length
+                  ? Math.round(
+                      (dataProveedores?.productosSinproveedor /
+                        dataProveedores?.productosTotal) *
+                        100,
+                    )
+                  : 0
+              }
+            />
+          </Grid>
 
-      <Grid item lg={8} md={12} xl={9} xs={12}>
-        {dataGeneral?.por_fecha.length > 0 && (
-          <DashboardGraphBar
-            content={{
-              datasets: [
-                {
-                  backgroundColor: colors.indigo[700],
-                  data: dataGeneral.por_fecha.map((obj) =>
-                    parseFloat(obj.ventas),
-                  ),
-                  label: "Vendido en USD",
-                },
-                {
-                  backgroundColor: colors.orange[600],
-                  data: dataGeneral.por_fecha.map((obj) =>
-                    parseFloat(obj.pagado),
-                  ),
-                  label: "Cobrado en USD",
-                },
-              ],
-              labels: dataGeneral.por_fecha.map((obj) => obj.fecha),
-            }}
-            title="Desglose por fecha"
-            source={dataGeneral.por_fecha}
-          />
-        )}
-      </Grid>
-      <Grid item lg={4} md={6} xl={3} xs={12}>
-        {dataGeneral?.pagosTotales && (
-          <DashboardGraphPie
-            title="Porcentajes de venta"
-            dataSet={{
-              datasets: [
-                {
-                  data: [
-                    dataGeneral?.pagosTotales ? dataGeneral.pagosTotales : 0,
-                    dataGeneral?.saldosTotales ? dataGeneral.saldosTotales : 0,
+          <Grid item lg={8} md={12} xl={9} xs={12}>
+            {dataGeneral?.por_fecha.length > 0 && (
+              <DashboardGraphBar
+                content={{
+                  datasets: [
+                    {
+                      backgroundColor: colors.indigo[700],
+                      data: dataGeneral.por_fecha.map((obj) =>
+                        parseFloat(obj.ventas),
+                      ),
+                      label: "Vendido en USD",
+                    },
+                    {
+                      backgroundColor: colors.orange[600],
+                      data: dataGeneral.por_fecha.map((obj) =>
+                        parseFloat(obj.pagado),
+                      ),
+                      label: "Cobrado en USD",
+                    },
                   ],
-                  backgroundColor: [colors.indigo[500], colors.red[600]],
-                  borderWidth: 8,
-                  borderColor: colors.common.white,
-                  hoverBorderColor: colors.common.white,
-                },
-              ],
-              labels: ["Pagos recibidos", "Cobros pendientes"],
-            }}
-            devices={[
-              {
-                title: "Pagos recibidos",
-                value: dataGeneral?.pagosTotales?.toFixed(2),
-                icon: AttachMoneyIcon,
-                color: colors.indigo[500],
-              },
-              {
-                title: "Cobros pendientes",
-                value: dataGeneral?.saldosTotales?.toFixed(2),
-                icon: AttachMoneyIcon,
-                color: colors.red[600],
-              },
-            ]}
-          />
-        )}
-      </Grid>
+                  labels: dataGeneral.por_fecha.map((obj) => obj.fecha),
+                }}
+                title="Desglose por fecha"
+                source={dataGeneral.por_fecha}
+              />
+            )}
+          </Grid>
+          <Grid item lg={4} md={6} xl={3} xs={12}>
+            {dataGeneral?.pagosTotales ? (
+              <DashboardGraphPie
+                title="Porcentajes de venta"
+                dataSet={{
+                  datasets: [
+                    {
+                      data: [
+                        dataGeneral?.pagosTotales
+                          ? dataGeneral.pagosTotales
+                          : 0,
+                        dataGeneral?.saldosTotales
+                          ? dataGeneral.saldosTotales
+                          : 0,
+                      ],
+                      backgroundColor: [colors.indigo[500], colors.red[600]],
+                      borderWidth: 8,
+                      borderColor: colors.common.white,
+                      hoverBorderColor: colors.common.white,
+                    },
+                  ],
+                  labels: ["Pagos recibidos", "Cobros pendientes"],
+                }}
+                devices={[
+                  {
+                    title: "Pagos recibidos",
+                    value: dataGeneral?.pagosTotales?.toFixed(2),
+                    icon: AttachMoneyIcon,
+                    color: colors.indigo[500],
+                  },
+                  {
+                    title: "Cobros pendientes",
+                    value: dataGeneral?.saldosTotales?.toFixed(2),
+                    icon: AttachMoneyIcon,
+                    color: colors.red[600],
+                  },
+                ]}
+              />
+            ) : null}
+          </Grid>
+        </>
+      ) : null}
 
-      <Grid item lg={6} md={6} xl={6} xs={12}>
-        {dataVendedores?.usuariosConVenta.length > 0 && (
+      <Grid
+        item
+        lg={!vendedores ? 12 : 6}
+        md={!vendedores ? 12 : 6}
+        xl={!vendedores ? 12 : 6}
+        xs={12}
+      >
+        {proveedores && dataVendedores?.usuariosConVenta.length ? (
           <DashboardGraphBar
             content={{
               datasets: [
@@ -237,10 +247,16 @@ function DashboardGeneralVentas({ desde, hasta }) {
             title="Desglose por Proveedor"
             source={dataProveedores?.porFecha}
           />
-        )}
+        ) : null}
       </Grid>
-      <Grid item lg={6} md={6} xl={6} xs={12}>
-        {dataVendedores?.usuariosConVenta.length > 0 && (
+      <Grid
+        item
+        lg={!proveedores ? 12 : 6}
+        md={!proveedores ? 12 : 6}
+        xl={!proveedores ? 12 : 6}
+        xs={12}
+      >
+        {vendedores && dataVendedores?.usuariosConVenta.length ? (
           <DashboardGraphBar
             content={{
               datasets: [
@@ -266,39 +282,35 @@ function DashboardGeneralVentas({ desde, hasta }) {
             title="Desglose por vendedor"
             source={dataVendedores.usuariosConVenta}
           />
-        )}
+        ) : null}
       </Grid>
 
       <Grid item lg={4} md={12} xl={3} xs={12}>
-        <DashboardTableProductos
-          title="Productos: "
-          products={
-            dataGeneral?.productosVendidos.length > 0
-              ? dataGeneral?.productosVendidos.filter((producto) =>
-                  producto.producto
-                    .toLowerCase()
-                    .includes(searchFieldProductos.toLowerCase()),
-                )
-              : []
-          }
-          onSearchChange={onSearchChange}
-        />
+        {desglose && dataGeneral?.productosVendidos.length ? (
+          <DashboardTableProductos
+            title="Productos: "
+            products={dataGeneral.productosVendidos.filter((producto) =>
+              producto.producto
+                .toLowerCase()
+                .includes(searchFieldProductos.toLowerCase()),
+            )}
+            onSearchChange={onSearchChange}
+          />
+        ) : null}
       </Grid>
 
       <Grid item lg={8} md={12} xl={9} xs={12}>
-        <DashboardTableOrdenes
-          title={`Ordenes: `}
-          data={
-            dataGeneral?.desglose
-              ? dataGeneral.desglose.filter((ordenes) =>
-                  ordenes.nombre_cliente
-                    .toLowerCase()
-                    .includes(searchFieldOrdenes.toLowerCase()),
-                )
-              : []
-          }
-          onSearchChangeOrdenes={onSearchChangeOrdenes}
-        />
+        {desglose && dataGeneral?.desglose.length ? (
+          <DashboardTableOrdenes
+            title={`Ordenes: `}
+            data={dataGeneral.desglose.filter((ordenes) =>
+              ordenes.nombre_cliente
+                .toLowerCase()
+                .includes(searchFieldOrdenes.toLowerCase()),
+            )}
+            onSearchChangeOrdenes={onSearchChangeOrdenes}
+          />
+        ) : null}
       </Grid>
     </Grid>
   );

@@ -82,7 +82,14 @@ function Dashboard() {
               </FormHelperText>
             </FormControl>
           </Grid>
-          <DashboardGeneralVentas desde={desde} hasta={hoy} />
+          <DashboardGeneralVentas
+            desde={desde}
+            hasta={hoy}
+            ventas
+            proveedores
+            vendedores
+            desglose
+          />
         </Grid>
       </Container>
     </MainLayout>

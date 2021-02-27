@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Grid, Container } from "@material-ui/core";
 import BackButton from "../../components/BackButton/BackButton";
 import { Redirect } from "react-router-dom";
@@ -17,7 +17,9 @@ function ReportePreview({ match }) {
       case "proveedores":
         return "";
       case "ventas":
-        return <DashboardGeneralVentas desde={desde} hasta={hasta} />;
+        return (
+          <DashboardGeneralVentas desde={desde} hasta={hasta} ventas desglose />
+        );
       default:
         return <Redirect to="/reportes" />;
     }
@@ -36,13 +38,14 @@ function ReportePreview({ match }) {
         container
       >
         <BackButton
-          texto="volver al inicio"
+          texto="Seleccionar otro tipo de reporte"
           style={{ marginRight: ".5rem" }}
           ruta={`/reportes`}
         />
         <BackButton
           texto="Atras"
           ruta={`/reportes/buscar/${match.params.type}`}
+          style={{ marginRight: ".5rem" }}
         />
         <div style={{ flexGrow: 1 }}></div>
         <div>{`Reporte: ${moment(desde).format("DD-MMM-YYYY")} a ${moment(
@@ -54,4 +57,4 @@ function ReportePreview({ match }) {
   );
 }
 
-export default ReportePreview;
+export default memo(ReportePreview);
