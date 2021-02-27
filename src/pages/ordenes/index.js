@@ -22,6 +22,7 @@ const Ordenes = () => {
   const [atrib, setAtrib] = useState("orden_id");
   const [order, setOrder] = useState("desc");
   const isFetching = useIsFetching();
+  const [estado, setEstado] = useState(0);
 
   const handleChangePage = (page) => setPage(page + 1);
   const handleChangeLimit = (limit) => setLimit(limit);
@@ -85,11 +86,11 @@ const Ordenes = () => {
   const { data: rows } = useQuery(
     [
       "ordenes",
-      `${getAllURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${0}`,
+      `${getAllURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${estado}`,
     ],
     () =>
       fetchOrden(
-        `${getAllURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${0}`,
+        `${getAllURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${estado}`,
       ),
     {
       staleTime: 300000,
@@ -115,6 +116,8 @@ const Ordenes = () => {
                   "cargando..",
                 ],
           }}
+          setEstado={setEstado}
+          ver
         />
 
         <Toolbar

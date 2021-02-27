@@ -29,6 +29,7 @@ import { OrderProvider } from "./Context/OrderContext";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import "moment/locale/es";
 
 function App() {
   const queryClient = new QueryClient();
