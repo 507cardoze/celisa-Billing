@@ -4,6 +4,7 @@ import BackButton from "../../components/BackButton/BackButton";
 import moment from "moment";
 import { Redirect, useHistory } from "react-router-dom";
 import * as url from "../../helpers/urls";
+import { useStickyState } from "../../helpers/fetch";
 
 //views
 import ReporteSelector from "../../components/ReporteSelector/ReporteSelector";
@@ -11,8 +12,14 @@ import ReporteSelector from "../../components/ReporteSelector/ReporteSelector";
 function ReporteContent({ match }) {
   const type = match.params.type;
 
-  const [desde, setDesde] = useState(moment().format("YYYY-MM-DD"));
-  const [hasta, setHasta] = useState(moment().format("YYYY-MM-DD"));
+  const [desdeReporte, setDesdeReporte] = useStickyState(
+    moment().format("YYYY-MM-DD"),
+    "desdeReporte",
+  );
+  const [hastaReporte, setHastaReporte] = useStickyState(
+    moment().format("YYYY-MM-DD"),
+    "hastaReporte",
+  );
   const [selectedUser, setSelectedUser] = useState(0);
   const [selectedClient, setSelectedClient] = useState(0);
   const [selectedProveedor, setSelectedProveedor] = useState(0);
@@ -23,7 +30,9 @@ function ReporteContent({ match }) {
   const getProveedoresUrl = url.getAllProveedoresUrl();
 
   const handleBuscar = (type, data) =>
-    history.push(`/reportes/preview/${desde}/${hasta}/${type}/${data}`);
+    history.push(
+      `/reportes/preview/${desdeReporte}/${hastaReporte}/${type}/${data}`,
+    );
 
   const getTypeDataSelector = (type) => {
     switch (type) {
@@ -111,9 +120,9 @@ function ReporteContent({ match }) {
         <TextField
           label="Desde"
           type="date"
-          value={desde}
+          value={desdeReporte}
           style={{ margin: ".5rem" }}
-          onChange={(e) => setDesde(e.target.value)}
+          onChange={(e) => setDesdeReporte(e.target.value)}
           InputLabelProps={{
             shrink: true,
           }}
@@ -121,9 +130,9 @@ function ReporteContent({ match }) {
         <TextField
           label="Hasta"
           type="date"
-          value={hasta}
+          value={hastaReporte}
           style={{ margin: ".5rem" }}
-          onChange={(e) => setHasta(e.target.value)}
+          onChange={(e) => setHastaReporte(e.target.value)}
           InputLabelProps={{
             shrink: true,
           }}
