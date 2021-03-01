@@ -1,5 +1,12 @@
 import React, { useState, useContext } from "react";
-import { Grid, colors } from "@material-ui/core";
+import {
+  Grid,
+  colors,
+  Switch,
+  FormGroup,
+  FormControlLabel,
+  FormControl,
+} from "@material-ui/core";
 import { UserContext } from "../../Context/userContext";
 import { useHistory } from "react-router-dom";
 import * as fetch from "../../helpers/fetch";
@@ -24,6 +31,7 @@ function DashboardGeneralVentas({
   proveedores,
   vendedores,
   desglose,
+  modulos,
 }) {
   const history = useHistory();
   const [user] = useContext(UserContext);
@@ -31,6 +39,11 @@ function DashboardGeneralVentas({
 
   const [searchFieldProductos, setSearchFieldProductos] = useState("");
   const [searchFieldOrdenes, setSearchFieldOrdenes] = useState("");
+
+  const [ventasState, setVentasState] = useState(ventas);
+  const [proveedoresState, setProveedoresState] = useState(proveedores);
+  const [vendedoresState, setVendedoresState] = useState(vendedores);
+  const [desgloseState, setDesgloseState] = useState(desglose);
 
   const onSearchChange = (event) => setSearchFieldProductos(event.target.value);
 
@@ -79,7 +92,60 @@ function DashboardGeneralVentas({
   return (
     <Grid container spacing={3}>
       <BackdropSpinner isLoading={!isFetching} />
-      {ventas ? (
+      {modulos ? (
+        <Grid item xs={12} container justify="flex-end" alignItems="center">
+          <FormControl component="fieldset">
+            <FormGroup aria-label="position" row>
+              <FormControlLabel
+                control={
+                  <Switch
+                    color="primary"
+                    checked={ventasState}
+                    onChange={() => setVentasState(!ventasState)}
+                  />
+                }
+                label="Ventas"
+                labelPlacement="top"
+              />
+              <FormControlLabel
+                control={
+                  <Switch
+                    color="primary"
+                    checked={proveedoresState}
+                    onChange={() => setProveedoresState(!proveedoresState)}
+                  />
+                }
+                label="Proveedores"
+                labelPlacement="top"
+              />
+              <FormControlLabel
+                control={
+                  <Switch
+                    color="primary"
+                    checked={vendedoresState}
+                    onChange={() => setVendedoresState(!vendedoresState)}
+                  />
+                }
+                label="Vendedores"
+                labelPlacement="top"
+              />
+              <FormControlLabel
+                control={
+                  <Switch
+                    color="primary"
+                    checked={desgloseState}
+                    onChange={() => setDesgloseState(!desgloseState)}
+                  />
+                }
+                label="Desglose"
+                labelPlacement="top"
+              />
+            </FormGroup>
+          </FormControl>
+        </Grid>
+      ) : null}
+
+      {ventasState ? (
         <>
           <Grid item lg={4} sm={6} md={4} xl={4} xs={12}>
             <DashbordCard
@@ -225,7 +291,7 @@ function DashboardGeneralVentas({
         xl={!vendedores ? 12 : 6}
         xs={12}
       >
-        {proveedores && dataVendedores?.usuariosConVenta.length ? (
+        {proveedoresState && dataVendedores?.usuariosConVenta.length ? (
           <DashboardGraphBar
             content={{
               datasets: [
@@ -240,9 +306,7 @@ function DashboardGeneralVentas({
                   label: "Cantidad de productos",
                 },
               ],
-              labels: dataProveedores?.proveedoresList.map(
-                (obj) => obj.proveedor,
-              ),
+              labels: dataProveedores?.porFecha.map((obj) => obj.proveedor),
             }}
             title="Desglose por Proveedor"
             source={dataProveedores?.porFecha}
@@ -256,7 +320,7 @@ function DashboardGeneralVentas({
         xl={!proveedores ? 12 : 6}
         xs={12}
       >
-        {vendedores && dataVendedores?.usuariosConVenta.length ? (
+        {vendedoresState && dataVendedores?.usuariosConVenta.length ? (
           <DashboardGraphBar
             content={{
               datasets: [
@@ -286,7 +350,7 @@ function DashboardGeneralVentas({
       </Grid>
 
       <Grid item lg={4} md={12} xl={3} xs={12}>
-        {desglose && dataGeneral?.productosVendidos.length ? (
+        {desgloseState && dataGeneral?.productosVendidos.length ? (
           <DashboardTableProductos
             title="Productos: "
             products={dataGeneral.productosVendidos.filter((producto) =>
@@ -300,7 +364,7 @@ function DashboardGeneralVentas({
       </Grid>
 
       <Grid item lg={8} md={12} xl={9} xs={12}>
-        {desglose && dataGeneral?.desglose.length ? (
+        {desgloseState && dataGeneral?.desglose.length ? (
           <DashboardTableOrdenes
             title={`Ordenes: `}
             data={dataGeneral.desglose.filter((ordenes) =>
