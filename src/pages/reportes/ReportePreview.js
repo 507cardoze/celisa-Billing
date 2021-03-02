@@ -44,16 +44,17 @@ function ReportePreview({ match }) {
   };
 
   return (
-    <Container spacing={5} maxWidth={false}>
+    <Container maxWidth={false}>
       <Grid
         item
         xs={12}
         style={{
           display: "flex",
-          justifyContent: "flex-start",
+          justifyContent: "flex-end",
           alignItems: "center",
         }}
         container
+        spacing={2}
       >
         <BackButton
           texto="Seleccionar otro tipo de reporte"
@@ -70,7 +71,17 @@ function ReportePreview({ match }) {
           hasta,
         ).format("DD-MMM-YYYY")}`}</div>
       </Grid>
-      {getTypeDataSelector(type, desde, hasta, data)}
+      <Grid
+        container
+        spacing={2}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItem: "center",
+        }}
+      >
+        {getTypeDataSelector(type, desde, hasta, data)}
+      </Grid>
     </Container>
   );
 }

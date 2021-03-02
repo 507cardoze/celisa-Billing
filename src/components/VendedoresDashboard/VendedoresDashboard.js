@@ -108,15 +108,7 @@ function VendedoresDashboard({ desde, hasta, id_vendedor }) {
 
         if (info?.length) {
           return (
-            <Grid
-              container
-              spacing={2}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItem: "center",
-              }}
-            >
+            <>
               <Grid item xs={12}>
                 <DashboardGraphPie
                   title={`Desglose de ${info[0].name} ${info[0].lastname}`}
@@ -234,11 +226,11 @@ function VendedoresDashboard({ desde, hasta, id_vendedor }) {
                   />
                 </Grid>
               </Grid>
-            </Grid>
+            </>
           );
         } else {
           return (
-            <Grid container spacing={2}>
+            <>
               <Grid item xs={12}>
                 <DashboardGraphPie
                   title={`Vendedor no cuenta con informacion para esta fechas.`}
@@ -270,7 +262,7 @@ function VendedoresDashboard({ desde, hasta, id_vendedor }) {
                   ]}
                 />
               </Grid>
-            </Grid>
+            </>
           );
         }
     }

@@ -28,8 +28,8 @@ const Ordenes = () => {
   const handleChangeLimit = (limit) => setLimit(limit);
   const handleChangeAtrib = (atrib) => setAtrib(atrib);
   const handleChangeOrder = (order) => setOrder(order);
-  const history = useHistory();
   const [user] = useContext(UserContext);
+  const history = useHistory();
 
   const dashboard = [
     { text: "Todas las ordenes", estado: 0 },
@@ -84,10 +84,7 @@ const Ordenes = () => {
   const getAllURL = url.getOrdenesUrl();
 
   const { data: rows } = useQuery(
-    [
-      "ordenes",
-      `${getAllURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${estado}`,
-    ],
+    ["ordenes", getAllURL, page, limit, atrib, order, estado],
     () =>
       fetchOrden(
         `${getAllURL}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${estado}`,
@@ -152,16 +149,16 @@ const Ordenes = () => {
                       color="primary"
                       label={row.orden_id}
                       clickable
-                      onClick={() => {
-                        history.push(`/edit-orders/${row.orden_id}`);
-                      }}
+                      onClick={() =>
+                        history.push(`/edit-orders/${row.orden_id}`)
+                      }
                     />
                   </TableCell>
                   <TableCell align="center">{row.pedido_id}</TableCell>
                   <TableCell align="center">{`${row.nombre} ${row.apellido}`}</TableCell>
                   <TableCell align="center">{row.nombre_cliente}</TableCell>
                   <TableCell align="center">
-                    {moment(row.fecha).locale("es").format("MMMM Do YYYY")}
+                    {moment(row.fecha).locale("es").format("DD MMM YYYY")}
                   </TableCell>
                   <TableCell align="center">
                     <Chip label={row.nombre_status} />
