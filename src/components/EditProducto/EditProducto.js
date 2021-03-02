@@ -131,7 +131,7 @@ function EditProducto(props) {
               size="small"
               style={margin}
               fullWidth
-              onChange={(event) => setColor(event.target.value)}
+              onChange={(event) => setTalla(event.target.value)}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -143,7 +143,7 @@ function EditProducto(props) {
               size="small"
               style={margin}
               fullWidth
-              onChange={(event) => setTalla(event.target.value)}
+              onChange={(event) => setColor(event.target.value)}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
