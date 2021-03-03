@@ -71,15 +71,7 @@ function ReportePreview({ match }) {
           hasta,
         ).format("DD-MMM-YYYY")}`}</div>
       </Grid>
-      <Grid
-        container
-        spacing={2}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItem: "center",
-        }}
-      >
+      <Grid container spacing={2}>
         {getTypeDataSelector(type, desde, hasta, data)}
       </Grid>
     </Container>
