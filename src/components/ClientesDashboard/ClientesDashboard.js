@@ -39,21 +39,21 @@ function ClientesDashboard({ desde, hasta, id_cliente }) {
       case "0":
         return (
           <Grid container spacing={2}>
-            <Grid item xs={12} md={12} lg={4} xl={3}>
+            <Grid item xs={12} md={12} lg={6} xl={6}>
               {/*   top 10 mejores compradores   */}
               <LadderRanking
                 title="Mejores compradores"
                 data={dataClientes?.clientesConVentas}
               />
             </Grid>
-            <Grid item xs={12} md={12} lg={4} xl={3}>
+            <Grid item xs={12} md={12} lg={6} xl={6}>
               {/*   top 10 deudas altas   */}
               <LadderRanking
                 title="Deuda mas altas"
                 data={dataClientes?.clientesConSaldosAltos}
               />
             </Grid>
-            <Grid item xs={12} md={12} lg={4} xl={3}>
+            <Grid item xs={12} md={12} lg={6} xl={6}>
               {/* bar por cliente de ventas */}
               <DashboardGraphBar
                 orientation
@@ -75,7 +75,7 @@ function ClientesDashboard({ desde, hasta, id_cliente }) {
                 source={dataClientes?.clientesConVentas}
               />
             </Grid>
-            <Grid item xs={12} md={12} lg={4} xl={3}>
+            <Grid item xs={12} md={12} lg={6} xl={6}>
               {/* bar por cliente de saldos */}
               <DashboardGraphBar
                 orientation
