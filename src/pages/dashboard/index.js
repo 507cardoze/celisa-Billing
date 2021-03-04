@@ -93,6 +93,7 @@ function Dashboard({ history }) {
             proveedores
             vendedores
             desglose
+            clientes
           />
         </Grid>
       </Container>

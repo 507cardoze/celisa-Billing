@@ -12,7 +12,6 @@ const BackButton = ({ texto, ruta, ...otherProps }) => {
   return (
     <Button
       variant="contained"
-      color="primary"
       className={classes.submit}
       onClick={moveBack}
       {...otherProps}
@@ -27,6 +26,7 @@ export const CustomButton = ({
   onClick,
   style = null,
   disabled = false,
+  ...otherProps
 }) => {
   const classes = useStyles();
   return (
@@ -36,6 +36,7 @@ export const CustomButton = ({
       style={style}
       onClick={onClick}
       disabled={disabled}
+      {...otherProps}
     >
       {text}
     </Button>

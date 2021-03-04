@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import PropTypes from "prop-types";
+import { HorizontalBar } from "react-chartjs-2";
 import { Bar } from "react-chartjs-2";
 import {
   Box,
@@ -12,7 +13,14 @@ import {
 import ExportCSV from "../ExportExcelButton/ExportExcelButton";
 import moment from "moment";
 
-const DashboardGraphBar = ({ className, title, content, source, ...rest }) => {
+const DashboardGraphBar = ({
+  className,
+  title,
+  content,
+  source,
+  orientation,
+  ...rest
+}) => {
   const theme = useTheme();
   const options = {
     animation: false,
@@ -74,8 +82,12 @@ const DashboardGraphBar = ({ className, title, content, source, ...rest }) => {
       <CardHeader title={title} />
       <Divider />
       <CardContent>
-        <Box height={400} position="relative">
-          <Bar data={content} options={options} />
+        <Box minHeight={400} position="relative">
+          {!orientation ? (
+            <Bar data={content} options={options} />
+          ) : (
+            <HorizontalBar data={content} options={options} />
+          )}
         </Box>
       </CardContent>
       <Divider />
@@ -83,7 +95,7 @@ const DashboardGraphBar = ({ className, title, content, source, ...rest }) => {
         <ExportCSV
           label="Exportar"
           csvData={source}
-          fileName={`reporte de ventas / ${moment().format("YYYY/MM/DD")}`}
+          fileName={`reporte / ${moment().format("YYYY/MM/DD")}`}
         />
       </Box>
     </Card>

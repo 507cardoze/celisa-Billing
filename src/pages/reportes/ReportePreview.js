@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import DashboardGeneralVentas from "../../components/DashboardGeneralVentas/DashboardGeneralVentas";
 import ProveedoresDashboard from "../../components/ProveedoresDashboard/ProveedoresDashboard";
 import VendedoresDashboard from "../../components/VendedoresDashboard/VendedoresDashboard";
+import ClientesDashboard from "../../components/ClientesDashboard/ClientesDashboard";
 import moment from "moment";
 
 function ReportePreview({ match }) {
@@ -17,7 +18,9 @@ function ReportePreview({ match }) {
           <VendedoresDashboard desde={desde} hasta={hasta} id_vendedor={data} />
         );
       case "clientes":
-        return alert(data);
+        return (
+          <ClientesDashboard desde={desde} hasta={hasta} id_cliente={data} />
+        );
       case "proveedores":
         return (
           <ProveedoresDashboard
@@ -35,6 +38,7 @@ function ReportePreview({ match }) {
             proveedores
             vendedores
             desglose
+            clientes
             modulos
           />
         );
@@ -60,8 +64,10 @@ function ReportePreview({ match }) {
           texto="Seleccionar otro tipo de reporte"
           style={{ marginRight: "0.5rem" }}
           ruta={`/reportes`}
+          color="default"
         />
         <BackButton
+          color="primary"
           texto="Atras"
           ruta={`/reportes/buscar/${match.params.type}`}
           style={{ marginRight: "0.5rem" }}

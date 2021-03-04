@@ -171,6 +171,10 @@ export const getDataReporteProveedores = () => {
   return `${process.env.REACT_APP_BACK_END}/v1/reportes/ranking-proveedores`;
 };
 
+export const getDataReporteClientes = () => {
+  return `${process.env.REACT_APP_BACK_END}/v1/reportes/ranking-clientes`;
+};
+
 //CLIENTES
 
 export const getClientes = () => {

@@ -23,6 +23,7 @@ import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import MoneyOffIcon from "@material-ui/icons/MoneyOff";
 import { useQuery } from "react-query";
 import { useIsFetching } from "react-query";
+import LadderRanking from "../../components/LadderRanking/LadderRanking";
 
 function DashboardGeneralVentas({
   desde,
@@ -31,6 +32,7 @@ function DashboardGeneralVentas({
   proveedores,
   vendedores,
   desglose,
+  clientes,
   modulos,
 }) {
   const history = useHistory();
@@ -44,6 +46,7 @@ function DashboardGeneralVentas({
   const [proveedoresState, setProveedoresState] = useState(proveedores);
   const [vendedoresState, setVendedoresState] = useState(vendedores);
   const [desgloseState, setDesgloseState] = useState(desglose);
+  const [clientesState, setClientesState] = useState(clientes);
 
   const onSearchChange = (event) => setSearchFieldProductos(event.target.value);
 
@@ -54,6 +57,7 @@ function DashboardGeneralVentas({
   const urlGeneral = url.getDataReporteGeneral();
   const urlVendedores = url.getDataReporteVendedores();
   const urlProveedores = url.getDataReporteProveedores();
+  const urlClientes = url.getDataReporteClientes();
 
   const fetchReporte = async (url, header) => {
     fetch.UserRedirect(user, history);
@@ -67,7 +71,7 @@ function DashboardGeneralVentas({
     ["reporteGeneral", urlGeneral, desde],
     () => fetchReporte(`${urlGeneral}?desde=${desde}&hasta=${hasta}`),
     {
-      staleTime: 300000,
+      staleTime: 180000,
     },
     header,
   );
@@ -76,7 +80,7 @@ function DashboardGeneralVentas({
     ["reporteVendedores", urlVendedores, desde],
     () => fetchReporte(`${urlVendedores}?desde=${desde}&hasta=${hasta})}`),
     {
-      staleTime: 300000,
+      staleTime: 180000,
     },
     header,
   );
@@ -85,10 +89,20 @@ function DashboardGeneralVentas({
     ["reporteProveedores", urlProveedores, desde],
     () => fetchReporte(`${urlProveedores}?desde=${desde}&hasta=${hasta}`),
     {
-      staleTime: 300000,
+      staleTime: 180000,
     },
     header,
   );
+
+  const { data: dataClientes } = useQuery(
+    ["reportesClientes", urlClientes, desde],
+    () => fetchReporte(`${urlClientes}?desde=${desde}&hasta=${hasta})}`),
+    {
+      staleTime: 180000,
+    },
+    header,
+  );
+
   return (
     <Grid container spacing={3}>
       <BackdropSpinner isLoading={!isFetching} />
@@ -135,6 +149,17 @@ function DashboardGeneralVentas({
                     color="primary"
                     checked={desgloseState}
                     onChange={() => setDesgloseState(!desgloseState)}
+                  />
+                }
+                label="Desglose"
+                labelPlacement="top"
+              />
+              <FormControlLabel
+                control={
+                  <Switch
+                    color="primary"
+                    checked={clientesState}
+                    onChange={() => setClientesState(!clientesState)}
                   />
                 }
                 label="Desglose"
@@ -217,6 +242,7 @@ function DashboardGeneralVentas({
           <Grid item lg={8} md={12} xl={9} xs={12}>
             {dataGeneral?.por_fecha.length > 0 && (
               <DashboardGraphBar
+                orientation
                 content={{
                   datasets: [
                     {
@@ -293,6 +319,7 @@ function DashboardGeneralVentas({
       >
         {proveedoresState && dataVendedores?.usuariosConVenta.length ? (
           <DashboardGraphBar
+            orientation
             content={{
               datasets: [
                 {
@@ -349,6 +376,57 @@ function DashboardGeneralVentas({
         ) : null}
       </Grid>
 
+      {clientesState &&
+      dataClientes?.clientesConVentas.length &&
+      dataClientes?.clientesConSaldosAltos.length ? (
+        <>
+          <Grid item xs={12} md={12} lg={6} xl={6}>
+            {/* bar por cliente de ventas */}
+            <DashboardGraphBar
+              orientation
+              content={{
+                datasets: [
+                  {
+                    backgroundColor: colors.indigo[700],
+                    data: dataClientes?.clientesConVentas.map((obj) =>
+                      parseFloat(obj.ventas_total),
+                    ),
+                    label: "Compras",
+                  },
+                ],
+                labels: dataClientes?.clientesConVentas.map(
+                  (obj) => obj.nombre,
+                ),
+              }}
+              title="Clientes por compras"
+              source={dataClientes?.clientesConVentas}
+            />
+          </Grid>
+          <Grid item xs={12} md={12} lg={6} xl={6}>
+            {/* bar por cliente de saldos */}
+            <DashboardGraphBar
+              orientation
+              content={{
+                datasets: [
+                  {
+                    backgroundColor: colors.yellow[700],
+                    data: dataClientes?.clientesConSaldosAltos.map((obj) =>
+                      parseFloat(obj.saldo),
+                    ),
+                    label: "Saldo",
+                  },
+                ],
+                labels: dataClientes?.clientesConSaldosAltos.map(
+                  (obj) => obj.nombre,
+                ),
+              }}
+              title="Clientes por deuda"
+              source={dataClientes?.clientesConSaldosAltos}
+            />
+          </Grid>
+        </>
+      ) : null}
+
       <Grid item lg={4} md={12} xl={3} xs={12}>
         {desgloseState && dataGeneral?.productosVendidos.length ? (
           <DashboardTableProductos
@@ -376,6 +454,26 @@ function DashboardGeneralVentas({
           />
         ) : null}
       </Grid>
+      {clientesState &&
+      dataClientes?.clientesConVentas.length &&
+      dataClientes?.clientesConSaldosAltos.length ? (
+        <>
+          <Grid item xs={12} md={12} lg={6} xl={6}>
+            {/*   top 10 mejores compradores   */}
+            <LadderRanking
+              title="Mejores compradores"
+              data={dataClientes?.clientesConVentas}
+            />
+          </Grid>
+          <Grid item xs={12} md={12} lg={6} xl={6}>
+            {/*   top 10 deudas altas   */}
+            <LadderRanking
+              title="Deuda mas altas"
+              data={dataClientes?.clientesConSaldosAltos}
+            />
+          </Grid>
+        </>
+      ) : null}
     </Grid>
   );
 }
