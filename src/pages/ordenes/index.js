@@ -114,7 +114,7 @@ const Ordenes = () => {
                 ],
           }}
           setEstado={setEstado}
-          ver
+          //ver
         />
 
         <Toolbar

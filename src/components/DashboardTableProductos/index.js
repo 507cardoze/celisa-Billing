@@ -82,7 +82,7 @@ const DashboardTableProductos = ({
           <ListItem
             className={classes.listItem}
             component={Link}
-            to={`./edit-orders/${product.orden_id}`}
+            to={`/edit-orders/${product.orden_id}`}
             key={i}
           >
             <ListItemAvatar>

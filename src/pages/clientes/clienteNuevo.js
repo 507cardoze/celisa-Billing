@@ -103,6 +103,16 @@ function CrearCliente({ className, ...rest }) {
       >
         Atras
       </Button>
+      <Button
+        variant="contained"
+        color="default"
+        style={{ margin: "10px" }}
+        onClick={() => {
+          history.push(`/create-orders`);
+        }}
+      >
+        Volver a la orden
+      </Button>
       <form
         autoComplete="off"
         noValidate

@@ -156,7 +156,7 @@ function VendedoresDashboard({ desde, hasta, id_vendedor }) {
                 </Grid>
                 <Grid item xs={6}>
                   <DashbordCard
-                    title="Saldo"
+                    title="Pagos recibidos"
                     color={colors.orange[600]}
                     Icon={AttachMoneyIcon}
                     data={`$${ventasNormales
@@ -164,7 +164,7 @@ function VendedoresDashboard({ desde, hasta, id_vendedor }) {
                         return a + b.saldo;
                       }, 0)
                       .toFixed(2)}`}
-                    description="Total del saldo producto de estas ventas"
+                    description="Total de pagos recibidos producto de estas ventas"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -199,7 +199,7 @@ function VendedoresDashboard({ desde, hasta, id_vendedor }) {
                 </Grid>
                 <Grid item xs={6}>
                   <DashbordCard
-                    title="Saldo"
+                    title="Pagos recibidos"
                     color={colors.red[600]}
                     Icon={AttachMoneyIcon}
                     data={`$${ventasRevendedoras
@@ -207,7 +207,7 @@ function VendedoresDashboard({ desde, hasta, id_vendedor }) {
                         return a + b.saldo;
                       }, 0)
                       .toFixed(2)}`}
-                    description="Total del saldo producto de estas ventas"
+                    description="Total del pagos recibidos producto de estas ventas"
                   />
                 </Grid>
                 <Grid item xs={12}>

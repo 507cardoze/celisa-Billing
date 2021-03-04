@@ -71,9 +71,7 @@ function ReportePreview({ match }) {
           hasta,
         ).format("DD-MMM-YYYY")}`}</div>
       </Grid>
-      <Grid container spacing={2}>
-        {getTypeDataSelector(type, desde, hasta, data)}
-      </Grid>
+      {getTypeDataSelector(type, desde, hasta, data)}
     </Container>
   );
 }

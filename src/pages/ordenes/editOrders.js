@@ -62,6 +62,7 @@ function EditOrder(props) {
     tipoPago: 0,
     adjunto: null,
     adjuntoNombre: null,
+    comentarios: "",
   };
 
   const [productoInput, setProductoInput] = useState(producto_inicial);
@@ -264,6 +265,7 @@ function EditOrder(props) {
         id_tipo: pagoInput.tipoPago,
         id_pedido: orden.id_pedido,
         cantidad: pagoInput.cantidad,
+        comentarios: pagoInput.comentarios,
       });
       const header = fetch.requestHeader("POST", body, localStorage.token);
       const pagoUrl = url.agregarPagosUrl();

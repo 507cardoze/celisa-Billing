@@ -55,6 +55,7 @@ function PagosRealizados({
                 <TableCell align="right">Tipo de pago</TableCell>
                 {editable && <TableCell align="right">Adjunto</TableCell>}
                 <TableCell align="right">Cobrador</TableCell>
+                {editable && <TableCell align="right">Comentarios</TableCell>}
                 {editable && <TableCell align="right">Eliminar</TableCell>}
               </TableRow>
             </TableHead>
@@ -84,6 +85,9 @@ function PagosRealizados({
                     </TableCell>
                   )}
                   <TableCell align="right">{`${pago.name} ${pago.lastname}`}</TableCell>
+                  {editable && (
+                    <TableCell align="right">{pago.comentarios}</TableCell>
+                  )}
                   {editable && (
                     <TableCell align="right">
                       <IconButton
@@ -194,6 +198,22 @@ function PagosRealizados({
               ))}
             </Select>
           </Grid>
+          <Grid item>
+            <TextField
+              variant="outlined"
+              name="comentarios"
+              label="Comentarios"
+              type="text"
+              multiline={3}
+              value={pagoInput.comentarios}
+              onChange={(event) =>
+                setPagoInput({
+                  ...pagoInput,
+                  comentarios: event.target.value,
+                })
+              }
+            />
+          </Grid>
           {pagoInput.tipoPago !== null &&
             pagoInput.tipoPago !== 1 &&
             pagoInput.tipoPago !== 0 && (
@@ -248,6 +268,7 @@ function PagosRealizados({
                 </Button>
               </Grid>
             )}
+
           <Grid container item xs={12} md={12} lg={12}>
             <Grid item xs={6} md={6} lg={6}>
               <Button

@@ -81,7 +81,7 @@ const DashboardTableOrdenes = ({
                         label={obj.orden_id}
                         size="small"
                         component={Link}
-                        to={`./edit-orders/${obj.orden_id}`}
+                        to={`/edit-orders/${obj.orden_id}`}
                         clickable
                       />
                     </TableCell>

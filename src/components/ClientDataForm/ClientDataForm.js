@@ -6,6 +6,8 @@ import {
   MenuItem,
   FormHelperText,
   Button,
+  TextField,
+  InputAdornment,
 } from "@material-ui/core";
 import { OrderContext } from "../../Context/OrderContext";
 import { UserContext } from "../../Context/userContext";
@@ -13,6 +15,7 @@ import * as url from "../../helpers/urls";
 import * as fetch from "../../helpers/fetch";
 import BackdropSpinner from "../BackDrop/backDrop";
 import { useHistory } from "react-router-dom";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 
 function ClientDataForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +23,7 @@ function ClientDataForm() {
   const [user] = useContext(UserContext);
   const history = useHistory();
   const [clientes, setClientes] = useState([]);
+  const [searchField, setSearchField] = useState("");
 
   useEffect(() => {
     const header = fetch.requestHeader("GET", null, localStorage.token);
@@ -35,10 +39,25 @@ function ClientDataForm() {
   }, [user, history]);
 
   return (
-    <Grid container>
+    <Grid container spacing={2}>
       <BackdropSpinner isLoading={!isLoading} />
       <Grid item xs={12} md={4} lg={4}>
-        <FormControl>
+        <FormControl style={{ marginTop: ".5rem" }}>
+          {user.rol === "Administrador" ? (
+            <TextField
+              value={searchField}
+              label="Buscar clientes"
+              style={{ marginBottom: "1rem", width: 300 }}
+              onChange={(e) => setSearchField(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircle />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          ) : null}
           <Select
             variant="outlined"
             fullWidth
@@ -60,13 +79,20 @@ function ClientDataForm() {
             }}
             disabled={user.rol === "Administrador" ? false : true}
           >
-            {clientes?.map((cliente) => (
-              <MenuItem key={cliente.cliente_id} value={cliente.cliente_id}>{`${
+            {clientes
+              ?.filter((cliente) =>
                 cliente.nombre
-              } ${
-                cliente.observacion.length > 0 ? cliente.observacion : ""
-              }`}</MenuItem>
-            ))}
+                  .toLowerCase()
+                  .includes(searchField.toLowerCase()),
+              )
+              .map((cliente) => (
+                <MenuItem
+                  key={cliente.cliente_id}
+                  value={cliente.cliente_id}
+                >{`${cliente.nombre} ${
+                  cliente.observacion.length > 0 ? cliente.observacion : ""
+                }`}</MenuItem>
+              ))}
           </Select>
           {user.rol === "Administrador" && (
             <>
@@ -74,10 +100,8 @@ function ClientDataForm() {
               <Button
                 variant="contained"
                 color="primary"
-                style={{ margin: "10px" }}
-                onClick={() => {
-                  history.push(`/clientes/crear`);
-                }}
+                style={{ margin: "0.5rem" }}
+                onClick={() => history.push(`/clientes/crear`)}
               >
                 Crear Cliente
               </Button>

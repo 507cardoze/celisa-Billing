@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { useContext, useEffect, memo } from "react";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
 import {
   Grid,
@@ -12,16 +12,20 @@ import {
 import moment from "moment";
 import { useStickyState } from "../../helpers/fetch";
 import DashboardGeneralVentas from "../../components/DashboardGeneralVentas/DashboardGeneralVentas";
+import { UserContext } from "../../Context/userContext";
 
-function Dashboard() {
+function Dashboard({ history }) {
   const [desde, setDesde] = useStickyState(
     moment().subtract(7, "days").format("YYYY-MM-DD"),
     "desde",
   );
-
+  const [user] = useContext(UserContext);
   const hoy = moment().format("YYYY-MM-DD");
-
   const handleChangeRangoFecha = (fecha) => setDesde(fecha);
+
+  useEffect(() => {
+    if (user?.rol === "Usuario Final") return history.push("/create-orders");
+  }, [user, history]);
 
   return (
     <MainLayout Tittle="Dashboard">
