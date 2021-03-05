@@ -29,6 +29,7 @@ import { Link } from "react-router-dom";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import ExportCSV from "../ExportExcelButton/ExportExcelButton";
 import moment from "moment";
+import Factura from "../Factura/Factura";
 
 function ClientesDashboard({ desde, hasta, id_cliente }) {
   const history = useHistory();
@@ -266,8 +267,6 @@ function ClientesDashboard({ desde, hasta, id_cliente }) {
                     <Box
                       style={{
                         overflow: "auto",
-                        // maxHeight: "500px",
-                        // minHeight: "500px",
                       }}
                     >
                       <Table size="small" aria-label="a dense table">
@@ -317,6 +316,7 @@ function ClientesDashboard({ desde, hasta, id_cliente }) {
                   </PerfectScrollbar>
                   <Divider />
                   <Box display="flex" justifyContent="flex-end" p={2}>
+                    <Factura />
                     <ExportCSV
                       label="Exportar"
                       csvData={ordenesDelCliente}
