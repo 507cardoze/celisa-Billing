@@ -94,7 +94,7 @@ const OrderDetails = ({
                   <Button
                     variant="contained"
                     color="primary"
-                    style={{ margin: "10px" }}
+                    style={{ margin: ".5rem" }}
                     onClick={() => {
                       history.push(`/clientes/editar/${orden.id_cliente}`);
                     }}
@@ -127,7 +127,7 @@ const OrderDetails = ({
                         id="select-estado"
                         value={orden?.estado_id ? orden.estado_id : ""}
                         onChange={(event) => onChangeEstado(event.target.value)}
-                        style={{ marginTop: 20 }}
+                        style={{ marginTop: ".5rem" }}
                       >
                         {status.map((estado) => (
                           <MenuItem
