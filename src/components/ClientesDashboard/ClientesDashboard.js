@@ -21,15 +21,13 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Button,
 } from "@material-ui/core";
 import DashboardGraphBar from "../DashboardGraphBar/";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
 import LadderRanking from "../../components/LadderRanking/LadderRanking";
 import { Link } from "react-router-dom";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import ExportCSV from "../ExportExcelButton/ExportExcelButton";
-import moment from "moment";
-import Factura from "../Factura/Factura";
 
 function ClientesDashboard({ desde, hasta, id_cliente }) {
   const history = useHistory();
@@ -316,12 +314,16 @@ function ClientesDashboard({ desde, hasta, id_cliente }) {
                   </PerfectScrollbar>
                   <Divider />
                   <Box display="flex" justifyContent="flex-end" p={2}>
-                    <Factura />
-                    <ExportCSV
-                      label="Exportar"
-                      csvData={ordenesDelCliente}
-                      fileName={`reporte / ${moment().format("YYYY/MM/DD")}`}
-                    />
+                    <Button
+                      variant="contained"
+                      onClick={() =>
+                        history.push(
+                          `/reportes/factura/${desde}/${hasta}/${id_cliente}`,
+                        )
+                      }
+                    >
+                      Exportar a PDF
+                    </Button>
                   </Box>
                 </Card>
               </Grid>

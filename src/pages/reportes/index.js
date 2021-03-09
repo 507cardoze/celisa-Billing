@@ -7,6 +7,7 @@ import ReporteContent from "./Reporte-content";
 import { UserContext } from "../../Context/userContext";
 import * as fetch from "../../helpers/fetch";
 import ReportePreview from "./ReportePreview";
+import Factura from "../../components/Factura/Factura";
 
 function Reportes({ match }) {
   const history = useHistory();
@@ -29,6 +30,10 @@ function Reportes({ match }) {
         <Route
           path={`${match.path}/preview/:desde/:hasta/:type/:data`}
           render={(props) => <ReportePreview {...props} />}
+        />
+        <Route
+          path={`${match.path}/factura/:desde/:hasta/:id_cliente`}
+          component={Factura}
         />
       </Container>
     </MainLayout>

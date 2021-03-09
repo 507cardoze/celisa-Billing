@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import * as url from "./urls";
-import { useHistory } from "react-router-dom";
-import { useJwt } from "react-jwt";
 
 export const requestHeader = (method, body = {}, token) => {
   return {
@@ -56,33 +53,6 @@ export const fetchData = async (urls, header) => {
     console.log("error: ", error);
     return "conexion error";
   }
-};
-
-export const SubcriberRefreshToken = ({ children }) => {
-  const history = useHistory();
-  const { isExpired } = useJwt(localStorage.accessToken);
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      if (isExpired && localStorage.refresh_token) {
-        const body = JSON.stringify({
-          token: localStorage.refresh_token,
-        });
-        const TokenRenewServiceUrl = url.refreshTokenUrl();
-        const headerRT = requestHeader("POST", body, "");
-        const loggedInfo = await fetchData(TokenRenewServiceUrl, headerRT);
-        if (loggedInfo.accessToken) {
-          localStorage.setItem("token", loggedInfo.accessToken);
-        } else {
-          return history.push("/login");
-        }
-      }
-    }, 180000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  });
-  return <>{children}</>;
 };
 
 export function useStickyState(defaultValue, key) {
