@@ -115,32 +115,65 @@ function VendedoresDashboard({ desde, hasta, id_vendedor }) {
                   dataSet={{
                     datasets: [
                       {
-                        data: [info[0].ventas_total, info[0].pagado],
+                        data: [
+                          Math.round(
+                            (info[0].pagado / info[0].ventas_total) * 100,
+                          ),
+                          100 -
+                            Math.round(
+                              (info[0].pagado / info[0].ventas_total) * 100,
+                            ),
+                        ],
                         backgroundColor: [colors.indigo[500], colors.red[600]],
                         borderWidth: 8,
                         borderColor: colors.common.white,
                         hoverBorderColor: colors.common.white,
                       },
                     ],
-                    labels: ["Cantidad en ventas", "Cobros pendientes"],
+                    labels: ["Pagos recibidos", "Pagos pendientes"],
                   }}
                   devices={[
                     {
-                      title: "Cantidad en ventas",
-                      value: info[0].ventas_total.toFixed(2),
+                      title: "Pagos recibidos",
+                      value: `${Math.round(
+                        (info[0].pagado / info[0].ventas_total) * 100,
+                      )}%`,
                       icon: AttachMoneyIcon,
                       color: colors.indigo[500],
                     },
                     {
-                      title: "Cobros pendientes",
-                      value: info[0].pagado.toFixed(2),
+                      title: "Pagos pendientes",
+                      value: `${
+                        100 -
+                        Math.round(
+                          (info[0].pagado / info[0].ventas_total) * 100,
+                        )
+                      }%`,
                       icon: AttachMoneyIcon,
                       color: colors.red[600],
                     },
                   ]}
                 />
               </Grid>
-              <Grid item lg={6} md={12} xl={6} xs={12} container spacing={2}>
+              <Grid item xs={6}>
+                <DashbordCard
+                  title="Total vendido"
+                  color={colors.green[600]}
+                  Icon={AttachMoneyIcon}
+                  data={`$${info[0].ventas_total}`}
+                  description="Total ventas"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <DashbordCard
+                  title="Total pagos recibidos"
+                  color={colors.indigo[600]}
+                  Icon={AttachMoneyIcon}
+                  data={`$${info[0].pagado}`}
+                  description="Total pagado"
+                />
+              </Grid>
+              <Grid item lg={6} md={12} xl={6} xs={12} container spacing={1}>
                 <Grid item xs={6}>
                   <DashbordCard
                     title="Normales"
@@ -161,7 +194,7 @@ function VendedoresDashboard({ desde, hasta, id_vendedor }) {
                     Icon={AttachMoneyIcon}
                     data={`$${ventasNormales
                       ?.reduce((a, b) => {
-                        return a + b.saldo;
+                        return a + b.pagos;
                       }, 0)
                       .toFixed(2)}`}
                     description="Total de pagos recibidos producto de estas ventas"
@@ -204,7 +237,7 @@ function VendedoresDashboard({ desde, hasta, id_vendedor }) {
                     Icon={AttachMoneyIcon}
                     data={`$${ventasRevendedoras
                       ?.reduce((a, b) => {
-                        return a + b.saldo;
+                        return a + b.pagos;
                       }, 0)
                       .toFixed(2)}`}
                     description="Total del pagos recibidos producto de estas ventas"
