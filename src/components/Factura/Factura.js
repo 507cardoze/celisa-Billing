@@ -135,7 +135,11 @@ function Factura({ match }) {
             >
               <img
                 src={Logo}
-                style={{ width: "21.875rem", maxWidth: "21.875rem" }}
+                style={{
+                  width: "21.875rem",
+                  maxWidth: "21.875rem",
+                  maxHeight: "21.875rem",
+                }}
                 alt="logo"
               />
             </Grid>
