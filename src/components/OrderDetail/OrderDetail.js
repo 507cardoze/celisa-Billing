@@ -3,15 +3,14 @@ import moment from "moment";
 import {
   Card,
   CardContent,
-  Divider,
   Typography,
   Grid,
   Button,
-  MenuItem,
-  FormHelperText,
-  FormControl,
-  Select,
-  Chip,
+  // MenuItem,
+  // FormHelperText,
+  // FormControl,
+  // Select,
+  // Chip,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
@@ -28,7 +27,7 @@ const OrderDetails = ({
   const history = useHistory();
   return (
     <Grid item xs={12} md={7} lg={7}>
-      <Card className={className} {...rest} raised>
+      <Card className={className} {...rest} raised style={{ height: "100%" }}>
         <CardContent>
           <Grid container spacing={2}>
             <Grid
@@ -59,7 +58,7 @@ const OrderDetails = ({
                     "DD-MM-YYYY",
                   )}`}
                 </Typography>
-                <Chip color="primary" label={orden.estado} />
+                {/* <Chip color="primary" label={orden.estado} /> */}
               </Grid>
             </Grid>
             <Grid
@@ -104,7 +103,7 @@ const OrderDetails = ({
                 </Grid>
               )}
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Grid
                 style={{
                   display: "flex",
@@ -145,10 +144,9 @@ const OrderDetails = ({
                   </Grid>
                 )}
               </Grid>
-            </Grid>
+            </Grid> */}
           </Grid>
         </CardContent>
-        <Divider />
       </Card>
     </Grid>
   );

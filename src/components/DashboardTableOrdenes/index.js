@@ -68,7 +68,7 @@ const DashboardTableOrdenes = ({
                 <TableCell align="left">Vendedor</TableCell>
                 <TableCell align="left">Cliente</TableCell>
                 <TableCell align="left">Fecha</TableCell>
-                <TableCell align="left">Estado</TableCell>
+                {/* <TableCell align="left">Estado</TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -88,13 +88,13 @@ const DashboardTableOrdenes = ({
                     <TableCell align="left">{obj.vendedor}</TableCell>
                     <TableCell align="left">{obj.nombre_cliente}</TableCell>
                     <TableCell align="left">{obj.fecha}</TableCell>
-                    <TableCell align="left">
+                    {/* <TableCell align="left">
                       <Chip
                         color="primary"
                         label={obj.nombre_status}
                         size="small"
                       />
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 );
               })}

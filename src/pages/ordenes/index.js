@@ -33,12 +33,12 @@ const Ordenes = () => {
 
   const dashboard = [
     { text: "Todas las ordenes", estado: 0 },
-    { text: "Pendiente por aprobacion", estado: 1 },
-    { text: "Aprobadas", estado: 2 },
-    { text: "Llego al pais", estado: 3 },
-    { text: "Saldo Pendiente", estado: 4 },
-    { text: "Entregados", estado: 5 },
-    { text: "Cancelados", estado: 6 },
+    // { text: "Pendiente por aprobacion", estado: 1 },
+    // { text: "Aprobadas", estado: 2 },
+    // { text: "Llego al pais", estado: 3 },
+    // { text: "Saldo Pendiente", estado: 4 },
+    // { text: "Entregados", estado: 5 },
+    // { text: "Cancelados", estado: 6 },
   ];
 
   const columns = [
@@ -47,7 +47,7 @@ const Ordenes = () => {
     { tittle: "Nombre vendedor", atributo: "nombre" },
     { tittle: "Nombre de factura", atributo: "nombre_cliente" },
     { tittle: "Fecha", atributo: "fecha" },
-    { tittle: "Estado", atributo: "estatus" },
+    //{ tittle: "Estado", atributo: "estatus" },
   ];
 
   //funciones
@@ -160,9 +160,9 @@ const Ordenes = () => {
                   <TableCell align="center">
                     {moment(row.fecha).locale("es").format("DD MMM YYYY")}
                   </TableCell>
-                  <TableCell align="center">
+                  {/* <TableCell align="center">
                     <Chip label={row.nombre_status} />
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))
             ) : (

@@ -126,19 +126,21 @@ function Factura({ match }) {
             }}
           >
             <Grid
-              xs={12}
-              md={6}
+              xs={6}
               style={{
                 display: "flex",
                 justifyContent: "flex-start",
                 alignItem: "center",
               }}
             >
-              <img src={Logo} width={350} alt="logo" />
+              <img
+                src={Logo}
+                style={{ width: "21.875rem", maxWidth: "21.875rem" }}
+                alt="logo"
+              />
             </Grid>
             <Grid
-              xs={12}
-              md={6}
+              xs={6}
               style={{
                 display: "flex",
                 justifyContent: "center",
@@ -163,7 +165,7 @@ function Factura({ match }) {
               marginBottom: "3rem",
             }}
           >
-            <Grid container item xs={12} maxWidth={false}>
+            <Grid container item xs={6} maxWidth={false}>
               {/* datos del cliente */}
               <Card item raised style={{ width: "100%" }}>
                 <CardContent
@@ -189,7 +191,7 @@ function Factura({ match }) {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid container item xs={12} spacing={2}>
+            <Grid container item xs={6} spacing={2}>
               {/* resumen */}
               <Grid item xl={6} style={{ width: "50%" }}>
                 <Card raised>
@@ -273,11 +275,16 @@ function Factura({ match }) {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12} style={{ paddingBottom: "4rem" }}>
+          <Grid
+            item
+            xs={12}
+            style={{
+              paddingBottom: "4rem",
+            }}
+          >
             {/* lista de ordenes */}
             <Card raised style={{ margin: "1.2rem" }}>
               <CardHeader title="Desglose de ordenes" />
-
               <Divider />
               <PerfectScrollbar>
                 <Box
