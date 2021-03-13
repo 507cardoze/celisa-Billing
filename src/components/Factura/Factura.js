@@ -138,7 +138,7 @@ function Factura({ match }) {
                 style={{
                   width: "21.875rem",
                   maxWidth: "21.875rem",
-                  maxHeight: "21.875rem",
+                  maxHeight: "10.88rem",
                 }}
                 alt="logo"
               />
