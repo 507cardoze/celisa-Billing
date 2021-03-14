@@ -19,7 +19,7 @@ import MisOrdenes from "./pages/misOrdenes/";
 import EditOrder from "./pages/ordenes/editOrders";
 import Clientes from "./pages/clientes/";
 import Reportes from "./pages/reportes/";
-import FacturaOrden from "./components/Factura/factura";
+import FacturaOrden from "./components/Factura/factura-orden";
 
 // contexto
 

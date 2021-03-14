@@ -27,7 +27,7 @@ import {
 import Logo from "../../static/Celisastore logotipo.png";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import BackdropSpinner from "../BackDrop/backDrop";
-import MainLayout from "../../components/MainLayOut/mainLayout.component";
+import MainLayout from "../MainLayOut/mainLayout.component";
 
 function FacturaOrden({ match }) {
   const ref = useRef(null);
