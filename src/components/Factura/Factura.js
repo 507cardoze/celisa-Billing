@@ -29,7 +29,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import BackdropSpinner from "../BackDrop/backDrop";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
 
-function Factura({ match }) {
+function FacturaOrden({ match }) {
   const ref = useRef(null);
   const urlGet = url.getByIdOrdenUrl();
   const history = useHistory();
@@ -435,4 +435,4 @@ function Factura({ match }) {
   );
 }
 
-export default Factura;
+export default FacturaOrden;
