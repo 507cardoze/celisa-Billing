@@ -37,8 +37,9 @@ function VendedoresDashboard({ desde, hasta, id_vendedor }) {
   };
 
   const { data: dataVendedores } = useQuery(
-    ["reporteVendedoresReporte", urlVendedores, desde],
-    () => fetchReporte(`${urlVendedores}?desde=${desde}&hasta=${hasta})}`),
+    ["reporteVendedoresReporte", urlVendedores, desde, header],
+    () =>
+      fetchReporte(`${urlVendedores}?desde=${desde}&hasta=${hasta})}`, header),
     {
       staleTime: 180000,
     },
@@ -46,8 +47,8 @@ function VendedoresDashboard({ desde, hasta, id_vendedor }) {
   );
 
   const { data: dataGeneral } = useQuery(
-    ["reporteGeneralReporte", urlGeneral, desde],
-    () => fetchReporte(`${urlGeneral}?desde=${desde}&hasta=${hasta}`),
+    ["reporteGeneralReporte", urlGeneral, desde, header],
+    () => fetchReporte(`${urlGeneral}?desde=${desde}&hasta=${hasta}`, header),
     {
       staleTime: 180000,
     },

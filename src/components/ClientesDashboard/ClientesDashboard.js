@@ -47,13 +47,13 @@ function ClientesDashboard({ desde, hasta, id_cliente }) {
 
   const results = useQueries([
     {
-      queryKey: ["reporteGeneralReporte", urlGeneral, desde],
+      queryKey: ["reporteGeneralReporte", urlGeneral, desde, header],
       queryFn: () =>
         fetchReporte(`${urlGeneral}?desde=${desde}&hasta=${hasta}`, header),
       staleTime: 180000,
     },
     {
-      queryKey: ["reportesClientesReporte", urlClientes, desde],
+      queryKey: ["reportesClientesReporte", urlClientes, desde, header],
       queryFn: () =>
         fetchReporte(`${urlClientes}?desde=${desde}&hasta=${hasta})}`, header),
       staleTime: 180000,

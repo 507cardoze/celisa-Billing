@@ -27,8 +27,9 @@ function ProveedoresDashboard({ desde, hasta, id_proveedor }) {
   };
 
   const { data: dataProveedores } = useQuery(
-    ["reporteProveedoresBusqueda", urlProveedores, desde],
-    () => fetchReporte(`${urlProveedores}?desde=${desde}&hasta=${hasta}`),
+    ["reporteProveedoresBusqueda", urlProveedores, desde, header],
+    () =>
+      fetchReporte(`${urlProveedores}?desde=${desde}&hasta=${hasta}`, header),
     {
       staleTime: 180000,
     },

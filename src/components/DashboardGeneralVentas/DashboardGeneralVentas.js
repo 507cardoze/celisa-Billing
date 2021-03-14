@@ -68,7 +68,7 @@ function DashboardGeneralVentas({
   };
 
   const { data: dataGeneral } = useQuery(
-    ["reporteGeneral", urlGeneral, desde],
+    ["reporteGeneral", urlGeneral, desde, header],
     () => fetchReporte(`${urlGeneral}?desde=${desde}&hasta=${hasta}`, header),
     {
       staleTime: 180000,
@@ -76,7 +76,7 @@ function DashboardGeneralVentas({
   );
 
   const { data: dataVendedores } = useQuery(
-    ["reporteVendedores", urlVendedores, desde],
+    ["reporteVendedores", urlVendedores, desde, header],
     () =>
       fetchReporte(`${urlVendedores}?desde=${desde}&hasta=${hasta})}`, header),
     {
@@ -85,7 +85,7 @@ function DashboardGeneralVentas({
   );
 
   const { data: dataProveedores } = useQuery(
-    ["reporteProveedores", urlProveedores, desde],
+    ["reporteProveedores", urlProveedores, desde, header],
     () =>
       fetchReporte(`${urlProveedores}?desde=${desde}&hasta=${hasta}`, header),
     {
@@ -95,7 +95,7 @@ function DashboardGeneralVentas({
   );
 
   const { data: dataClientes } = useQuery(
-    ["reportesClientes", urlClientes, desde],
+    ["reportesClientes", urlClientes, desde, header],
     () =>
       fetchReporte(`${urlClientes}?desde=${desde}&hasta=${hasta})}`, header),
     {
