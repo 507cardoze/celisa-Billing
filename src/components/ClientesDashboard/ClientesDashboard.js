@@ -142,7 +142,7 @@ function ClientesDashboard({ desde, hasta, id_cliente }) {
           return (
             <Container spacing={2} maxWidth={false}>
               <Grid item container spacing={2} xs={12} maxWidth={false}>
-                <Grid container item xs={6} maxWidth={false}>
+                <Grid container item xs={12} md={6} maxWidth={false}>
                   {/* datos del cliente */}
                   <Card item raised style={{ width: "100%" }}>
                     <CardContent
@@ -171,9 +171,9 @@ function ClientesDashboard({ desde, hasta, id_cliente }) {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid container item xs={6} spacing={2}>
+                <Grid container item xs={12} md={6} spacing={2}>
                   {/* resumen */}
-                  <Grid item xl={6} style={{ width: "50%" }}>
+                  <Grid item xl={12} md={6} style={{ width: "50%" }}>
                     <Card raised>
                       <CardContent
                         style={{
@@ -193,7 +193,7 @@ function ClientesDashboard({ desde, hasta, id_cliente }) {
                       </CardContent>
                     </Card>
                   </Grid>
-                  <Grid item xs={6} style={{ width: "50%" }}>
+                  <Grid item xs={12} md={6} style={{ width: "50%" }}>
                     <Card raised>
                       <CardContent
                         style={{
@@ -213,7 +213,7 @@ function ClientesDashboard({ desde, hasta, id_cliente }) {
                       </CardContent>
                     </Card>
                   </Grid>
-                  <Grid item xs={6} style={{ width: "50%" }}>
+                  <Grid item xs={12} md={6} style={{ width: "50%" }}>
                     <Card raised>
                       <CardContent
                         style={{
@@ -233,7 +233,7 @@ function ClientesDashboard({ desde, hasta, id_cliente }) {
                       </CardContent>
                     </Card>
                   </Grid>
-                  <Grid item xs={6} style={{ width: "50%" }}>
+                  <Grid item xs={12} md={6} style={{ width: "50%" }}>
                     <Card raised>
                       <CardContent
                         style={{
