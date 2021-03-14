@@ -11,15 +11,15 @@ import NumericToolBar from "../../components/NumericToolBar/NumericToolBar";
 import { useQuery } from "react-query";
 import { useIsFetching } from "react-query";
 
-function ClientTable() {
+function ProveedoresTable() {
   const history = useHistory();
   const [user] = useContext(UserContext);
   const isFetching = useIsFetching();
   const [resultados, setResultados] = useState([]);
   const [searchField, setSearchField] = useState("");
-  const [page, setPage] = fetch.useStickyState(1, "clients_page");
-  const [limit, setLimit] = fetch.useStickyState(50, "clients_limit");
-  const [atrib, setAtrib] = useState("cliente_id");
+  const [page, setPage] = fetch.useStickyState(1, "proveedor_page");
+  const [limit, setLimit] = fetch.useStickyState(50, "proveedor_limit");
+  const [atrib, setAtrib] = useState("proveedor_id");
   const [order, setOrder] = useState("desc");
   const handleChangePage = (page) => setPage(page + 1);
   const handleChangeLimit = (limit) => setLimit(limit);
@@ -27,15 +27,12 @@ function ClientTable() {
   const handleChangeOrder = (order) => setOrder(order);
 
   const columns = [
-    { tittle: "Cliente Ref", atributo: "cliente_id" },
-    { tittle: "Nombre", atributo: "nombre" },
-    { tittle: "Dirección", atributo: "direccion" },
-    { tittle: "Número", atributo: "numero" },
-    { tittle: "Observación", atributo: "observacion" },
+    { tittle: "Proveedor Ref", atributo: "proveedor_id" },
+    { tittle: "Nombre", atributo: "proveedor" },
   ];
 
   const headerSearch = fetch.requestHeader("GET", null, localStorage.token);
-  const searchUrl = url.getClientSearch();
+  const searchUrl = url.searchProveedoresUrl();
 
   const handleOnChangeTextField = (event) => {
     setSearchField(event.target.value);
@@ -55,7 +52,7 @@ function ClientTable() {
     }
   };
 
-  const fetchClientes = async (url) => {
+  const fetchData = async (url) => {
     const header = fetch.requestHeader("GET", null, localStorage.token);
     fetch.UserRedirect(user, history);
     const res = await window.fetch(url, header);
@@ -64,16 +61,13 @@ function ClientTable() {
     return decoded;
   };
 
-  const getClienteUrl = url.getClientes();
+  const UrlProveedores = url.getAllProveedoresUrl();
 
   const { data: rows } = useQuery(
-    [
-      "clientesTable",
-      `${getClienteUrl}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${0}`,
-    ],
+    ["ProveedoresTable", UrlProveedores, page, limit, atrib, order],
     () =>
-      fetchClientes(
-        `${getClienteUrl}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}&estado=${0}`,
+      fetchData(
+        `${UrlProveedores}?page=${page}&limit=${limit}&atrib=${atrib}&order=${order}`,
       ),
     {
       staleTime: 30000,
@@ -85,7 +79,7 @@ function ClientTable() {
       <BackdropSpinner isLoading={!isFetching} />
       <NumericToolBar
         data={{
-          titles: [{ text: "Total de clientes", estado: 0 }],
+          titles: [{ text: "Total de proveedores", estado: 0 }],
           values: [rows?.total ? rows.total : `cargando...`],
         }}
       />
@@ -94,10 +88,10 @@ function ClientTable() {
         resultados={resultados}
         handleOnChangeTextField={handleOnChangeTextField}
         searchField={searchField}
-        nav="Agregar Cliente"
-        ruta="/clientes/crear"
-        searchLabel="Buscar clientes..."
-        type="clientes"
+        nav="Agregar proveedor"
+        ruta="/proveedores/crear"
+        searchLabel="Buscar proveedores..."
+        type="proveedores"
         clientes
       />
       <Box mt={3}>
@@ -115,21 +109,18 @@ function ClientTable() {
         >
           {rows?.results?.length ? (
             rows.results.map((row) => (
-              <TableRow key={row.cliente_id}>
+              <TableRow key={row.proveedor_id}>
                 <TableCell align="center">
                   <Chip
                     color="primary"
-                    label={row.cliente_id}
+                    label={row.proveedor_id}
                     clickable
                     onClick={() => {
-                      history.push(`/clientes/editar/${row.cliente_id}`);
+                      history.push(`/proveedores/editar/${row.proveedor_id}`);
                     }}
                   />
                 </TableCell>
-                <TableCell align="center">{row.nombre}</TableCell>
-                <TableCell align="center">{row.direccion}</TableCell>
-                <TableCell align="center">{row.numero}</TableCell>
-                <TableCell align="center">{row.observacion}</TableCell>
+                <TableCell align="center">{row.proveedor}</TableCell>
               </TableRow>
             ))
           ) : (
@@ -145,4 +136,4 @@ function ClientTable() {
   );
 }
 
-export default memo(ClientTable);
+export default memo(ProveedoresTable);

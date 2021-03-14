@@ -133,6 +133,27 @@ const getLinksContainer = (type, data, classes) => {
           })}
         </List>
       );
+    case "proveedores":
+      return (
+        <List component="nav" aria-label="results">
+          {data.map((row) => {
+            return (
+              <ListItem
+                button
+                component={Link}
+                to={`/proveedores/editar/${row.proveedor_id}`}
+                className={`${classes.a}`}
+                key={row.proveedor_id}
+              >
+                <ListItemText
+                  primary={`#${row.proveedor_id} - proveedor: ${row.proveedor}`}
+                />
+                <Divider light />
+              </ListItem>
+            );
+          })}
+        </List>
+      );
     default:
       return null;
   }

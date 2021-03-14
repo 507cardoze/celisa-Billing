@@ -18,6 +18,7 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import SearchIcon from "@material-ui/icons/Search";
 import { UserContext } from "../../Context/userContext";
+import ApartmentIcon from "@material-ui/icons/Apartment";
 
 function MainList() {
   const useStyles = makeStyles((theme) => ({
@@ -41,6 +42,7 @@ function MainList() {
 
   const privateLinks = [
     { route: "/", Icon: PieChartIcon, text: "Dashboard" },
+    { route: "/proveedores", Icon: ApartmentIcon, text: "Proveedores" },
     { route: "/pedidos", Icon: AssignmentIcon, text: "Pedidos" },
     { route: "/clientes", Icon: EmojiPeopleIcon, text: "clientes" },
     { route: "/orders", Icon: AddShoppingCartIcon, text: "Ordenes" },

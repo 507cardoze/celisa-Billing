@@ -142,6 +142,14 @@ export const updateCamposProductosUrl = () => {
 export const getAllProveedoresUrl = () => {
   return `${process.env.REACT_APP_BACK_END}/v1/proveedores/all-proveedores`;
 };
+
+export const searchProveedoresUrl = () => {
+  return `${process.env.REACT_APP_BACK_END}/v1/proveedores/proveedorSearch`;
+};
+
+export const getProveedorDetails = () => {
+  return `${process.env.REACT_APP_BACK_END}/v1/proveedores/proveedorDetails`;
+};
 //PROVEEDORES
 
 //STATUS
