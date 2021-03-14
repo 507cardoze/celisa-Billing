@@ -7,7 +7,7 @@ import ReporteContent from "./Reporte-content";
 import { UserContext } from "../../Context/userContext";
 import * as fetch from "../../helpers/fetch";
 import ReportePreview from "./ReportePreview";
-import Factura from "../../components/Factura/Factura";
+import Factura from "../../components/Factura/Estado-de-cuenta";
 
 function Reportes({ match }) {
   const history = useHistory();

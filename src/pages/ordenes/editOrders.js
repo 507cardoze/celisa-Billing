@@ -331,10 +331,21 @@ function EditOrder(props) {
           flexDirection: "column",
         }}
       >
-        <BackButton
-          texto="Atras"
-          ruta={user?.rol === "Administrador" ? `/orders` : `/my-orders`}
-        />
+        <Grid>
+          <BackButton
+            texto="Atras"
+            style={{ marginRight: "1rem" }}
+            ruta={user?.rol === "Administrador" ? `/orders` : `/my-orders`}
+          />
+          {user?.rol === "Administrador" ? (
+            <BackButton
+              style={{ backgroundColor: "#ffffff" }}
+              texto="Factura en PDF"
+              ruta={`/factura/${id_orden}`}
+            />
+          ) : null}
+        </Grid>
+
         {orden ? (
           <Grid container spacing={2}>
             <OrderDetails

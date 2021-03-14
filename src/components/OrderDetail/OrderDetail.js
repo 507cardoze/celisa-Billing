@@ -98,7 +98,7 @@ const OrderDetails = ({
                       history.push(`/clientes/editar/${orden.id_cliente}`);
                     }}
                   >
-                    Modificar cliente
+                    Editar cliente
                   </Button>
                 </Grid>
               )}
