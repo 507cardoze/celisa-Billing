@@ -391,11 +391,14 @@ function FacturaOrden({ match }) {
                         })}
                         <TableRow>
                           <TableCell
+                            align="left"
                             component="th"
                             scope="row"
-                            align="left"
                           ></TableCell>
-                          <TableCell style={{ fontWeight: "bold" }}>
+                          <TableCell
+                            align="left"
+                            style={{ fontWeight: "bold" }}
+                          >
                             TOTAL:
                           </TableCell>
                           <TableCell
@@ -404,8 +407,6 @@ function FacturaOrden({ match }) {
                           >{`$${fetch.numberWithCommas(
                             data?.pagos?.reduce(sumaArticulos, 0).toFixed(2),
                           )}`}</TableCell>
-
-                          <TableCell align="left"></TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>
