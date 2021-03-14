@@ -26,29 +26,6 @@ export const fetchData = async (urls, header) => {
     const query = await fetch(urls, header);
     const parsed = await query.json();
     return parsed;
-
-    // if (parsed === 'No esta autorizado') {
-    // 	const body = JSON.stringify({
-    // 		token: localStorage.refresh_token ? localStorage.refresh_token : null,
-    // 	});
-    // 	const TokenRenewServiceUrl = url.refreshTokenUrl();
-    // 	const headerRT = requestHeader('POST', body, '');
-    // 	const loggedInfo = await fetchData(TokenRenewServiceUrl, headerRT);
-    // 	if (loggedInfo.accessToken) {
-    // 		localStorage.setItem('token', loggedInfo.accessToken);
-    // 		header.headers.Authorization = `Bearer ${loggedInfo.accessToken}`;
-    // 		const requery = await fetch(urls, header);
-    // 		const reparsed = await requery.json();
-    // 		console.log('reparsed:', parsed);
-    // 		return reparsed;
-    // 	} else {
-    // 		console.log('No esta autorizado');
-    // 		return 'No esta autorizado';
-    // 	}
-    // } else {
-    // 	console.log('parsed:', parsed);
-    // 	return parsed;
-    // }
   } catch (error) {
     console.log("error: ", error);
     return "conexion error";

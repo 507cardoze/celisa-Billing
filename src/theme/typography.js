@@ -3,13 +3,13 @@ export default {
     fontWeight: 500,
     fontSize: 35,
     letterSpacing: "-0.24px",
-    fontFamily: "Roboto",
+    fontFamily: "Belleza",
   },
   h2: {
     fontWeight: 500,
     fontSize: 34,
     letterSpacing: "-0.24px",
-    fontFamily: "Roboto",
+    fontFamily: "Belleza",
   },
   h3: {
     fontWeight: 500,
