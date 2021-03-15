@@ -21,6 +21,7 @@ import Clientes from "./pages/clientes/";
 import Reportes from "./pages/reportes/";
 import FacturaOrden from "./components/Factura/factura-orden";
 import Proveedores from "./pages/proveedores/";
+import EditPedido from "./pages/pedidos/editPedido";
 
 // contexto
 
@@ -46,6 +47,10 @@ function App() {
               <PrivateRoute path="/profile" component={ProfilePage} />
               <PrivateRoute path="/users" component={Users} />
               <PrivateRoute path="/pedidos" component={Pedidos} />
+              <PrivateRoute
+                path="/edit-pedido/:id_pedido"
+                component={EditPedido}
+              />
               <PrivateRoute path="/orders" component={Ordenes} />
               <PrivateRoute path="/edit-orders/:id" component={EditOrder} />
               <PrivateRoute
