@@ -79,22 +79,24 @@ function EditCliente({ className, match, ...rest }) {
     const body = JSON.stringify({
       selectedUsuario,
       selectedAdmin,
+      id_cliente: cliente_id,
     });
 
     const header = fetch.requestHeader("PUT", body, localStorage.token);
-    // const getClientDetails = url.getClientDetails();
 
-    // setIsLoading(true);
-    // fetch.UserRedirect(user, history);
-    // const loggedInfo = await fetch.fetchData(getClientDetails, header);
-    // fetch.UnauthorizedRedirect(loggedInfo, history);
-    // if (loggedInfo === "Detalles Actualizados.") {
-    //   toast.msgSuccess("Detalles Actualizados.");
-    // } else {
-    //   toast.errorToast("error al actualizar los datos.");
-    // }
+    const getClientRevURL = url.getClientRevendora();
 
-    // setIsLoading(false);
+    setIsLoading(true);
+    fetch.UserRedirect(user, history);
+    const loggedInfo = await fetch.fetchData(getClientRevURL, header);
+    fetch.UnauthorizedRedirect(loggedInfo, history);
+    if (loggedInfo === "Detalles Actualizados.") {
+      toast.msgSuccess("Detalles Actualizados.");
+    } else {
+      toast.errorToast("error al actualizar los datos.");
+    }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -136,10 +138,6 @@ function EditCliente({ className, match, ...rest }) {
     );
   }, [user, history, cliente_id]);
 
-  console.log(usuarios);
-  console.log(userData);
-  console.log(selectedUsuario);
-  console.log(selectedAdmin);
   return (
     <>
       <BackdropSpinner isLoading={!isLoading} />
@@ -273,7 +271,7 @@ function EditCliente({ className, match, ...rest }) {
           {userData && (
             <CardContent>
               <Grid container spacing={3}>
-                <Grid item md={6} xs={12}>
+                <Grid item md={12} xs={12}>
                   <FormControl>
                     <Select
                       variant="outlined"
@@ -298,7 +296,7 @@ function EditCliente({ className, match, ...rest }) {
                     </FormHelperText>
                   </FormControl>
                 </Grid>
-                <Grid item md={6} xs={12}>
+                <Grid item md={12} xs={12}>
                   <FormControl>
                     <Select
                       variant="outlined"

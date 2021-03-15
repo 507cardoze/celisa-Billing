@@ -197,6 +197,10 @@ export const getClientDetails = () => {
   return `${process.env.REACT_APP_BACK_END}/v1/clientes/clientDetails`;
 };
 
+export const getClientRevendora = () => {
+  return `${process.env.REACT_APP_BACK_END}/v1/clientes/clientRevendedora`;
+};
+
 export const getClientSearch = () => {
   return `${process.env.REACT_APP_BACK_END}/v1/clientes/clientSearch`;
 };
