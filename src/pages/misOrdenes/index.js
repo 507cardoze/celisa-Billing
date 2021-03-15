@@ -96,7 +96,7 @@ const MisOrdenes = () => {
         {rows?.dashboard && (
           <NumericToolBar
             setEstado={setEstado}
-            ver
+            //ver
             data={{
               titles: [
                 { text: "Todas mis ordenes", estado: 0 },

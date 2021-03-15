@@ -32,7 +32,7 @@ function SeleccionPedidos() {
     };
 
     fetchData(getdataURL, header, setPedidos);
-  }, [history, orden, setOrden]);
+  }, [history]);
 
   return (
     <Grid container spacing={2}>
@@ -42,7 +42,7 @@ function SeleccionPedidos() {
           variant="outlined"
           fullWidth
           onChange={(event) => setIdPedido(parseInt(event.target.value))}
-          value={orden.id_pedido ? orden.id_pedido : 0}
+          value={orden.id_pedido}
         >
           {pedidos.length > 0 &&
             pedidos.map((pedido) => (

@@ -113,21 +113,25 @@ function EditCliente({ className, match, ...rest }) {
       setIsLoading(false);
     };
     const fetchUserData = async (url, header, setter) => {
-      const loggedInfo = await fetch.fetchData(url, header);
-      fetch.UnauthorizedRedirect(loggedInfo, history);
-      setter({
-        id_cliente: loggedInfo[0].cliente_id,
-        nombre: loggedInfo[0].nombre,
-        direccion: loggedInfo[0].direccion,
-        id_pais: loggedInfo[0].id_pais,
-        pais: loggedInfo[0].pais,
-        observacion: loggedInfo[0].observacion,
-        numero: loggedInfo[0].numero,
-        user_id: loggedInfo[0].user_id,
-        is_admin: loggedInfo[0].id_admin,
-      });
-      setSelectedUsuario(loggedInfo[0].user_id);
-      setSelectedAdmin(loggedInfo[0].id_admin);
+      try {
+        const loggedInfo = await fetch.fetchData(url, header);
+        fetch.UnauthorizedRedirect(loggedInfo, history);
+        setter({
+          id_cliente: loggedInfo[0].cliente_id,
+          nombre: loggedInfo[0].nombre,
+          direccion: loggedInfo[0].direccion,
+          id_pais: loggedInfo[0].id_pais,
+          pais: loggedInfo[0].pais,
+          observacion: loggedInfo[0].observacion,
+          numero: loggedInfo[0].numero,
+          user_id: loggedInfo[0].user_id,
+          is_admin: loggedInfo[0].id_admin,
+        });
+        setSelectedUsuario(loggedInfo[0].user_id);
+        setSelectedAdmin(loggedInfo[0].id_admin);
+      } catch (error) {
+        console.log(error);
+      }
     };
     fetchData(getPaisData, header, setPaises);
     fetchData(getAllusersURL, header, setUsuarios);

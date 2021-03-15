@@ -305,7 +305,7 @@ function EditOrder(props) {
   };
 
   useEffect(() => {
-    fetch.UserRedirect(user, history);
+    //fetch.UserRedirect(user, history);
     const header = fetch.requestHeader("GET", null, localStorage.token);
     const fetchData = async (url, header, setter) => {
       setIsLoading(true);
