@@ -184,7 +184,7 @@ const Users = () => {
                   <TableCell align="center">
                     {row.last_activity
                       ? moment(row.last_activity).fromNow()
-                      : ""}
+                      : "No se detecta actividad"}
                   </TableCell>
                 </TableRow>
               ))

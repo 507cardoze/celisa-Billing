@@ -44,7 +44,7 @@ function MainList() {
     { route: "/", Icon: PieChartIcon, text: "Dashboard" },
     { route: "/proveedores", Icon: ApartmentIcon, text: "Proveedores" },
     { route: "/pedidos", Icon: AssignmentIcon, text: "Pedidos" },
-    { route: "/clientes", Icon: EmojiPeopleIcon, text: "clientes" },
+    { route: "/clientes", Icon: EmojiPeopleIcon, text: "Clientes" },
     { route: "/orders", Icon: AddShoppingCartIcon, text: "Ordenes" },
     { route: "/users", Icon: PersonIcon, text: "Usuarios" },
     { route: "/reportes", Icon: SearchIcon, text: "Reportes" },

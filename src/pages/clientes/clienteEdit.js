@@ -31,7 +31,11 @@ function EditCliente({ className, match, ...rest }) {
   const [isLoading, setIsLoading] = useState(false);
   const [user] = useContext(UserContext);
   const [paises, setPaises] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
   const [userData, setUserData] = useState(null);
+
+  const [selectedUsuario, setSelectedUsuario] = useState();
+  const [selectedAdmin, setSelectedAdmin] = useState();
   const cliente_id = match.params.cliente_id;
 
   const handleChange = (event) => {
@@ -69,10 +73,35 @@ function EditCliente({ className, match, ...rest }) {
     setIsLoading(false);
   };
 
+  const handleOnSubmitRevendedora = async (event) => {
+    event.preventDefault();
+
+    const body = JSON.stringify({
+      selectedUsuario,
+      selectedAdmin,
+    });
+
+    const header = fetch.requestHeader("PUT", body, localStorage.token);
+    // const getClientDetails = url.getClientDetails();
+
+    // setIsLoading(true);
+    // fetch.UserRedirect(user, history);
+    // const loggedInfo = await fetch.fetchData(getClientDetails, header);
+    // fetch.UnauthorizedRedirect(loggedInfo, history);
+    // if (loggedInfo === "Detalles Actualizados.") {
+    //   toast.msgSuccess("Detalles Actualizados.");
+    // } else {
+    //   toast.errorToast("error al actualizar los datos.");
+    // }
+
+    // setIsLoading(false);
+  };
+
   useEffect(() => {
     fetch.UserRedirect(user, history);
     const header = fetch.requestHeader("GET", null, localStorage.token);
     const getPaisData = url.getPaisesUrl();
+    const getAllusersURL = url.getAllUsersUrl();
     const getClientDetails = url.getClientDetails();
     const fetchData = async (url, header, setter) => {
       setIsLoading(true);
@@ -92,15 +121,25 @@ function EditCliente({ className, match, ...rest }) {
         pais: loggedInfo[0].pais,
         observacion: loggedInfo[0].observacion,
         numero: loggedInfo[0].numero,
+        user_id: loggedInfo[0].user_id,
+        is_admin: loggedInfo[0].id_admin,
       });
+      setSelectedUsuario(loggedInfo[0].user_id);
+      setSelectedAdmin(loggedInfo[0].id_admin);
     };
     fetchData(getPaisData, header, setPaises);
+    fetchData(getAllusersURL, header, setUsuarios);
     fetchUserData(
       `${getClientDetails}?cliente_id=${cliente_id}`,
       header,
       setUserData,
     );
   }, [user, history, cliente_id]);
+
+  console.log(usuarios);
+  console.log(userData);
+  console.log(selectedUsuario);
+  console.log(selectedAdmin);
   return (
     <>
       <BackdropSpinner isLoading={!isLoading} />
@@ -121,7 +160,7 @@ function EditCliente({ className, match, ...rest }) {
         {...rest}
         onSubmit={handleOnSubmit}
       >
-        <Card>
+        <Card raised>
           <CardHeader
             subheader="La información del cliente se puede editar"
             title="Editar Cliente"
@@ -213,6 +252,91 @@ function EditCliente({ className, match, ...rest }) {
               style={{ margin: "5px" }}
             >
               Guardar Detalles
+            </Button>
+          </Box>
+        </Card>
+      </form>
+      <form
+        autoComplete="off"
+        noValidate
+        className={clsx(classes.root, className)}
+        {...rest}
+        onSubmit={handleOnSubmitRevendedora}
+        style={{ marginTop: "1rem" }}
+      >
+        <Card raised>
+          <CardHeader
+            subheader="Se puede asignar revendedora a un usuario en particular"
+            title="Asignar Revendedora"
+          />
+          <Divider />
+          {userData && (
+            <CardContent>
+              <Grid container spacing={3}>
+                <Grid item md={6} xs={12}>
+                  <FormControl>
+                    <Select
+                      variant="outlined"
+                      fullWidth
+                      value={selectedUsuario ? selectedUsuario : 0}
+                      onChange={(e) =>
+                        setSelectedUsuario(parseInt(e.target.value))
+                      }
+                      disabled={
+                        process.env.NODE_ENV === "development" ? false : true
+                      }
+                    >
+                      <MenuItem value={0}>Sin asignar</MenuItem>
+                      {usuarios?.map((user) => (
+                        <MenuItem key={user.user_id} value={user.user_id}>
+                          {`${user.name} ${user.lastname} - ${user.username}`}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText>
+                      A que usuario pertenece este cliente.
+                    </FormHelperText>
+                  </FormControl>
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <FormControl>
+                    <Select
+                      variant="outlined"
+                      fullWidth
+                      value={selectedAdmin ? selectedAdmin : 0}
+                      onChange={(e) =>
+                        setSelectedAdmin(parseInt(e.target.value))
+                      }
+                    >
+                      <MenuItem value={0}>Sin asignar</MenuItem>
+                      {usuarios?.map((user) => (
+                        <MenuItem key={user.user_id} value={user.user_id}>
+                          {`${user.name} ${user.lastname}`}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText>
+                      A que usuario pertenece este revendedor
+                    </FormHelperText>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </CardContent>
+          )}
+          <Divider />
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+            p={2}
+            alignItems="center"
+          >
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              style={{ margin: "5px" }}
+            >
+              Actualizar Datos
             </Button>
           </Box>
         </Card>
