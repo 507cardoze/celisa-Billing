@@ -12,6 +12,7 @@ import {
   makeStyles,
   useTheme,
 } from "@material-ui/core";
+import { numberWithCommas } from "../../helpers/fetch";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -22,9 +23,7 @@ const useStyles = makeStyles(() => ({
 const DashboardGraphPie = ({ className, title, dataSet, devices, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
-
   const data = dataSet;
-
   const options = {
     animation: false,
     cutoutPercentage: 50,
@@ -68,7 +67,7 @@ const DashboardGraphPie = ({ className, title, dataSet, devices, ...rest }) => {
                 {title}
               </Typography>
               <Typography style={{ color }} variant="h2">
-                {`${value ? value : 0}`}
+                {`${value ? `${numberWithCommas(value)}` : 0}`}
               </Typography>
             </Box>
           ))}

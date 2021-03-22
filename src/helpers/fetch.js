@@ -27,7 +27,6 @@ export const fetchData = async (urls, header) => {
     const parsed = await query.json();
     return parsed;
   } catch (error) {
-    console.log("error: ", error);
     return "conexion error";
   }
 };
@@ -56,6 +55,6 @@ export const UserRedirect = (user, history) => {
 };
 
 export const numberWithCommas = (x) => {
-  // return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-  return x;
+  const req = /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/;
+  return x.toString().replace(req, ",");
 };
