@@ -108,7 +108,7 @@ function Factura({ match }) {
         <Container
           maxWidth={false}
           ref={ref}
-          style={{ paddingBottom: "2rem", width: "800px" }}
+          style={{ marginTop: "3rem", paddingBottom: "2rem", width: "800px" }}
         >
           <Grid
             item
@@ -176,7 +176,11 @@ function Factura({ match }) {
                     alignContent: "flex-start",
                   }}
                 >
-                  <Typography color="textSecondary" gutterBottom>
+                  <Typography
+                    color="textSecondary"
+                    gutterBottom
+                    style={{ fontWeight: "bold", fontSize: "1rem" }}
+                  >
                     Datos generales del cliente:
                   </Typography>
                   <Typography variant="h4" component="h2" gutterBottom>
@@ -204,7 +208,11 @@ function Factura({ match }) {
                       height: "100%",
                     }}
                   >
-                    <Typography color="textSecondary" gutterBottom>
+                    <Typography
+                      color="textSecondary"
+                      gutterBottom
+                      style={{ fontWeight: "bold", fontSize: "1rem" }}
+                    >
                       Ordenes:
                     </Typography>
                     <Typography variant="h5" component="h2" gutterBottom>
@@ -224,7 +232,11 @@ function Factura({ match }) {
                       height: "100%",
                     }}
                   >
-                    <Typography color="textSecondary" gutterBottom>
+                    <Typography
+                      color="textSecondary"
+                      gutterBottom
+                      style={{ fontWeight: "bold", fontSize: "1rem" }}
+                    >
                       Compras:
                     </Typography>
                     <Typography variant="h5" component="h2" gutterBottom>
@@ -244,7 +256,11 @@ function Factura({ match }) {
                       height: "100%",
                     }}
                   >
-                    <Typography color="textSecondary" gutterBottom>
+                    <Typography
+                      color="textSecondary"
+                      gutterBottom
+                      style={{ fontWeight: "bold", fontSize: "1rem" }}
+                    >
                       Pagado:
                     </Typography>
                     <Typography variant="h5" component="h2" gutterBottom>
@@ -264,7 +280,11 @@ function Factura({ match }) {
                       height: "100%",
                     }}
                   >
-                    <Typography color="textSecondary" gutterBottom>
+                    <Typography
+                      color="textSecondary"
+                      gutterBottom
+                      style={{ fontWeight: "bold", fontSize: "1rem" }}
+                    >
                       Saldo:
                     </Typography>
                     <Typography variant="h5" component="h2" gutterBottom>
@@ -367,7 +387,12 @@ function Factura({ match }) {
               paddingRight: "2rem",
             }}
           >
-            <Typography variant="h4" component="h2" gutterBottom>
+            <Typography
+              variant="h4"
+              component="h2"
+              gutterBottom
+              style={{ fontWeight: "bold", fontSize: "1rem" }}
+            >
               {`Fecha generado: ${moment().format("YYYY-MM-DD")}`}
             </Typography>
           </Grid>

@@ -21,7 +21,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Paper,
   Button,
 } from "@material-ui/core";
 import Logo from "../../static/Gris celisa store.png";
@@ -71,9 +70,9 @@ function FacturaOrden({ match }) {
           filename={`factura-orden-${id_orden}-${moment().format(
             "YYYY-MM-DD",
           )}.pdf`}
-          x={-1}
+          x={10}
           y={10}
-          scale={0.6}
+          scale={0.9}
         >
           {({ toPdf }) => (
             <Button
@@ -90,10 +89,7 @@ function FacturaOrden({ match }) {
           <Container
             maxWidth={false}
             ref={ref}
-            component={Paper}
-            elevation={3}
-            square
-            style={{ paddingBottom: "2rem", minWidth: "1100px" }}
+            style={{ paddingBottom: "2rem", width: "800px" }}
           >
             <Grid
               item
@@ -102,7 +98,7 @@ function FacturaOrden({ match }) {
               xs={12}
               maxWidth={false}
               style={{
-                marginTop: "3rem",
+                marginTop: "5rem",
                 marginBottom: "3rem",
               }}
             >
@@ -152,7 +148,7 @@ function FacturaOrden({ match }) {
             >
               <Grid container item xs={6} maxWidth={false}>
                 {/* datos del cliente */}
-                <Card item raised style={{ width: "100%" }}>
+                <Card item style={{ width: "100%" }}>
                   <CardContent
                     style={{
                       display: "flex",
@@ -161,7 +157,11 @@ function FacturaOrden({ match }) {
                       alignContent: "flex-start",
                     }}
                   >
-                    <Typography color="textSecondary" gutterBottom>
+                    <Typography
+                      color="textSecondary"
+                      gutterBottom
+                      style={{ fontWeight: "bold", fontSize: "1rem" }}
+                    >
                       Datos generales del cliente:
                     </Typography>
                     <Typography variant="h4" component="h2" gutterBottom>
@@ -184,7 +184,7 @@ function FacturaOrden({ match }) {
               <Grid container item xs={6} spacing={2}>
                 {/* resumen */}
                 <Grid item xl={6} style={{ width: "50%" }}>
-                  <Card raised>
+                  <Card>
                     <CardContent
                       style={{
                         display: "flex",
@@ -194,7 +194,11 @@ function FacturaOrden({ match }) {
                         minHeight: "200px",
                       }}
                     >
-                      <Typography color="textSecondary" gutterBottom>
+                      <Typography
+                        color="textSecondary"
+                        gutterBottom
+                        style={{ fontWeight: "bold", fontSize: "1rem" }}
+                      >
                         Factura total:
                       </Typography>
                       {data?.productos.length > 0 ? (
@@ -212,7 +216,7 @@ function FacturaOrden({ match }) {
                   </Card>
                 </Grid>
                 <Grid item xs={6} style={{ width: "50%" }}>
-                  <Card raised>
+                  <Card>
                     <CardContent
                       style={{
                         display: "flex",
@@ -222,7 +226,11 @@ function FacturaOrden({ match }) {
                         minHeight: "200px",
                       }}
                     >
-                      <Typography color="textSecondary" gutterBottom>
+                      <Typography
+                        color="textSecondary"
+                        gutterBottom
+                        style={{ fontWeight: "bold", fontSize: "1rem" }}
+                      >
                         Saldo pendiente:
                       </Typography>
                       {data?.productos.length > 0 && data?.pagos.length > 0 ? (
@@ -271,7 +279,7 @@ function FacturaOrden({ match }) {
             </Grid>
             <Grid item xs={12}>
               {/* lista de productos */}
-              <Card raised style={{ margin: "1.2rem" }}>
+              <Card style={{ margin: "1.2rem" }}>
                 <CardHeader title="Desglose de productos" />
                 <Divider />
                 <PerfectScrollbar>
@@ -283,14 +291,40 @@ function FacturaOrden({ match }) {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableCell>Productos (articulo)</TableCell>
-                          <TableCell align="left">Talla</TableCell>
-                          <TableCell align="left">Color</TableCell>
-                          <TableCell align="left">Cantidad</TableCell>
-                          <TableCell align="left">
+                          <TableCell
+                            align="left"
+                            style={{ fontWeight: "bold", fontSize: "1rem" }}
+                          >
+                            Productos (articulo)
+                          </TableCell>
+                          <TableCell
+                            align="left"
+                            style={{ fontWeight: "bold", fontSize: "1rem" }}
+                          >
+                            Talla
+                          </TableCell>
+                          <TableCell
+                            align="left"
+                            style={{ fontWeight: "bold", fontSize: "1rem" }}
+                          >
+                            Color
+                          </TableCell>
+                          <TableCell
+                            align="left"
+                            style={{ fontWeight: "bold", fontSize: "1rem" }}
+                          >
+                            Cantidad
+                          </TableCell>
+                          <TableCell
+                            align="left"
+                            style={{ fontWeight: "bold", fontSize: "1rem" }}
+                          >
                             Precio Unitario&nbsp;($)
                           </TableCell>
-                          <TableCell align="left">
+                          <TableCell
+                            align="left"
+                            style={{ fontWeight: "bold", fontSize: "1rem" }}
+                          >
                             Precio Total&nbsp;($)
                           </TableCell>
                         </TableRow>
@@ -299,18 +333,60 @@ function FacturaOrden({ match }) {
                         {data?.productos?.map((obj, i) => {
                           return (
                             <TableRow hover key={i}>
-                              <TableCell align="left">
+                              <TableCell
+                                align="left"
+                                style={{
+                                  fontWeight: "bold",
+                                  fontSize: "0.9rem",
+                                }}
+                              >
                                 {obj.descripcion}
                               </TableCell>
-                              <TableCell align="left">{obj.talla}</TableCell>
-                              <TableCell align="left">{obj.color}</TableCell>
-                              <TableCell align="left">{obj.cantidad}</TableCell>
-                              <TableCell align="left">
+                              <TableCell
+                                align="left"
+                                style={{
+                                  fontWeight: "bold",
+                                  fontSize: "0.9rem",
+                                }}
+                              >
+                                {obj.talla}
+                              </TableCell>
+                              <TableCell
+                                align="left"
+                                style={{
+                                  fontWeight: "bold",
+                                  fontSize: "0.9rem",
+                                }}
+                              >
+                                {obj.color}
+                              </TableCell>
+                              <TableCell
+                                align="left"
+                                style={{
+                                  fontWeight: "bold",
+                                  fontSize: "0.9rem",
+                                }}
+                              >
+                                {obj.cantidad}
+                              </TableCell>
+                              <TableCell
+                                align="left"
+                                style={{
+                                  fontWeight: "bold",
+                                  fontSize: "0.9rem",
+                                }}
+                              >
                                 {`$${fetch.numberWithCommas(
                                   parseFloat(obj.precio).toFixed(2),
                                 )}`}
                               </TableCell>
-                              <TableCell align="left">
+                              <TableCell
+                                align="left"
+                                style={{
+                                  fontWeight: "bold",
+                                  fontSize: "0.9rem",
+                                }}
+                              >
                                 {`$${fetch.numberWithCommas(
                                   parseFloat(obj.precio * obj.cantidad).toFixed(
                                     2,
@@ -323,8 +399,16 @@ function FacturaOrden({ match }) {
                         <TableRow>
                           <TableCell component="th" scope="row"></TableCell>
                           <TableCell align="left"></TableCell>
-                          <TableCell align="left">Articulos: </TableCell>
-                          <TableCell align="left">{`${fetch.numberWithCommas(
+                          <TableCell
+                            align="left"
+                            style={{ fontWeight: "bold", fontSize: "0.9rem" }}
+                          >
+                            Articulos:{" "}
+                          </TableCell>
+                          <TableCell
+                            align="left"
+                            style={{ fontWeight: "bold", fontSize: "0.9rem" }}
+                          >{`${fetch.numberWithCommas(
                             data.productos.reduce(sumaArticulos, 0),
                           )}`}</TableCell>
                           <TableCell
@@ -335,7 +419,7 @@ function FacturaOrden({ match }) {
                           </TableCell>
                           <TableCell
                             align="left"
-                            style={{ fontWeight: "bold" }}
+                            style={{ fontWeight: "bold", fontSize: "0.9rem" }}
                           >
                             {`$${fetch.numberWithCommas(
                               data.productos.reduce(suma, 0).toFixed(2),
@@ -356,7 +440,7 @@ function FacturaOrden({ match }) {
               }}
             >
               {/* lista de pagos */}
-              <Card raised style={{ margin: "1.2rem" }}>
+              <Card style={{ margin: "1.2rem" }}>
                 <CardHeader title="Desglose de pagos" />
                 <Divider />
                 <PerfectScrollbar>
@@ -368,20 +452,56 @@ function FacturaOrden({ match }) {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableCell align="left">Fecha de pago</TableCell>
-                          <TableCell align="left">Tipo de pago</TableCell>
-                          <TableCell align="left">Monto&nbsp;($)</TableCell>
+                          <TableCell
+                            align="left"
+                            style={{ fontWeight: "bold", fontSize: "1rem" }}
+                          >
+                            Fecha de pago
+                          </TableCell>
+                          <TableCell
+                            align="left"
+                            style={{ fontWeight: "bold", fontSize: "1rem" }}
+                          >
+                            Tipo de pago
+                          </TableCell>
+                          <TableCell
+                            align="left"
+                            style={{ fontWeight: "bold", fontSize: "1rem" }}
+                          >
+                            Monto&nbsp;($)
+                          </TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
                         {data?.pagos?.map((obj, i) => {
                           return (
                             <TableRow hover key={i}>
-                              <TableCell component="th" scope="row">
+                              <TableCell
+                                component="th"
+                                scope="row"
+                                style={{
+                                  fontWeight: "bold",
+                                  fontSize: "0.9rem",
+                                }}
+                              >
                                 {moment(obj.fecha_pago).format("DD-MM-YYYY")}
                               </TableCell>
-                              <TableCell align="left">{obj.tipo}</TableCell>
-                              <TableCell align="left">
+                              <TableCell
+                                align="left"
+                                style={{
+                                  fontWeight: "bold",
+                                  fontSize: "0.9rem",
+                                }}
+                              >
+                                {obj.tipo}
+                              </TableCell>
+                              <TableCell
+                                align="left"
+                                style={{
+                                  fontWeight: "bold",
+                                  fontSize: "0.9rem",
+                                }}
+                              >
                                 {`$${fetch.numberWithCommas(
                                   parseFloat(obj.cantidad).toFixed(2),
                                 )}`}
@@ -397,13 +517,13 @@ function FacturaOrden({ match }) {
                           ></TableCell>
                           <TableCell
                             align="left"
-                            style={{ fontWeight: "bold" }}
+                            style={{ fontWeight: "bold", fontSize: "0.9rem" }}
                           >
                             TOTAL:
                           </TableCell>
                           <TableCell
                             align="left"
-                            style={{ fontWeight: "bold" }}
+                            style={{ fontWeight: "bold", fontSize: "0.9rem" }}
                           >{`$${fetch.numberWithCommas(
                             data?.pagos?.reduce(sumaArticulos, 0).toFixed(2),
                           )}`}</TableCell>
@@ -423,7 +543,12 @@ function FacturaOrden({ match }) {
                 paddingRight: "2rem",
               }}
             >
-              <Typography variant="h4" component="h2" gutterBottom>
+              <Typography
+                variant="h4"
+                component="h2"
+                gutterBottom
+                style={{ fontWeight: "bold", fontSize: "1rem" }}
+              >
                 {`Fecha generado: ${moment().format("YYYY-MM-DD")}`}
               </Typography>
             </Grid>
