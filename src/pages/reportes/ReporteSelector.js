@@ -11,7 +11,7 @@ import {
 import * as fetch from "../../helpers/fetch";
 import { useQuery } from "react-query";
 import { useHistory } from "react-router-dom";
-import BackdropSpinner from "../BackDrop/backDrop";
+import BackdropSpinner from "../../components/BackDrop/backDrop";
 
 function ReporteSelector({
   selectedData,

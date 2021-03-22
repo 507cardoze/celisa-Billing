@@ -5,13 +5,11 @@ import moment from "moment";
 import { Redirect, useHistory } from "react-router-dom";
 import * as url from "../../helpers/urls";
 import { useStickyState } from "../../helpers/fetch";
-
 //views
-import ReporteSelector from "../../components/ReporteSelector/ReporteSelector";
+import ReporteSelector from "./ReporteSelector";
 
 function ReporteContent({ match }) {
   const type = match.params.type;
-
   const [desdeReporte, setDesdeReporte] = useStickyState(
     moment().format("YYYY-MM-DD"),
     "desdeReporte",
@@ -24,7 +22,6 @@ function ReporteContent({ match }) {
   const [selectedClient, setSelectedClient] = useState(0);
   const [selectedProveedor, setSelectedProveedor] = useState(0);
   const history = useHistory();
-
   const getClientsUrl = url.getClientes();
   const getVendedoresUrl = url.getAllUsersUrl();
   const getProveedoresUrl = url.getAllProveedoresUrl();
