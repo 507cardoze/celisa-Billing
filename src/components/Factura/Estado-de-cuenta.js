@@ -22,10 +22,9 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Paper,
   Button,
 } from "@material-ui/core";
-import Logo from "../../static/Celisastore logotipo.png";
+import Logo from "../../static/Gris celisa store.png";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import BackdropSpinner from "../BackDrop/backDrop";
 
@@ -90,9 +89,9 @@ function Factura({ match }) {
       <Pdf
         targetRef={ref}
         filename={`estado-de-cuenta-${moment().format("YYYY-MM-DD")}.pdf`}
-        x={-1}
+        x={10}
         y={10}
-        scale={0.65}
+        scale={0.9}
       >
         {({ toPdf }) => (
           <Button
@@ -109,10 +108,7 @@ function Factura({ match }) {
         <Container
           maxWidth={false}
           ref={ref}
-          component={Paper}
-          elevation={3}
-          square
-          style={{ paddingBottom: "2rem", minWidth: "1100px" }}
+          style={{ paddingBottom: "2rem", width: "800px" }}
         >
           <Grid
             item
@@ -121,7 +117,7 @@ function Factura({ match }) {
             xs={12}
             maxWidth={false}
             style={{
-              marginTop: "3rem",
+              marginTop: "5rem",
               marginBottom: "3rem",
             }}
           >
@@ -161,7 +157,7 @@ function Factura({ match }) {
           <Grid
             item
             container
-            spacing={2}
+            spacing={1}
             xs={12}
             maxWidth={false}
             style={{
@@ -171,7 +167,7 @@ function Factura({ match }) {
           >
             <Grid container item xs={6} maxWidth={false}>
               {/* datos del cliente */}
-              <Card item raised style={{ width: "100%" }}>
+              <Card item style={{ width: "100%" }}>
                 <CardContent
                   style={{
                     display: "flex",
@@ -198,7 +194,7 @@ function Factura({ match }) {
             <Grid container item xs={6} spacing={2}>
               {/* resumen */}
               <Grid item xl={6} style={{ width: "50%" }}>
-                <Card raised>
+                <Card>
                   <CardContent
                     style={{
                       display: "flex",
@@ -218,7 +214,7 @@ function Factura({ match }) {
                 </Card>
               </Grid>
               <Grid item xs={6} style={{ width: "50%" }}>
-                <Card raised>
+                <Card>
                   <CardContent
                     style={{
                       display: "flex",
@@ -238,7 +234,7 @@ function Factura({ match }) {
                 </Card>
               </Grid>
               <Grid item xs={6} style={{ width: "50%" }}>
-                <Card raised>
+                <Card>
                   <CardContent
                     style={{
                       display: "flex",
@@ -258,7 +254,7 @@ function Factura({ match }) {
                 </Card>
               </Grid>
               <Grid item xs={6} style={{ width: "50%" }}>
-                <Card raised>
+                <Card>
                   <CardContent
                     style={{
                       display: "flex",
@@ -287,7 +283,7 @@ function Factura({ match }) {
             }}
           >
             {/* lista de ordenes */}
-            <Card raised style={{ margin: "1.2rem" }}>
+            <Card>
               <CardHeader title="Desglose de ordenes" />
               <Divider />
               <PerfectScrollbar>
@@ -299,26 +295,58 @@ function Factura({ match }) {
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell align="left">Ref Orden</TableCell>
-                        <TableCell align="left">Fechas</TableCell>
-                        <TableCell align="left">Compras</TableCell>
-                        <TableCell align="left">Pagos</TableCell>
-                        <TableCell align="left">Saldos</TableCell>
+                        <TableCell
+                          align="left"
+                          style={{ fontWeight: "bold", fontSize: "1.2rem" }}
+                        >
+                          Fechas
+                        </TableCell>
+                        <TableCell
+                          align="left"
+                          style={{ fontWeight: "bold", fontSize: "1.2rem" }}
+                        >
+                          Compras
+                        </TableCell>
+                        <TableCell
+                          align="left"
+                          style={{ fontWeight: "bold", fontSize: "1.2rem" }}
+                        >
+                          Pagos
+                        </TableCell>
+                        <TableCell
+                          align="left"
+                          style={{ fontWeight: "bold", fontSize: "1.2rem" }}
+                        >
+                          Saldos
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {ordenesDelCliente?.map((obj, i) => {
                         return (
-                          <TableRow hover key={i}>
-                            <TableCell align="left">{obj.orden_id}</TableCell>
-                            <TableCell align="left">{obj.fecha}</TableCell>
-                            <TableCell align="left">
+                          <TableRow hover key={obj.orden_id}>
+                            <TableCell
+                              align="left"
+                              style={{ fontWeight: "bold", fontSize: "0.9rem" }}
+                            >
+                              {obj.fecha}
+                            </TableCell>
+                            <TableCell
+                              align="left"
+                              style={{ fontWeight: "bold", fontSize: "0.9rem" }}
+                            >
                               {`$${obj.ventas.toFixed(2)}`}
                             </TableCell>
-                            <TableCell align="left">
+                            <TableCell
+                              align="left"
+                              style={{ fontWeight: "bold", fontSize: "0.9rem" }}
+                            >
                               {`$${obj.pagos.toFixed(2)}`}
                             </TableCell>
-                            <TableCell align="left">
+                            <TableCell
+                              align="left"
+                              style={{ fontWeight: "bold", fontSize: "0.9rem" }}
+                            >
                               {`$${obj.saldo.toFixed(2)}`}
                             </TableCell>
                           </TableRow>

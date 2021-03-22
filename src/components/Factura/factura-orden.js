@@ -24,7 +24,7 @@ import {
   Paper,
   Button,
 } from "@material-ui/core";
-import Logo from "../../static/Celisastore logotipo.png";
+import Logo from "../../static/Gris celisa store.png";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import BackdropSpinner from "../BackDrop/backDrop";
 import MainLayout from "../MainLayOut/mainLayout.component";
