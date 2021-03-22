@@ -32,12 +32,11 @@ const UserCreate = () => {
   const getPaisData = url.getPaisesUrl();
   const history = useHistory();
 
-  const handleChange = (event) => {
+  const handleChange = (event) =>
     setNewUser({
       ...newUser,
       [event.target.name]: event.target.value,
     });
-  };
 
   const handleOnSubmit = async (event) => {
     event.preventDefault();

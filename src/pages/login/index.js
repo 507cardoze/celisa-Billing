@@ -1,11 +1,5 @@
 import React, { useState, useContext, memo, useEffect } from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { Paper, Grid, Typography, makeStyles } from "@material-ui/core";
 import fondoPrincipal from "../../static/fondo-principal.jpg";
 import * as fetch from "../../helpers/fetch";
 import * as styles from "../../helpers/styles";
@@ -14,13 +8,13 @@ import * as url from "../../helpers/urls";
 import { Redirect, useHistory } from "react-router-dom";
 import { UserContext } from "../../Context/userContext";
 import { OrderContext } from "../../Context/OrderContext";
-import BackdropSpinner from "../../components/BackDrop/backDrop";
 import { Helmet } from "react-helmet";
+import LoginForm from "./LoginForm";
 
 function Login() {
-  const useStyles = makeStyles((theme) => {
-    return styles.loginStyles(theme, fondoPrincipal);
-  });
+  const useStyles = makeStyles((theme) =>
+    styles.loginStyles(theme, fondoPrincipal),
+  );
   const classes = useStyles();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -151,47 +145,15 @@ function Login() {
           <Typography component="h1" variant="h5">
             CelisaStore Billing
           </Typography>
-          <form className={classes.form} onSubmit={handleOnSubmit}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              label="Usuario"
-              autoComplete="username"
-              value={username}
-              onChange={(e) => setUserName(e.target.value)}
-              autoFocus
-              name="username"
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              label="Contraseña"
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              name="password"
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={isLoading}
-            />
-            {isLoading ? (
-              <BackdropSpinner isLoading={!isLoading} />
-            ) : (
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Entrar
-              </Button>
-            )}
-            <Box mt={5}>
-              <styles.Copyright name="Anthony Cardoze" />
-            </Box>
-          </form>
+          <LoginForm
+            className={classes}
+            handleOnSubmit={handleOnSubmit}
+            username={username}
+            setUserName={setUserName}
+            password={password}
+            setPassword={setPassword}
+            isLoading={isLoading}
+          />
         </div>
       </Grid>
     </Grid>

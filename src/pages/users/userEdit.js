@@ -53,19 +53,17 @@ const UsersEdit = ({ match }) => {
     });
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event) =>
     setRows({
       ...rows,
       [event.target.name]: event.target.value,
     });
-  };
 
-  const handleChangePassword = (event) => {
+  const handleChangePassword = (event) =>
     setPasswords({
       ...passwords,
       [event.target.name]: event.target.value,
     });
-  };
 
   const handleOnSubmitPassword = async (event) => {
     event.preventDefault();

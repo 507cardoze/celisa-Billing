@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import * as fetch from "../../helpers/fetch";
 import * as url from "../../helpers/urls";
 import { colors, Grid, Container } from "@material-ui/core";
-import DashboardGraphBar from "../DashboardGraphBar/";
+import DashboardGraphBar from "../../components/DashboardGraphBar/";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import DashboardGraphPie from "../../components/DashboardGraphPie";

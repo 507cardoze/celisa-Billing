@@ -23,7 +23,7 @@ import {
   TableRow,
   Button,
 } from "@material-ui/core";
-import DashboardGraphBar from "../DashboardGraphBar/";
+import DashboardGraphBar from "../../components/DashboardGraphBar/";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
 import LadderRanking from "../../components/LadderRanking/LadderRanking";
 import { Link } from "react-router-dom";

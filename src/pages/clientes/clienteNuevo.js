@@ -1,31 +1,18 @@
 import React, { useState, useEffect, useContext, memo } from "react";
 import clsx from "clsx";
 import * as styles from "../../helpers/styles";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  Grid,
-  TextField,
-  makeStyles,
-  FormControl,
-  FormHelperText,
-  MenuItem,
-  Select,
-} from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../Context/userContext";
 import * as url from "../../helpers/urls";
 import * as fetch from "../../helpers/fetch";
 import * as toast from "../../helpers/toast";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
+import NewClientForm from "./newClientForm";
 
 const useStyles = makeStyles((theme) => styles.mainLayOutStyles(theme));
 
-function CrearCliente({ className, ...rest }) {
+function CrearCliente({ className }) {
   const classes = useStyles();
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
@@ -67,7 +54,7 @@ function CrearCliente({ className, ...rest }) {
     const loggedInfo = await fetch.fetchData(getClientDetails, header);
     fetch.UnauthorizedRedirect(loggedInfo, history);
     if (loggedInfo === "Cliente Creado.") {
-      history.push("/clientes");
+      history.push("/clientes/crear");
       toast.msgSuccess("Cliente Creado.");
     } else {
       toast.errorToast("error al crear usuario");
@@ -97,9 +84,7 @@ function CrearCliente({ className, ...rest }) {
         variant="contained"
         color="primary"
         style={{ margin: "10px" }}
-        onClick={() => {
-          history.push(`/clientes`);
-        }}
+        onClick={() => history.push(`/clientes`)}
       >
         Atras
       </Button>
@@ -107,115 +92,17 @@ function CrearCliente({ className, ...rest }) {
         variant="contained"
         color="default"
         style={{ margin: "10px" }}
-        onClick={() => {
-          history.push(`/create-orders`);
-        }}
+        onClick={() => history.push(`/create-orders`)}
       >
         Volver a la orden
       </Button>
-      <form
-        autoComplete="off"
-        noValidate
+      <NewClientForm
         className={clsx(classes.root, className)}
-        {...rest}
-        onSubmit={handleOnSubmit}
-      >
-        <Card>
-          <CardHeader
-            subheader="Ingrese la información del cliente"
-            title="Crear Cliente"
-          />
-          <Divider />
-          {userData && (
-            <CardContent>
-              <Grid container spacing={3}>
-                <Grid item md={6} xs={12}>
-                  <TextField
-                    fullWidth
-                    helperText="Por favor especifique el nombre"
-                    label="Nombre completo"
-                    name="nombre"
-                    onChange={handleChange}
-                    required
-                    value={userData.nombre}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item md={6} xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Dirección"
-                    name="direccion"
-                    onChange={handleChange}
-                    required
-                    value={userData.direccion}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item md={6} xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Número de teléfono"
-                    name="numero"
-                    onChange={handleChange}
-                    type="text"
-                    value={userData.numero}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item md={6} xs={12}>
-                  <FormControl item>
-                    <Select
-                      variant="outlined"
-                      fullWidth
-                      value={userData.id_pais}
-                      onChange={handleChange}
-                      inputProps={{
-                        name: "id_pais",
-                      }}
-                    >
-                      {paises?.map((pais) => (
-                        <MenuItem key={pais.pais_id} value={pais.pais_id}>
-                          {pais.pais}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    <FormHelperText>Seleccione un pais.</FormHelperText>
-                  </FormControl>
-                </Grid>
-                <Grid item md={10} xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Observación"
-                    name="observacion"
-                    onChange={handleChange}
-                    type="text"
-                    value={userData.observacion}
-                    variant="outlined"
-                    multiline={3}
-                  />
-                </Grid>
-              </Grid>
-            </CardContent>
-          )}
-          <Divider />
-          <Box
-            display="flex"
-            justifyContent="flex-end"
-            p={2}
-            alignItems="center"
-          >
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              style={{ margin: "5px" }}
-            >
-              Guardar Detalles
-            </Button>
-          </Box>
-        </Card>
-      </form>
+        handleOnSubmit={handleOnSubmit}
+        handleChange={handleChange}
+        userData={userData}
+        paises={paises}
+      />
     </>
   );
 }

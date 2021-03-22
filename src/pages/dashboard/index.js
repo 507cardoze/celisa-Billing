@@ -1,18 +1,11 @@
 import React, { useContext, useEffect, memo } from "react";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
-import {
-  Grid,
-  Container,
-  FormControl,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormHelperText,
-} from "@material-ui/core";
+import { Grid, Container } from "@material-ui/core";
 import moment from "moment";
 import { useStickyState } from "../../helpers/fetch";
 import DashboardGeneralVentas from "../../components/DashboardGeneralVentas/DashboardGeneralVentas";
 import { UserContext } from "../../Context/userContext";
+import DateSelector from "./DateSelector";
 
 function Dashboard({ history }) {
   const [desde, setDesde] = useStickyState(
@@ -41,50 +34,10 @@ function Dashboard({ history }) {
             }}
             container
           >
-            <FormControl item>
-              <InputLabel>{`Desde ${desde} hasta hoy, ${moment().format(
-                "YYYY-MM-DD",
-              )}`}</InputLabel>
-              <Select
-                value={desde}
-                onChange={(e) => handleChangeRangoFecha(e.target.value)}
-                inputProps={{
-                  name: "fecha",
-                }}
-              >
-                <MenuItem value={desde}>
-                  <em>Seleccione una rango de fecha</em>
-                </MenuItem>
-                <MenuItem
-                  value={moment().subtract(7, "days").format("YYYY-MM-DD")}
-                >
-                  Últimos 7 dias
-                </MenuItem>
-                <MenuItem
-                  value={moment().subtract(15, "days").format("YYYY-MM-DD")}
-                >
-                  Última 2 Semana
-                </MenuItem>
-                <MenuItem
-                  value={moment().subtract(1, "months").format("YYYY-MM-DD")}
-                >
-                  Último Mes
-                </MenuItem>
-                <MenuItem
-                  value={moment().subtract(6, "months").format("YYYY-MM-DD")}
-                >
-                  Últimos 6 Mes
-                </MenuItem>
-                <MenuItem
-                  value={moment().subtract(2, "years").format("YYYY-MM-DD")}
-                >
-                  Últimos 2 años
-                </MenuItem>
-              </Select>
-              <FormHelperText>
-                Al hacer cambios aqui, se afecta la información mostrada.
-              </FormHelperText>
-            </FormControl>
+            <DateSelector
+              handleChangeRangoFecha={handleChangeRangoFecha}
+              desde={desde}
+            />
           </Grid>
           <DashboardGeneralVentas
             desde={desde}

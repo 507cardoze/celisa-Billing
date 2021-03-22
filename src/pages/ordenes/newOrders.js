@@ -1,18 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
+import {
+  makeStyles,
+  Stepper,
+  Step,
+  StepLabel,
+  StepContent,
+  Button,
+} from "@material-ui/core";
+
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
 import { useStickyState } from "../../helpers/fetch";
-import SeleccionPedidos from "../../components/SeleccionPedidos/SeleccionPedidos";
-import ClientDataForm from "../../components/ClientDataForm/ClientDataForm";
-import SeleccionProductos from "../../components/SeleccionProductos/SeleccionProductos";
-import StepContent from "@material-ui/core/StepContent";
-import Button from "@material-ui/core/Button";
+import SeleccionPedidos from "./SeleccionPedidos";
+import ClientDataForm from "./ClientDataForm";
+import SeleccionProductos from "./SeleccionProductos";
+import PreviewOrden from "./PreviewOrden";
 import { OrderContext } from "../../Context/OrderContext";
 import { UserContext } from "../../Context/userContext";
-import PreviewOrden from "../../components/PreviewOrden/PreviewOrden";
 import * as url from "../../helpers/urls";
 import * as fetch from "../../helpers/fetch";
 import * as toast from "../../helpers/toast";

@@ -1,19 +1,20 @@
-import React, { useState, useEffect, useContext, memo } from "react";
-import { Container, Grid, Box, Tabs, Tab } from "@material-ui/core";
-import * as toast from "../../helpers/toast";
-import * as url from "../../helpers/urls";
-import * as fetch from "../../helpers/fetch";
-import { useHistory, Route } from "react-router-dom";
-import { UserContext } from "../../Context/userContext";
+import React, { memo } from "react";
+import { Container, Grid } from "@material-ui/core";
+//import { Box, Tabs, Tab } from "@material-ui/core";
+// import * as toast from "../../helpers/toast";
+// import * as url from "../../helpers/urls";
+// import * as fetch from "../../helpers/fetch";
+// import { useHistory, Route } from "react-router-dom";
+//import { UserContext } from "../../Context/userContext";
 import MainLayout from "../../components/MainLayOut/mainLayout.component";
-import BackdropSpinner from "../../components/BackDrop/backDrop";
+//import BackdropSpinner from "../../components/BackDrop/backDrop";
 import BackButton from "../../components/BackButton/BackButton";
 
 function EditPedido({ match }) {
   const id_pedido = match.params.id_pedido;
-  const history = useHistory();
-  const [isLoading, setIsLoading] = useState(false);
-  const [user] = useContext(UserContext);
+  // const history = useHistory();
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [user] = useContext(UserContext);
 
   return (
     <MainLayout Tittle={`Pedido ${id_pedido}`}>
@@ -36,8 +37,10 @@ function EditPedido({ match }) {
           <Grid
             xs={12}
             item
-            style={{ backgroundColor: "black", height: "200px" }}
-          ></Grid>
+            //style={{ backgroundColor: "black", height: "200px" }}
+          >
+            <h3>Area en construcción...</h3>
+          </Grid>
         </Grid>
       </Container>
     </MainLayout>

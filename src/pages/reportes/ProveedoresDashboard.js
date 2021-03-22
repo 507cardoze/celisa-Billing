@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
-import { useQuery } from "react-query";
-import { useIsFetching } from "react-query";
+import { useQuery, useIsFetching } from "react-query";
 import { UserContext } from "../../Context/userContext";
 import { useHistory } from "react-router-dom";
 import * as fetch from "../../helpers/fetch";
 import * as url from "../../helpers/urls";
 import { colors, Grid } from "@material-ui/core";
-import DashboardGraphBar from "../DashboardGraphBar/";
+import DashboardGraphBar from "../../components/DashboardGraphBar/";
 import BackdropSpinner from "../../components/BackDrop/backDrop";
 import DashbordCard from "../../components/DashboardCard";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
@@ -66,7 +65,7 @@ function ProveedoresDashboard({ desde, hasta, id_proveedor }) {
           (obj) => obj.proveedor_id === parseInt(id_proveedor),
         );
         return (
-          <h3>
+          <>
             {info?.length ? (
               <DashbordCard
                 title={`${info[0].proveedor}`}
@@ -84,7 +83,7 @@ function ProveedoresDashboard({ desde, hasta, id_proveedor }) {
                 description={`No hay productos registrados.`}
               />
             )}
-          </h3>
+          </>
         );
     }
   };

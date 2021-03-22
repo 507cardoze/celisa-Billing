@@ -5,7 +5,7 @@ import * as url from "../../helpers/urls";
 import * as fetch from "../../helpers/fetch";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
-import BackdropSpinner from "../BackDrop/backDrop";
+import BackdropSpinner from "../../components/BackDrop/backDrop";
 
 function SeleccionPedidos() {
   const [isLoading, setIsLoading] = useState(false);

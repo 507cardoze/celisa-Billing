@@ -3,9 +3,9 @@ import { Grid, Container } from "@material-ui/core";
 import BackButton from "../../components/BackButton/BackButton";
 import { Redirect } from "react-router-dom";
 import DashboardGeneralVentas from "../../components/DashboardGeneralVentas/DashboardGeneralVentas";
-import ProveedoresDashboard from "../../components/ProveedoresDashboard/ProveedoresDashboard";
-import VendedoresDashboard from "../../components/VendedoresDashboard/VendedoresDashboard";
-import ClientesDashboard from "../../components/ClientesDashboard/ClientesDashboard";
+import ProveedoresDashboard from "./ProveedoresDashboard";
+import VendedoresDashboard from "./VendedoresDashboard";
+import ClientesDashboard from "./ClientesDashboard";
 import moment from "moment";
 
 function ReportePreview({ match }) {

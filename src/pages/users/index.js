@@ -158,9 +158,7 @@ const Users = () => {
                       color="primary"
                       label={`${row.name} ${row.lastname}`}
                       clickable
-                      onClick={() => {
-                        history.push(`/edit-user/${row.user_id}`);
-                      }}
+                      onClick={() => history.push(`/edit-user/${row.user_id}`)}
                     />
                   </TableCell>
                   <TableCell align="center">{row.username}</TableCell>
@@ -173,12 +171,12 @@ const Users = () => {
                       inputProps={{
                         "aria-label": "primary checkbox",
                       }}
-                      onChange={() => {
+                      onChange={() =>
                         updateEstado(
                           row.user_id,
                           row.estado === 1 ? true : false,
-                        );
-                      }}
+                        )
+                      }
                     />
                   </TableCell>
                   <TableCell align="center">
