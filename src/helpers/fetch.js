@@ -55,6 +55,7 @@ export const UserRedirect = (user, history) => {
 };
 
 export const numberWithCommas = (x) => {
-  const req = /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/;
-  return x.toString().replace(req, ",");
+  // const req = /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/;
+  // return x.toString().replace(req, ",");
+  return x;
 };
