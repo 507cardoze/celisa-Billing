@@ -27,6 +27,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.4",
     "react-to-pdf": "0.0.13",
+    "react-to-print": "^2.12.3",
     "react-toastify": "^6.2.0",
     "utf8": "^3.0.0",
     "uuid": "^8.3.2",

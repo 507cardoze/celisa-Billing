@@ -1,5 +1,5 @@
 import React, { useRef, useContext } from "react";
-import Pdf from "react-to-pdf";
+//import Pdf from "react-to-pdf";
 import moment from "moment";
 import { useQuery } from "react-query";
 import { useIsFetching } from "react-query";
@@ -27,6 +27,7 @@ import Logo from "../../static/Gris celisa store.png";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import BackdropSpinner from "../BackDrop/backDrop";
 import MainLayout from "../MainLayOut/mainLayout.component";
+import { useReactToPrint } from "react-to-print";
 
 function FacturaOrden({ match }) {
   const ref = useRef(null);
@@ -54,6 +55,10 @@ function FacturaOrden({ match }) {
     fetchData(`${urlGet}/${id_orden}`, header),
   );
 
+  const handlePrint = useReactToPrint({
+    content: () => ref.current,
+  });
+
   return (
     <MainLayout Tittle={`Factura de orden ${id_orden}`}>
       <>
@@ -65,7 +70,7 @@ function FacturaOrden({ match }) {
         >
           Volver
         </Button>
-        <Pdf
+        {/* <Pdf
           targetRef={ref}
           filename={`factura-orden-${id_orden}-${moment().format(
             "YYYY-MM-DD",
@@ -84,7 +89,15 @@ function FacturaOrden({ match }) {
               Descargar en PDF
             </Button>
           )}
-        </Pdf>
+        </Pdf> */}
+        <Button
+          variant="contained"
+          color="default"
+          style={{ fontWeight: "bold" }}
+          onClick={handlePrint}
+        >
+          Descargar en PDF
+        </Button>
         {data ? (
           <Container
             maxWidth={false}
@@ -336,7 +349,6 @@ function FacturaOrden({ match }) {
                               <TableCell
                                 align="left"
                                 style={{
-                                  fontWeight: "bold",
                                   fontSize: "0.9rem",
                                 }}
                               >
@@ -345,7 +357,6 @@ function FacturaOrden({ match }) {
                               <TableCell
                                 align="left"
                                 style={{
-                                  fontWeight: "bold",
                                   fontSize: "0.9rem",
                                 }}
                               >
@@ -354,7 +365,6 @@ function FacturaOrden({ match }) {
                               <TableCell
                                 align="left"
                                 style={{
-                                  fontWeight: "bold",
                                   fontSize: "0.9rem",
                                 }}
                               >
@@ -363,7 +373,6 @@ function FacturaOrden({ match }) {
                               <TableCell
                                 align="left"
                                 style={{
-                                  fontWeight: "bold",
                                   fontSize: "0.9rem",
                                 }}
                               >
@@ -372,7 +381,6 @@ function FacturaOrden({ match }) {
                               <TableCell
                                 align="left"
                                 style={{
-                                  fontWeight: "bold",
                                   fontSize: "0.9rem",
                                 }}
                               >
@@ -383,7 +391,6 @@ function FacturaOrden({ match }) {
                               <TableCell
                                 align="left"
                                 style={{
-                                  fontWeight: "bold",
                                   fontSize: "0.9rem",
                                 }}
                               >
@@ -401,13 +408,13 @@ function FacturaOrden({ match }) {
                           <TableCell align="left"></TableCell>
                           <TableCell
                             align="left"
-                            style={{ fontWeight: "bold", fontSize: "0.9rem" }}
+                            style={{ fontSize: "0.9rem" }}
                           >
                             Articulos:{" "}
                           </TableCell>
                           <TableCell
                             align="left"
-                            style={{ fontWeight: "bold", fontSize: "0.9rem" }}
+                            style={{ fontSize: "0.9rem" }}
                           >{`${fetch.numberWithCommas(
                             data.productos.reduce(sumaArticulos, 0),
                           )}`}</TableCell>
@@ -480,7 +487,6 @@ function FacturaOrden({ match }) {
                                 component="th"
                                 scope="row"
                                 style={{
-                                  fontWeight: "bold",
                                   fontSize: "0.9rem",
                                 }}
                               >
@@ -489,7 +495,6 @@ function FacturaOrden({ match }) {
                               <TableCell
                                 align="left"
                                 style={{
-                                  fontWeight: "bold",
                                   fontSize: "0.9rem",
                                 }}
                               >
@@ -498,7 +503,6 @@ function FacturaOrden({ match }) {
                               <TableCell
                                 align="left"
                                 style={{
-                                  fontWeight: "bold",
                                   fontSize: "0.9rem",
                                 }}
                               >

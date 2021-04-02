@@ -1,5 +1,5 @@
 import React, { useRef, useContext } from "react";
-import Pdf from "react-to-pdf";
+//import Pdf from "react-to-pdf";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 import { useQueries } from "react-query";
@@ -27,6 +27,7 @@ import {
 import Logo from "../../static/Gris celisa store.png";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import BackdropSpinner from "../BackDrop/backDrop";
+import { useReactToPrint } from "react-to-print";
 
 function Factura({ match }) {
   const { desde, hasta, id_cliente } = match.params;
@@ -72,6 +73,10 @@ function Factura({ match }) {
     (obj) => obj.id_cliente === parseInt(id_cliente),
   );
 
+  const handlePrint = useReactToPrint({
+    content: () => ref.current,
+  });
+
   return (
     <>
       <Button
@@ -86,7 +91,7 @@ function Factura({ match }) {
       >
         Volver
       </Button>
-      <Pdf
+      {/* <Pdf
         targetRef={ref}
         filename={`estado-de-cuenta-${moment().format("YYYY-MM-DD")}.pdf`}
         x={10}
@@ -103,7 +108,15 @@ function Factura({ match }) {
             Descargar en PDF
           </Button>
         )}
-      </Pdf>
+      </Pdf> */}
+      <Button
+        variant="contained"
+        color="default"
+        style={{ fontWeight: "bold" }}
+        onClick={handlePrint}
+      >
+        Descargar en PDF
+      </Button>
       {info?.length && ordenesDelCliente?.length ? (
         <Container
           maxWidth={false}
@@ -115,7 +128,6 @@ function Factura({ match }) {
             container
             spacing={2}
             xs={12}
-            maxWidth={false}
             style={{
               marginTop: "5rem",
               marginBottom: "3rem",
@@ -205,7 +217,6 @@ function Factura({ match }) {
                       justifyContent: "center",
                       flexDirection: "column",
                       alignContent: "center",
-                      height: "100%",
                     }}
                   >
                     <Typography
@@ -229,7 +240,6 @@ function Factura({ match }) {
                       justifyContent: "center",
                       flexDirection: "column",
                       alignContent: "center",
-                      height: "100%",
                     }}
                   >
                     <Typography
@@ -253,7 +263,6 @@ function Factura({ match }) {
                       justifyContent: "center",
                       flexDirection: "column",
                       alignContent: "center",
-                      height: "100%",
                     }}
                   >
                     <Typography
@@ -277,7 +286,6 @@ function Factura({ match }) {
                       justifyContent: "center",
                       flexDirection: "column",
                       alignContent: "center",
-                      height: "100%",
                     }}
                   >
                     <Typography
@@ -347,25 +355,25 @@ function Factura({ match }) {
                           <TableRow hover key={obj.orden_id}>
                             <TableCell
                               align="left"
-                              style={{ fontWeight: "bold", fontSize: "0.9rem" }}
+                              style={{ fontSize: "0.9rem" }}
                             >
                               {obj.fecha}
                             </TableCell>
                             <TableCell
                               align="left"
-                              style={{ fontWeight: "bold", fontSize: "0.9rem" }}
+                              style={{ fontSize: "0.9rem" }}
                             >
                               {`$${obj.ventas.toFixed(2)}`}
                             </TableCell>
                             <TableCell
                               align="left"
-                              style={{ fontWeight: "bold", fontSize: "0.9rem" }}
+                              style={{ fontSize: "0.9rem" }}
                             >
                               {`$${obj.pagos.toFixed(2)}`}
                             </TableCell>
                             <TableCell
                               align="left"
-                              style={{ fontWeight: "bold", fontSize: "0.9rem" }}
+                              style={{ fontSize: "0.9rem" }}
                             >
                               {`$${obj.saldo.toFixed(2)}`}
                             </TableCell>
