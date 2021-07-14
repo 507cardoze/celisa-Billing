@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Switch, Route } from "react-router-dom";
 import { ThemeProvider, CssBaseline } from "@material-ui/core";
 import theme from "./theme/";
@@ -37,10 +37,6 @@ import "moment/locale/es";
 
 function App() {
   const queryClient = new QueryClient();
-
-  useEffect(() => {
-    progressier.install();
-  }, []);
   return (
     <ThemeProvider theme={theme}>
       <UserProvider>

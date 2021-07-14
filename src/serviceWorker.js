@@ -10,7 +10,7 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
-importScripts("https://progressier.com/client/sw.js?id=OTK0HsDwnPU5HaUNdJIN");
+//importScripts("https://progressier.com/client/sw.js?id=OTK0HsDwnPU5HaUNdJIN");
 
 const isLocalhost = Boolean(
   window.location.hostname === "localhost" ||
